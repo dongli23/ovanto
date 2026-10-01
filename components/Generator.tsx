@@ -34,6 +34,11 @@ type UploadedAsset = {
   url: string;
 };
 
+export type PromptExample = {
+  label: string;
+  prompt: string;
+};
+
 type UploadState = "idle" | "uploading" | "ready" | "error";
 
 type TurnstileApi = {
@@ -61,8 +66,11 @@ declare global {
 
 type Copy = {
   generate: string;
+  promptLabel: string;
   placeholder: string;
   download: string;
+  openResult: string;
+  retry: string;
   generating: string;
   error: string;
   limitReached: string;
@@ -87,13 +95,26 @@ type Copy = {
   paidCreditsRequired: string;
   paidSessionRequired: string;
   paidSubmissionUncertain: string;
+  settingsLabel: string;
+  modelLabel: string;
+  inputLabel: string;
+  aspectLabel: string;
+  outputLabel: string;
+  durationLabel: string;
+  originalLabel: string;
+  beforeLabel: string;
+  afterLabel: string;
+  examplesLabel: string;
 };
 
 const copy: Record<Locale, Copy> = {
   en: {
     generate: "Generate",
+    promptLabel: "Prompt",
     placeholder: "Describe the image you want…",
     download: "Download",
+    openResult: "Open result",
+    retry: "Try again",
     generating: "Generating…",
     error: "Something went wrong. Try again.",
     limitReached: "Daily free limit reached. Try again tomorrow or choose a paid option.",
@@ -118,11 +139,24 @@ const copy: Record<Locale, Copy> = {
     paidCreditsRequired: "Select a paid credit balance before generating, or continue to payment below.",
     paidSessionRequired: "Paid access needs to be activated before generating.",
     paidSubmissionUncertain: "Request outcome is being checked; your credit remains reserved.",
+    settingsLabel: "Generation settings",
+    modelLabel: "Model",
+    inputLabel: "Input",
+    aspectLabel: "Aspect ratio",
+    outputLabel: "Output",
+    durationLabel: "Duration",
+    originalLabel: "Original",
+    beforeLabel: "Before",
+    afterLabel: "After",
+    examplesLabel: "Try an example prompt",
   },
   it: {
     generate: "Genera",
+    promptLabel: "Prompt",
     placeholder: "Descrivi il video che vuoi…",
     download: "Scarica",
+    openResult: "Apri il risultato",
+    retry: "Riprova",
     generating: "Generazione…",
     error: "Qualcosa è andato storto. Riprova.",
     limitReached: "Limite giornaliero raggiunto. Riprova domani o scegli un'opzione a pagamento.",
@@ -147,11 +181,24 @@ const copy: Record<Locale, Copy> = {
     paidCreditsRequired: "Seleziona un saldo di crediti a pagamento prima di generare oppure vai al pagamento qui sotto.",
     paidSessionRequired: "L'accesso a pagamento deve essere attivato prima di generare.",
     paidSubmissionUncertain: "Stiamo verificando l'esito della richiesta; il tuo credito resta riservato.",
+    settingsLabel: "Impostazioni di generazione",
+    modelLabel: "Modello",
+    inputLabel: "Ingresso",
+    aspectLabel: "Formato",
+    outputLabel: "Qualità",
+    durationLabel: "Durata",
+    originalLabel: "Originale",
+    beforeLabel: "Prima",
+    afterLabel: "Dopo",
+    examplesLabel: "Prova un prompt di esempio",
   },
   fr: {
     generate: "Générer",
+    promptLabel: "Prompt",
     placeholder: "Décrivez ce que vous voulez…",
     download: "Télécharger",
+    openResult: "Ouvrir le résultat",
+    retry: "Réessayer",
     generating: "Génération…",
     error: "Une erreur est survenue. Réessayez.",
     limitReached: "Limite journalière atteinte. Réessayez demain ou choisissez une option payante.",
@@ -176,11 +223,24 @@ const copy: Record<Locale, Copy> = {
     paidCreditsRequired: "Sélectionnez un solde de crédits payants avant de générer, ou continuez vers le paiement ci-dessous.",
     paidSessionRequired: "L'accès payant doit être activé avant de générer.",
     paidSubmissionUncertain: "Le résultat de la demande est vérifié ; votre crédit reste réservé.",
+    settingsLabel: "Paramètres de génération",
+    modelLabel: "Modèle",
+    inputLabel: "Entrée",
+    aspectLabel: "Format",
+    outputLabel: "Qualité",
+    durationLabel: "Durée",
+    originalLabel: "Original",
+    beforeLabel: "Avant",
+    afterLabel: "Après",
+    examplesLabel: "Essayez un prompt exemple",
   },
   nl: {
     generate: "Genereren",
+    promptLabel: "Prompt",
     placeholder: "Beschrijf wat je wilt maken…",
     download: "Downloaden",
+    openResult: "Resultaat openen",
+    retry: "Opnieuw proberen",
     generating: "Genereren…",
     error: "Er ging iets mis. Probeer opnieuw.",
     limitReached: "Daglimiet bereikt. Probeer morgen opnieuw of kies een betaalde optie.",
@@ -205,6 +265,16 @@ const copy: Record<Locale, Copy> = {
     paidCreditsRequired: "Kies een saldo met betaalde credits voordat je genereert, of ga hieronder door naar de betaling.",
     paidSessionRequired: "Betaalde toegang moet worden geactiveerd voordat je kunt genereren.",
     paidSubmissionUncertain: "De uitkomst van je aanvraag wordt gecontroleerd; je credit blijft gereserveerd.",
+    settingsLabel: "Generatie-instellingen",
+    modelLabel: "Model",
+    inputLabel: "Invoer",
+    aspectLabel: "Beeldverhouding",
+    outputLabel: "Uitvoer",
+    durationLabel: "Duur",
+    originalLabel: "Origineel",
+    beforeLabel: "Voor",
+    afterLabel: "Na",
+    examplesLabel: "Probeer een voorbeeldprompt",
   },
 };
 
@@ -308,19 +378,25 @@ export function Generator({
   valueLine,
   toolKind,
   turnstileSiteKey,
+  examples = [],
+  actionLabel,
+  showPaidAccess = true,
 }: {
   locale: Locale;
   title: string;
   valueLine: string;
   toolKind: ToolKind;
   turnstileSiteKey?: string;
+  examples?: readonly PromptExample[];
+  actionLabel?: string;
+  showPaidAccess?: boolean;
 }) {
   const localized = copy[locale];
   const kind = generationKind(toolKind);
   const isEdit = toolKind === "edit";
   const [prompt, setPrompt] = useState("");
   const [quota, setQuota] = useState<QuotaResponse | null>(null);
-  const [quotaError, setQuotaError] = useState(false);
+  const [quotaError, setQuotaError] = useState(!turnstileSiteKey);
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [result, setResult] = useState<GenerationResult | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -333,6 +409,7 @@ export function Generator({
   const [paidState, setPaidState] = useState<PaidAccessState>(defaultPaidAccessState);
   const [paidRefreshSignal, setPaidRefreshSignal] = useState(0);
   const [paidRemaining, setPaidRemaining] = useState<number | undefined>(undefined);
+  const promptRef = useRef<HTMLTextAreaElement>(null);
   const turnstileContainer = useRef<HTMLDivElement>(null);
   const widgetId = useRef<string | null>(null);
   const pendingJobId = useRef<string | null>(null);
@@ -347,6 +424,7 @@ export function Generator({
 
   const loadQuota = useCallback(async () => {
     if (!turnstileSiteKey) {
+      setQuota(null);
       setQuotaError(true);
       return;
     }
@@ -359,6 +437,7 @@ export function Generator({
       setQuota(payload);
       setQuotaError(false);
     } catch {
+      setQuota(null);
       setQuotaError(true);
     }
   }, [kind, turnstileSiteKey]);
@@ -704,6 +783,26 @@ export function Generator({
     }
   };
 
+  const handleRetry = () => {
+    setError(null);
+    setDownloadError(null);
+    setStatus("idle");
+    void loadQuota();
+  };
+
+  const modelName = kind === "video" ? "Wan 2.5" : kind === "edit" ? "Flux Kontext Dev" : "Flux Schnell";
+  const outputSetting = kind === "video" ? "480p" : kind === "edit" ? localized.originalLabel : "1:1";
+  const settingItems = kind === "video"
+    ? [
+        { label: localized.modelLabel, value: modelName },
+        { label: localized.durationLabel, value: "5 s" },
+        { label: localized.outputLabel, value: outputSetting },
+      ]
+    : [
+        { label: localized.modelLabel, value: modelName },
+        { label: kind === "edit" ? localized.inputLabel : localized.aspectLabel, value: outputSetting },
+      ];
+
   const quotaLabel = quota
     ? quota.available
       ? `${locale === "en" ? "Free" : locale === "it" ? "Gratis" : locale === "fr" ? "Gratuit" : "Gratis"} (${quota.remaining}/${quota.limit} ${locale === "en" ? "today" : locale === "it" ? "oggi" : locale === "fr" ? "aujourd'hui" : "vandaag"})`
@@ -715,106 +814,213 @@ export function Generator({
       : localized.checking;
   const generateDisabled = status === "loading" || (isEdit && (uploadState !== "ready" || !uploadedAsset));
 
+  const promptDescription = error ? `${kind}-status ${kind}-error` : `${kind}-status`;
+
+  const renderMedia = (media: GenerationResult, className = "generated-media") => media.mediaType === "video" ? (
+    <video
+      className={className}
+      src={media.url}
+      width={1024}
+      height={576}
+      controls
+      playsInline
+      preload="metadata"
+      aria-label={localized.videoLabel}
+    />
+  ) : (
+    <Image className={className} src={media.url} width={1024} height={1024} alt={localized.imageAlt} unoptimized />
+  );
+
   return (
-    <section className={`tool-card${isEdit ? " tool-card-edit" : ""}`} aria-label={title}>
+    <section className={`tool-card workbench${isEdit ? " tool-card-edit" : ""}`} aria-label={title}>
       {turnstileSiteKey ? (
         <Script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" strategy="afterInteractive" />
       ) : null}
       <div ref={turnstileContainer} className="turnstile-container" aria-label="Security verification" />
       <p className="tool-value">{valueLine}</p>
-      <form className="prompt-form" onSubmit={handleSubmit}>
-        {isEdit ? (
-          <div className="edit-input-grid">
-            <div className="upload-field">
-              <label className="upload-label" htmlFor="edit-upload">
-                {localized.uploadHint}
-              </label>
-              <input
-                id="edit-upload"
-                className="upload-input"
-                type="file"
-                accept="image/jpeg,image/png,image/gif,image/webp"
-                onChange={handleUpload}
-                disabled={uploadState === "uploading" || status === "loading"}
-              />
-              <p className="upload-rules">{localized.uploadRules}</p>
-              {uploadName ? <p className="upload-name">{uploadName}</p> : null}
-              {uploadState === "uploading" ? <p className="upload-status">{localized.uploadInProgress}</p> : null}
-              {uploadState === "ready" ? <p className="upload-status">{localized.uploadReady}</p> : null}
-              {uploadError ? <p className="status-error" role="alert">{uploadError}</p> : null}
-            </div>
-            <div className="prompt-field">
-              <label className="sr-only" htmlFor={`${kind}-prompt`}>
-                {localized.placeholder}
-              </label>
-              <textarea
-                id={`${kind}-prompt`}
-                className="prompt-input"
-                placeholder={localized.placeholder}
-                value={prompt}
-                onChange={(event) => setPrompt(event.target.value)}
-                maxLength={2000}
-                aria-describedby={`${kind}-status`}
-              />
-            </div>
-          </div>
-        ) : (
-          <>
-            <label className="sr-only" htmlFor={`${kind}-prompt`}>
-              {localized.placeholder}
-            </label>
-            <textarea
-              id={`${kind}-prompt`}
-              className="prompt-input"
-              placeholder={localized.placeholder}
-              value={prompt}
-              onChange={(event) => setPrompt(event.target.value)}
-              maxLength={kind === "video" ? 1500 : 2000}
-              aria-describedby={`${kind}-status`}
-            />
-          </>
-        )}
-        <div className="generate-row">
-          <button type="submit" className="generate-button" disabled={generateDisabled}>
-            {status === "loading" ? localized.generating : localized.generate}
-          </button>
-          <span className="quota-label" aria-live="polite">{quotaLabel}</span>
-        </div>
-      </form>
-      <div className="result-panel" id={`${kind}-status`} aria-live="polite">
-        {isEdit && uploadedAsset ? (
-          <div className="original-preview">
-            <p>{localized.uploadReady}</p>
-            <Image className="original-media" src={uploadedAsset.url} width={1024} height={1024} alt={localized.originalAlt} unoptimized />
-          </div>
-        ) : null}
-        {status === "loading" ? <p className="status-loading">{localized.generating}</p> : null}
-        {error ? <p className="status-error" role="alert">{error}</p> : null}
-        {status === "idle" && !error && !uploadedAsset ? <p>{localized.waiting}</p> : null}
-        {status === "success" && result ? (
-          <>
-            <p>{localized.resultReady}</p>
-            {result.mediaType === "video" ? (
-              <video className="generated-media" src={result.url} width={1024} height={576} controls playsInline aria-label={localized.videoLabel} />
+      <div className="workbench-grid">
+        <div className="workbench-controls">
+          <form className="prompt-form" onSubmit={handleSubmit} aria-busy={status === "loading"}>
+            {isEdit ? (
+              <div className="edit-input-grid">
+                <div className="upload-field">
+                  <label className="upload-label" htmlFor="edit-upload">
+                    {localized.uploadHint}
+                  </label>
+                  <input
+                    id="edit-upload"
+                    className="upload-input"
+                    type="file"
+                    accept="image/jpeg,image/png,image/gif,image/webp"
+                    onChange={handleUpload}
+                    disabled={uploadState === "uploading" || status === "loading"}
+                    aria-invalid={Boolean(uploadError)}
+                    aria-describedby={`edit-upload-help${uploadError ? " edit-upload-error" : ""}`}
+                  />
+                  <p className="upload-rules" id="edit-upload-help">{localized.uploadRules}</p>
+                  {uploadName ? <p className="upload-name">{uploadName}</p> : null}
+                  {uploadState === "uploading" ? <p className="upload-status">{localized.uploadInProgress}</p> : null}
+                  {uploadState === "ready" ? <p className="upload-status">{localized.uploadReady}</p> : null}
+                  {uploadError ? <p className="status-error" id="edit-upload-error" role="alert">{uploadError}</p> : null}
+                  {uploadedAsset ? (
+                    <figure className="upload-original-preview">
+                      <figcaption>{localized.originalLabel}</figcaption>
+                      <Image
+                        src={uploadedAsset.url}
+                        width={180}
+                        height={180}
+                        alt={localized.originalAlt}
+                        unoptimized
+                      />
+                    </figure>
+                  ) : null}
+                </div>
+                <div className="prompt-field">
+                  <label className="prompt-label" htmlFor={`${kind}-prompt`}>
+                    {localized.promptLabel}
+                  </label>
+                  <textarea
+                    ref={promptRef}
+                    id={`${kind}-prompt`}
+                    className="prompt-input"
+                    placeholder={localized.placeholder}
+                    value={prompt}
+                    onChange={(event) => setPrompt(event.target.value)}
+                    maxLength={2000}
+                    disabled={status === "loading"}
+                    aria-invalid={Boolean(error)}
+                    aria-describedby={promptDescription}
+                  />
+                </div>
+              </div>
             ) : (
-              <Image className="generated-media" src={result.url} width={1024} height={1024} alt={localized.imageAlt} unoptimized />
+              <div className="prompt-field">
+                <label className="prompt-label" htmlFor={`${kind}-prompt`}>
+                  {localized.promptLabel}
+                </label>
+                <textarea
+                  ref={promptRef}
+                  id={`${kind}-prompt`}
+                  className="prompt-input"
+                  placeholder={localized.placeholder}
+                  value={prompt}
+                  onChange={(event) => setPrompt(event.target.value)}
+                  maxLength={kind === "video" ? 1500 : 2000}
+                  disabled={status === "loading"}
+                  aria-invalid={Boolean(error)}
+                  aria-describedby={promptDescription}
+                />
+              </div>
             )}
-            <button type="button" className="download-button" onClick={handleDownload} disabled={downloadBusy}>
-              {localized.download}
-            </button>
-            {downloadError ? <p className="status-error" role="alert">{downloadError}</p> : null}
-          </>
-        ) : null}
-        {status === "error" && !error ? <p role="alert">{localized.error}</p> : null}
+            <fieldset className="workbench-settings" aria-label={localized.settingsLabel}>
+              <legend>{localized.settingsLabel}</legend>
+              {settingItems.map((setting) => (
+                <div className="workbench-setting" key={setting.label}>
+                  <span>{setting.label}</span>
+                  <strong>{setting.value}</strong>
+                </div>
+              ))}
+            </fieldset>
+            <div className="generate-row">
+              <button type="submit" className="generate-button" disabled={generateDisabled}>
+                {status === "loading" ? localized.generating : actionLabel ?? localized.generate}
+              </button>
+              <span className="quota-label" aria-live="polite">{quotaLabel}</span>
+              {quotaError ? (
+                <button type="button" className="retry-button" onClick={handleRetry} disabled={status === "loading"}>
+                  {localized.retry}
+                </button>
+              ) : null}
+            </div>
+          </form>
+        </div>
+        <div className="workbench-preview">
+          <div className="result-panel" id={`${kind}-status`} aria-live="polite">
+            {status === "loading" ? <p className="status-loading">{localized.generating}</p> : null}
+            {error ? <p className="status-error" id={`${kind}-error`} role="alert">{error}</p> : null}
+            {status === "idle" && !error && !uploadedAsset ? <p>{localized.waiting}</p> : null}
+            {isEdit && uploadedAsset && status === "success" && result ? (
+              <div className="result-compare">
+                <figure className="result-side original-preview">
+                  <figcaption>{localized.beforeLabel}</figcaption>
+                  <Image className="original-media" src={uploadedAsset.url} width={1024} height={1024} alt={localized.originalAlt} unoptimized />
+                </figure>
+                <figure className="result-side generated-preview">
+                  <figcaption>{localized.afterLabel}</figcaption>
+                  {renderMedia(result)}
+                </figure>
+              </div>
+            ) : isEdit && uploadedAsset && !error && status !== "loading" ? (
+              <p>{localized.uploadReady}</p>
+            ) : status === "success" && result ? (
+              <>
+                <p>{localized.resultReady}</p>
+                {renderMedia(result)}
+              </>
+            ) : null}
+            {status === "success" && result ? (
+              <>
+                <button type="button" className="download-button" onClick={handleDownload} disabled={downloadBusy}>
+                  {downloadBusy ? localized.generating : localized.download}
+                </button>
+                {downloadError ? (
+                  <>
+                    <p className="status-error" role="alert">{downloadError}</p>
+                    <a className="result-fallback-link" href={result.url} target="_blank" rel="noreferrer">
+                      {localized.openResult}
+                    </a>
+                  </>
+                ) : null}
+              </>
+            ) : null}
+            {error ? (
+              <button type="button" className="retry-button" onClick={handleRetry} disabled={status === "loading"}>
+                {localized.retry}
+              </button>
+            ) : null}
+            {status === "error" && !error ? <p role="alert">{localized.error}</p> : null}
+          </div>
+        </div>
       </div>
-      <PaidAccess
-        locale={locale}
-        kind={kind}
-        busy={status === "loading"}
-        refreshSignal={paidRefreshSignal}
-        remainingFromGeneration={paidRemaining}
-        onStateChange={setPaidState}
-      />
+      {examples.length ? (
+        <section className="workbench-examples" aria-labelledby={`${kind}-examples-title`}>
+          <p className="workbench-examples-title" id={`${kind}-examples-title`}>
+            <strong>{localized.examplesLabel}</strong>
+          </p>
+          <div className="prompt-examples">
+            {examples.map((example) => (
+              <button
+                type="button"
+                className="prompt-example"
+                key={`${example.label}-${example.prompt}`}
+                onClick={() => {
+                  if (status !== "loading") {
+                    setError(null);
+                    setDownloadError(null);
+                    setStatus("idle");
+                  }
+                  setPrompt(example.prompt);
+                  window.requestAnimationFrame(() => promptRef.current?.focus({ preventScroll: true }));
+                }}
+                disabled={status === "loading"}
+              >
+                <span>{example.label}</span>
+                <small>{example.prompt}</small>
+              </button>
+            ))}
+          </div>
+        </section>
+      ) : null}
+      {showPaidAccess ? (
+        <PaidAccess
+          locale={locale}
+          kind={kind}
+          busy={status === "loading"}
+          refreshSignal={paidRefreshSignal}
+          remainingFromGeneration={paidRemaining}
+          onStateChange={setPaidState}
+        />
+      ) : null}
     </section>
   );
 }

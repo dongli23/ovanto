@@ -1,0 +1,25 @@
+:root {
+  --ovanto-ink: #162023;
+  --ovanto-muted: #647176;
+  --ovanto-line: #dfe7e3;
+  --ovanto-paper: #fbfcf9;
+  --ovanto-surface: #ffffff;
+  --ovanto-soft: #f5f8f4;
+  --ovanto-mint: #cfeee0;
+  --ovanto-mint-strong: #9dd8bf;
+  --ovanto-coral: #ef7f63;
+  --ovanto-coral-dark: #c85a42;
+  --ovanto-space-1: 4px;
+  --ovanto-space-2: 8px;
+  --ovanto-space-3: 12px;
+  --ovanto-space-4: 16px;
+  --ovanto-space-5: 20px;
+  --ovanto-space-6: 24px;
+  --ovanto-space-8: 32px;
+  --ovanto-radius-sm: 10px;
+  --ovanto-radius-md: 16px;
+  --ovanto-radius-lg: 22px;
+  --ovanto-focus: 3px solid #527a67;
+  --ovanto-shadow: 0 18px 48px rgba(27, 54, 45, 0.08);
+  --ovanto-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}

@@ -1,0 +1,59 @@
+{
+  "checkedAt": "2026-10-01T06:40:01.017Z",
+  "base": "http://localhost:3001",
+  "baselineCommit": "8bc8a0394b956e25528a8b39c7fe4442f9d48ac5",
+  "passed": true,
+  "pages": [
+    {
+      "path": "/",
+      "status": 200,
+      "mode": "image",
+      "uploads": 0,
+      "words": 930
+    },
+    {
+      "path": "/it/",
+      "status": 200,
+      "mode": "video",
+      "uploads": 0,
+      "words": 818
+    },
+    {
+      "path": "/fr/",
+      "status": 200,
+      "mode": "video",
+      "uploads": 0,
+      "words": 841
+    },
+    {
+      "path": "/fr/photo-ia-gratuit",
+      "status": 200,
+      "mode": "image",
+      "uploads": 0,
+      "words": 838
+    },
+    {
+      "path": "/fr/modifier-photo-ia",
+      "status": 200,
+      "mode": "edit",
+      "uploads": 1,
+      "words": 817
+    },
+    {
+      "path": "/nl/",
+      "status": 200,
+      "mode": "image",
+      "uploads": 0,
+      "words": 782
+    },
+    {
+      "path": "/nl/afbeeldingen-maken-met-ai",
+      "status": 200,
+      "mode": "image",
+      "uploads": 0,
+      "words": 770
+    }
+  ],
+  "failures": [],
+  "liveGeneration": "Pending credentials; not tested"
+}

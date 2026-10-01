@@ -1,7 +1,6 @@
-import Image from "next/image";
 import type { PageDefinition } from "../lib/content";
 import { ROUTES } from "../lib/site";
-import { Generator } from "./Generator";
+import { GeneratorWorkbench } from "./GeneratorWorkbench";
 
 const languageLinks = [
   { key: "en", label: "English", href: ROUTES.en },
@@ -85,7 +84,6 @@ function SectionCopy({ page, index }: { page: PageDefinition; index: number }) {
         <div className="use-case-grid">
           {page.useCases.map((useCase, useCaseIndex) => (
             <article className="use-case-card" key={useCase}>
-              <Image src={page.examples[useCaseIndex].src} width={page.examples[useCaseIndex].width} height={page.examples[useCaseIndex].height} alt={page.examples[useCaseIndex].alt} className="use-case-image" />
               <strong>{String(useCaseIndex + 1).padStart(2, "0")}</strong>
               <p>{useCase}</p>
             </article>
@@ -120,24 +118,42 @@ function SectionCopy({ page, index }: { page: PageDefinition; index: number }) {
   );
 }
 
-function ExampleGrid({ page }: { page: PageDefinition }) {
+const toolsCopy: Record<PageDefinition["locale"], { label: string; summary: string }> = {
+  en: {
+    label: "Tools",
+    summary: "Image: write a prompt · Edit: upload an image and describe the change · Video: write a prompt for a 5s, 480p clip.",
+  },
+  it: {
+    label: "Strumenti",
+    summary: "Immagine: scrivi un prompt · Modifica: carica un'immagine e descrivi il cambiamento · Video: scrivi un prompt per un clip di 5 s in 480p.",
+  },
+  fr: {
+    label: "Outils",
+    summary: "Image : écrivez un prompt · Modifier : téléversez une image et décrivez le changement · Vidéo : écrivez un prompt pour une vidéo de 5 s en 480p.",
+  },
+  nl: {
+    label: "Hulpmiddelen",
+    summary: "Afbeelding: schrijf een prompt · Bewerken: upload een afbeelding en beschrijf de wijziging · Video: schrijf een prompt voor een clip van 5 s in 480p.",
+  },
+};
+
+function ToolsLinks({ page }: { page: PageDefinition }) {
+  const copy = toolsCopy[page.locale];
+
   return (
-    <section className="examples-section" aria-label="Examples">
-      <div className="examples-grid">
-        {page.examples.map((example) => (
-          <figure className="example-card" key={example.src}>
-            <Image
-              src={example.src}
-              width={example.width}
-              height={example.height}
-              alt={example.alt}
-              className="example-image"
-              sizes="(max-width: 700px) 100vw, 33vw"
-            />
-            <figcaption>{example.caption}</figcaption>
-          </figure>
-        ))}
-      </div>
+    <section className="tools-section" aria-label={copy.label}>
+      <p className="tools-label">{copy.label}</p>
+      <p className="tools-summary">{copy.summary}</p>
+      {page.extraLinks && page.extraLinks.length > 0 ? (
+        <nav className="context-links" aria-label="Related Ovanto tools">
+          {page.extraLinks.map((link) => (
+            <div key={link.href} data-latest-page={((page.key === "fr" || page.key === "nl") && link === page.extraLinks?.at(-1)) || undefined}>
+              {(page.key === "fr" || page.key === "nl") && link === page.extraLinks?.at(-1) ? <span className="latest-label">{page.locale === "fr" ? "Dernière page" : "Nieuwste pagina"}</span> : null}
+              <a className="context-link" href={link.href}>{link.label}</a>
+            </div>
+          ))}
+        </nav>
+      ) : null}
     </section>
   );
 }
@@ -168,41 +184,34 @@ export function PageShell({ page }: { page: PageDefinition }) {
 
       <main>
         <section className={`hero${page.toolKind === "edit" ? " hero-edit" : ""}`} aria-labelledby={`${page.key}-title`}>
-          <h1 id={`${page.key}-title`}>{page.h1}</h1>
-          <div className="trust-row" aria-label="Trust points">
-            {page.trustPoints.map((trustPoint, index) => (
-              <div className="trust-point" key={trustPoint}>
-                <span className="trust-icon" aria-hidden="true">0{index + 1}</span>
-                <span>{trustPoint}</span>
-              </div>
-            ))}
+          <div className="hero-intro">
+            <h1 id={`${page.key}-title`}>{page.h1}</h1>
+            <div className="trust-row" aria-label="Trust points">
+              {page.trustPoints.map((trustPoint, index) => (
+                <div className="trust-point" key={trustPoint}>
+                  <span className="trust-icon" aria-hidden="true">0{index + 1}</span>
+                  <span>{trustPoint}</span>
+                </div>
+              ))}
+            </div>
           </div>
           <div className="tool-wrap">
-            <Generator
+            <GeneratorWorkbench
               locale={page.locale}
               title={page.h1}
               valueLine={page.valueLine}
-              toolKind={page.toolKind}
+              mode={page.toolKind}
               turnstileSiteKey={turnstileSiteKey}
             />
           </div>
-          <ExampleGrid page={page} />
         </section>
+
+        <ToolsLinks page={page} />
 
         <div className="content-wrap">
           {page.h2s.map((_, index) => (
             <SectionCopy key={page.h2s[index]} page={page} index={index} />
           ))}
-          {page.extraLinks && page.extraLinks.length > 0 ? (
-            <nav className="context-links" aria-label="Related Ovanto tools">
-              {page.extraLinks.map((link) => (
-                <div key={link.href} data-latest-page={((page.key === "fr" || page.key === "nl") && link === page.extraLinks?.at(-1)) || undefined}>
-                  {(page.key === "fr" || page.key === "nl") && link === page.extraLinks?.at(-1) ? <span className="latest-label">{page.locale === "fr" ? "Dernière page" : "Nieuwste pagina"}</span> : null}
-                  <a className="context-link" href={link.href}>{link.label}</a>
-                </div>
-              ))}
-            </nav>
-          ) : null}
           {(page.key === "en" || page.key === "it") ? <div data-latest-page-slot={page.locale} hidden /> : null}
         </div>
       </main>

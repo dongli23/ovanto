@@ -106,24 +106,24 @@ export const PAGE_CONTENT: Record<PageDefinition["key"], PageDefinition> = {
       ],
       [
         "For an avatar, put the face, expression, and crop first. For a product scene, describe the material and the space around the object. For concept art, lead with the place and atmosphere, then add the style that should guide the finish.",
-        "The three examples are visual references for the kinds of directions a prompt can describe. They are original illustrations made for this page, so use them to compare composition and mood rather than as claims about a previous generation result.",
+        "The three prompt directions here offer scene ideas to explore. Use them to compare composition and mood, then describe the subject, setting, and light you want in your own prompt.",
       ],
     ],
     faq: [
       {
         question: "Is this AI image generator really free and without sign up?",
         answer:
-          "Yes, you can start without an account. The free tier includes 3 images per day, 1 image edit per day, and 1 480p/5-second video per day per IP. The planned paid video offer starts at $0.99 for 5 seconds, but paid purchase is not yet available; higher resolution and longer duration are not available in this release.",
+          "Yes. Start without an account, write a prompt, and create up to 3 images per day per IP.",
       },
       {
         question: "Do I need to create an account to download my image?",
         answer:
-          "No account or email is needed to download a finished image. The free allowance is 3 images per day, 1 image edit per day, and 1 480p/5-second video per day per IP. The planned paid video offer starts at $0.99 for 5 seconds, but paid purchase is not yet available; higher resolution and longer duration are not available in this release.",
+          "No. Enter a prompt, generate the image, and download the finished file without uploading an image or creating an account.",
       },
       {
         question: "What can I generate with it?",
         answer:
-          "You can explore avatars, product shots, concept art, and other original image ideas. The free allowance includes 3 images per day, 1 image edit per day, and 1 480p/5-second video per day per IP. The planned paid video offer starts at $0.99 for 5 seconds, but paid purchase is not yet available; higher resolution and longer duration are not available in this release.",
+          "Describe an avatar, product scene, landscape, or other image idea in a prompt, then review and download the result. The image allowance is 3 generations per day per IP.",
       },
     ],
     steps: ["Write a prompt", "Generate", "Download"],
@@ -133,7 +133,7 @@ export const PAGE_CONTENT: Record<PageDefinition["key"], PageDefinition> = {
       "Explore concept art by describing a place, atmosphere, and visual style. Add a season or time of day when the mood matters to the composition. Consider the viewer's distance and the main shape you want them to notice first. Small cues such as mist, warm windows, or a low horizon can make an imagined setting easier to read.",
     ],
     examples: examples.en,
-    trustPoints: ["Free: 3 images/day", "No sign up", "Video 5s from $0.99"],
+    trustPoints: ["Free: 3 images/day", "No sign up", "Prompt → Image"],
     toolKind: "image",
     isVideo: false,
   },
@@ -155,7 +155,7 @@ export const PAGE_CONTENT: Record<PageDefinition["key"], PageDefinition> = {
     ],
     sectionLeads: [
       "Scrivi un prompt indicando soggetto, ambiente, azione e atmosfera, poi controlla il risultato quando la scena è pronta. Se il movimento o l'inquadratura non seguono l'idea, modifica un dettaglio preciso e prova una nuova direzione. Quando la sequenza comunica ciò che volevi, scarica il file per una presentazione, una bozza o un progetto personale. La sequenza in tre passaggi mantiene il lavoro semplice e leggibile, anche quando stai imparando a descrivere il ritmo di una scena. Parti da un'immagine mentale chiara e lascia che ogni tentativo aggiunga una scelta utile.",
-      "Senza registrazione puoi concentrarti sul contenuto prima di creare un account. Il piano gratuito include un video 480p di 5 secondi al giorno per IP, mentre l'offerta video a pagamento prevista parte da $0,99 per 5 secondi, ma l'acquisto a pagamento non è ancora disponibile. Questo rende facile verificare una direzione per una storia, un prodotto o una presentazione senza preparare un profilo. Il prompt e il risultato restano nello stesso percorso del browser, quindi puoi valutare la scena con calma. Una quota giornaliera contenuta invita a fare prove intenzionali: cambia il soggetto, la luce o il movimento e osserva quale scelta migliora il risultato.",
+      "Senza registrazione puoi concentrarti sul contenuto prima di creare un account. Il piano gratuito include un video AI 480p di 5 secondi al giorno per IP. Questo rende facile verificare una direzione per una storia, un prodotto o una presentazione senza preparare un profilo. Il prompt e il risultato restano nello stesso percorso del browser, quindi puoi valutare la scena con calma. Una quota giornaliera contenuta invita a fare prove intenzionali: cambia il soggetto, la luce o il movimento e osserva quale scelta migliora il risultato.",
       "Imposta soggetto, ambiente e movimento per costruire una scena leggibile. Puoi partire da un concept, una clip prodotto o un momento narrativo. Indica il punto di vista, la velocità percepita e ciò che deve restare fermo mentre la scena cambia. Per un prodotto, specifica la superficie e la direzione della luce; per un racconto, aggiungi l'emozione e il gesto principale. Dettagli concreti aiutano a mantenere il focus senza trasformare il prompt in un elenco confuso. Prima definisci il centro della scena, poi aggiungi il contesto che rende credibile l'azione.",
     ],
     sectionDetails: [
@@ -169,24 +169,24 @@ export const PAGE_CONTENT: Record<PageDefinition["key"], PageDefinition> = {
       ],
       [
         "Una clip prodotto può richiedere un movimento lento e regolare per rendere leggibili forma e materiale. Una scena narrativa può invece richiedere un gesto breve, uno sguardo o un cambio di luce che segnali il momento importante.",
-        "Gli esempi sono illustrazioni originali preparate per questa pagina e servono a mostrare direzioni di soggetto, luce e composizione. Usali come riferimento per il prompt, non come promessa di un risultato precedente.",
+        "Queste tre direzioni di prompt suggeriscono scene da esplorare. Usale per confrontare composizione e atmosfera, poi descrivi nel tuo prompt il soggetto, l'ambiente e la luce che desideri.",
       ],
     ],
     faq: [
       {
         question: "Il generatore video AI è davvero gratis e senza registrazione?",
         answer:
-          "Sì, puoi iniziare senza registrazione. Il piano gratuito include 3 immagini al giorno, 1 modifica al giorno e 1 video 480p di 5 secondi al giorno per IP. L'offerta video a pagamento prevista parte da $0,99 per 5 secondi, ma l'acquisto a pagamento non è ancora disponibile; risoluzioni più alte e durate più lunghe non sono disponibili in questa versione.",
+          "Sì. Puoi scrivere un prompt senza registrazione e generare 1 video AI al giorno per IP, con durata di 5 secondi e risoluzione 480p.",
       },
       {
         question: "Devo creare un account per scaricare il video?",
         answer:
-          "No, non serve un account per scaricare un risultato completato. La quota gratuita comprende 3 immagini al giorno, 1 modifica al giorno e 1 video 480p di 5 secondi al giorno per IP. L'offerta video a pagamento prevista parte da $0,99 per 5 secondi, ma l'acquisto a pagamento non è ancora disponibile; risoluzioni più alte e durate più lunghe non sono disponibili in questa versione.",
+          "No. Scrivi il prompt, genera il video e scarica il file completato senza creare un account.",
       },
       {
         question: "In quali formati posso scaricare il video?",
         answer:
-          "Il risultato completato si scarica nel formato video restituito dal servizio, senza conversione nel browser. La quota gratuita comprende 3 immagini al giorno, 1 modifica al giorno e 1 video 480p di 5 secondi al giorno per IP, senza registrazione. L'offerta video a pagamento prevista parte da $0,99 per 5 secondi, ma l'acquisto a pagamento non è ancora disponibile; risoluzioni più alte e durate più lunghe non sono disponibili in questa versione.",
+          "Il video viene scaricato nel formato restituito dal servizio, senza conversione nel browser.",
       },
     ],
     steps: ["Scrivi il prompt", "Genera", "Scarica"],
@@ -196,7 +196,7 @@ export const PAGE_CONTENT: Record<PageDefinition["key"], PageDefinition> = {
       "Esplora un concept visivo con ambiente, punto di vista e stile. Puoi aggiungere una stagione o un'azione per orientare la scena. Un dettaglio sensoriale, come nebbia, vento o luce calda, aiuta a rendere l'atmosfera più coerente.",
     ],
     examples: examples.it,
-    trustPoints: ["Gratis: 3 immagini al giorno", "Senza registrazione", "Video 5s da $0.99"],
+    trustPoints: ["Gratis: 1 video AI al giorno", "5 secondi · 480p", "Senza registrazione"],
     toolKind: "video",
     isVideo: true,
   },
@@ -218,7 +218,7 @@ export const PAGE_CONTENT: Record<PageDefinition["key"], PageDefinition> = {
     ],
     sectionLeads: [
       "Écrivez un prompt qui précise le sujet, le décor, le mouvement et l'atmosphère, puis vérifiez la scène lorsqu'elle est prête. Si le rythme ou le cadrage ne correspondent pas à votre idée, modifiez un détail précis et relancez une direction. Lorsque la séquence devient claire, téléchargez le fichier pour une présentation, une maquette ou un projet personnel. Les trois étapes restent faciles à suivre, même lorsque vous apprenez à décrire un mouvement. Commencez par l'intention principale et laissez chaque essai vous aider à affiner la scène.",
-      "Sans inscription, vous pouvez vous concentrer sur votre idée avant de créer un compte. Le forfait gratuit inclut une vidéo 480p de 5 secondes par jour et par IP, puis l'offre vidéo payante prévue commence à 0,99 $ pour 5 secondes, mais l'achat payant n'est pas encore disponible. Vous pouvez ainsi tester une direction pour un récit, un produit ou une présentation sans préparer de profil. Le prompt et le résultat restent dans le même parcours du navigateur, ce qui laisse la place à une décision créative réfléchie. Une petite limite quotidienne encourage des essais précis : changez le sujet, la lumière ou le mouvement et observez ce qui améliore la scène.",
+      "Sans inscription, vous pouvez vous concentrer sur votre idée avant de créer un compte. Le forfait gratuit inclut une vidéo IA 480p de 5 secondes par jour et par IP. Vous pouvez ainsi tester une direction pour un récit, un produit ou une présentation sans préparer de profil. Le prompt et le résultat restent dans le même parcours du navigateur, ce qui laisse la place à une décision créative réfléchie. Une petite limite quotidienne encourage des essais précis : changez le sujet, la lumière ou le mouvement et observez ce qui améliore la scène.",
       "Décrivez le sujet, le décor et le mouvement pour construire une scène lisible. Vous pouvez partir d'un concept, d'un produit ou d'un moment narratif. Ajoutez le point de vue, la vitesse ressentie et l'élément qui doit rester stable pendant l'action. Pour un produit, indiquez la surface et la direction de la lumière ; pour un récit, précisez l'émotion et le geste central. Les détails concrets gardent le regard sur le sujet sans transformer le prompt en liste confuse. Définissez d'abord le centre de la scène, puis le contexte qui rend l'action crédible.",
     ],
     sectionDetails: [
@@ -232,24 +232,24 @@ export const PAGE_CONTENT: Record<PageDefinition["key"], PageDefinition> = {
       ],
       [
         "Une scène produit demande souvent un mouvement lent et régulier pour rendre la forme et la matière lisibles. Une scène narrative peut plutôt s'appuyer sur un geste bref, un regard ou un changement de lumière qui signale le moment important.",
-        "Les exemples sont des illustrations originales préparées pour cette page et montrent des directions de sujet, de lumière et de composition. Utilisez-les comme références pour écrire un prompt, pas comme promesse d'un résultat précédent.",
+        "Ces trois directions de prompt suggèrent des scènes à explorer. Comparez la composition et la lumière, puis décrivez dans votre propre prompt le sujet et l'atmosphère souhaités.",
       ],
     ],
     faq: [
       {
         question: "Le générateur de vidéo IA est-il vraiment gratuit et sans inscription ?",
         answer:
-          "Oui, vous pouvez commencer sans inscription. Le forfait gratuit inclut 3 images par jour, 1 modification photo par jour et 1 vidéo 480p de 5 secondes par jour et par IP. L'offre vidéo payante prévue commence à 0,99 $ pour 5 secondes, mais l'achat payant n'est pas encore disponible ; les résolutions plus élevées et les durées plus longues ne sont pas disponibles dans cette version.",
+          "Oui. Écrivez un prompt sans inscription et générez 1 vidéo IA par jour et par IP, en 5 secondes et 480p.",
       },
       {
         question: "Faut-il un compte pour télécharger la vidéo ?",
         answer:
-          "Non, aucun compte n'est requis pour télécharger un résultat terminé. Le quota gratuit comprend 3 images par jour, 1 modification photo par jour et 1 vidéo 480p de 5 secondes par jour et par IP. L'offre vidéo payante prévue commence à 0,99 $ pour 5 secondes, mais l'achat payant n'est pas encore disponible ; les résolutions plus élevées et les durées plus longues ne sont pas disponibles dans cette version.",
+          "Non. Écrivez le prompt, générez la vidéo et téléchargez le fichier terminé sans créer de compte.",
       },
       {
         question: "Quels formats de vidéo sont disponibles ?",
         answer:
-          "Le résultat terminé se télécharge dans le format vidéo fourni par le service, sans conversion dans le navigateur. Le quota gratuit comprend 3 images par jour, 1 modification photo par jour et 1 vidéo 480p de 5 secondes par jour et par IP, sans inscription. L'offre vidéo payante prévue commence à 0,99 $ pour 5 secondes, mais l'achat payant n'est pas encore disponible ; les résolutions plus élevées et les durées plus longues ne sont pas disponibles dans cette version.",
+          "La vidéo se télécharge dans le format fourni par le service, sans conversion dans le navigateur.",
       },
     ],
     steps: ["Écrivez le prompt", "Générez", "Téléchargez"],
@@ -259,7 +259,7 @@ export const PAGE_CONTENT: Record<PageDefinition["key"], PageDefinition> = {
       "Explorez un concept visuel en décrivant le décor, le point de vue et le style. Vous pouvez préciser une saison ou une action pour orienter la scène. Un détail sensoriel comme la brume, le vent ou une lumière chaude aide à stabiliser l'atmosphère.",
     ],
     examples: examples.fr,
-    trustPoints: ["Gratuit : 3 images/jour", "Sans inscription", "Vidéo 5s à partir de 0,99 $"],
+    trustPoints: ["Gratuit : 1 vidéo IA/jour", "5 secondes · 480p", "Sans inscription"],
     extraLinks: [
       { href: "/fr/photo-ia-gratuit", label: "Photo IA gratuit" },
       { href: "/fr/modifier-photo-ia", label: "Modifier photo IA" },
@@ -285,7 +285,7 @@ export const PAGE_CONTENT: Record<PageDefinition["key"], PageDefinition> = {
     ],
     sectionLeads: [
       "Décrivez un sujet, vérifiez le résultat et téléchargez votre image lorsqu'elle est prête. Un parcours court vous permet de rester concentré sur l'idée, sans vous perdre dans des réglages secondaires. Commencez par le sujet principal, observez la composition, puis ajustez un détail qui compte vraiment si l'image ne suit pas votre intention. Lorsque la direction est convaincante, gardez le fichier pour une maquette, une présentation ou un projet personnel. Les trois étapes forment une méthode claire pour passer d'une phrase à une image lisible, même lorsque vous explorez un style pour la première fois.",
-      "Sans inscription, vous pouvez tester une direction visuelle rapidement. Le quota gratuit comprend 3 images par jour et 1 vidéo 480p de 5 secondes par jour et par IP, tandis que l'offre vidéo payante prévue commence à 0,99 $ pour 5 secondes, mais l'achat payant n'est pas encore disponible. Cette approche convient à une idée ponctuelle, à une recherche de référence ou à une première proposition pour une équipe. Le prompt et l'image restent dans le même parcours du navigateur, ce qui permet de comparer les choix avec attention. Une limite quotidienne modeste aide à formuler des demandes précises et à apprendre de chaque résultat.",
+      "Sans inscription, vous pouvez tester une direction visuelle rapidement. Le quota gratuit comprend 3 images par jour et 1 vidéo 480p de 5 secondes par jour et par IP. Cette approche convient à une idée ponctuelle, à une recherche de référence ou à une première proposition pour une équipe. Le prompt et l'image restent dans le même parcours du navigateur, ce qui permet de comparer les choix avec attention. Une limite quotidienne modeste aide à formuler des demandes précises et à apprendre de chaque résultat.",
       "Précisez le sujet, le cadrage, la lumière et le style pour guider l'image. Les détails concrets donnent au prompt une intention plus facile à suivre. Ajoutez la matière, la distance de la caméra et la relation entre le sujet et l'arrière-plan si la composition doit rester précise. Un avatar gagne à préciser l'expression et la silhouette ; un produit gagne à préciser la surface et la source de lumière ; un paysage gagne à préciser la saison et la météo. Définissez d'abord ce qui doit attirer le regard, puis ajoutez le contexte utile.",
     ],
     sectionDetails: [
@@ -299,24 +299,24 @@ export const PAGE_CONTENT: Record<PageDefinition["key"], PageDefinition> = {
       ],
       [
         "Pour un avatar, placez le visage, l'expression et le cadrage au début. Pour un produit, indiquez la matière, la surface et l'espace autour de l'objet. Pour un paysage, commencez par le lieu, la lumière et la météo avant de préciser le style.",
-        "Les trois exemples sont des illustrations originales créées pour cette page. Ils montrent des sujets et des compositions possibles, sans prétendre être des résultats historiques de l'outil ; servez-vous-en comme références pour écrire votre propre prompt.",
+        "Ces trois directions de prompt suggèrent des sujets et des compositions possibles. Servez-vous-en pour imaginer la scène, puis décrivez votre propre sujet, cadrage et lumière dans le prompt.",
       ],
     ],
     faq: [
       {
         question: "Comment créer une photo IA sans inscription ?",
         answer:
-          "Décrivez l'image souhaitée et commencez sans inscription. Le quota gratuit comprend 3 images par jour, 1 traitement d'image par jour et 1 vidéo 480p de 5 secondes par jour et par IP. L'offre vidéo payante prévue commence à 0,99 $ pour 5 secondes, mais l'achat payant n'est pas encore disponible ; les résolutions plus élevées et les durées plus longues ne sont pas disponibles dans cette version.",
+          "Décrivez l'image dans un prompt et lancez la génération sans inscription. Vous pouvez créer jusqu'à 3 images par jour et par IP, puis télécharger le résultat.",
       },
       {
         question: "Quels types d'images puis-je créer ?",
         answer:
-          "Vous pouvez explorer des avatars, des visuels produits, des paysages et des illustrations. Le quota gratuit comprend 3 images par jour, 1 traitement d'image par jour et 1 vidéo 480p de 5 secondes par jour et par IP. L'offre vidéo payante prévue commence à 0,99 $ pour 5 secondes, mais l'achat payant n'est pas encore disponible ; les résolutions plus élevées et les durées plus longues ne sont pas disponibles dans cette version.",
+          "Vous pouvez décrire un avatar, un visuel produit, un paysage ou toute autre idée d'image dans un prompt, puis télécharger le résultat.",
       },
       {
         question: "Comment écrire un meilleur prompt ?",
         answer:
-          "Indiquez le sujet, le cadrage, la lumière, les couleurs et le style pour utiliser votre quota gratuit. Il comprend 3 images par jour, 1 traitement d'image par jour et 1 vidéo 480p de 5 secondes par jour et par IP, sans inscription. L'offre vidéo payante prévue commence à 0,99 $ pour 5 secondes, mais l'achat payant n'est pas encore disponible ; les résolutions plus élevées et les durées plus longues ne sont pas disponibles dans cette version.",
+          "Indiquez le sujet, le cadrage, la lumière et le style. Commencez par l'élément principal, ajustez un détail à la fois, puis téléchargez la version qui vous convient.",
       },
     ],
     steps: ["Écrivez le prompt", "Générez", "Téléchargez"],
@@ -326,9 +326,9 @@ export const PAGE_CONTENT: Record<PageDefinition["key"], PageDefinition> = {
       "Composez un paysage en indiquant la saison, l'ambiance et le point de vue. Les couleurs et la météo renforcent l'atmosphère choisie. Une brume légère, une ligne d'horizon ou une source de lumière précise peut aider à donner une structure au décor.",
     ],
     examples: examples.fr,
-    trustPoints: ["Gratuit : 3 images/jour", "Sans inscription", "Vidéo 5s à partir de 0,99 $"],
+    trustPoints: ["Gratuit : 3 images/jour", "Sans inscription", "Prompt → Image"],
     extraLinks: [{ href: "/fr/modifier-photo-ia", label: "Modifier photo IA" }],
-    toolKind: "edit",
+    toolKind: "image",
     isVideo: false,
   },
   frEdit: {
@@ -363,24 +363,24 @@ export const PAGE_CONTENT: Record<PageDefinition["key"], PageDefinition> = {
       ],
       [
         "Pour une lumière plus équilibrée, indiquez ce qui doit rester naturel : le teint, les volumes, les détails du regard ou la texture d'un vêtement. Décrivez l'intensité souhaitée plutôt qu'un changement total de style.",
-        "Les trois illustrations originales de cette page sont des références de composition, pas des sorties d'un traitement automatique. Elles permettent de comparer le sujet, le cadrage et la lumière avant de choisir une consigne adaptée à votre propre image.",
+        "Ces trois pistes de prompt suggèrent des compositions à observer avant une retouche. Elles vous aident à préciser le cadrage et la lumière, puis à décrire les éléments à préserver dans votre propre consigne.",
       ],
     ],
     faq: [
       {
         question: "Comment modifier une photo avec l'IA en ligne ?",
         answer:
-          "Téléversez une image, décrivez la zone à transformer et indiquez les éléments à préserver, puis vérifiez le résultat avant de le télécharger. Le quota gratuit comprend 3 images par jour, 1 modification photo par jour et 1 vidéo 480p de 5 secondes par jour et par IP, sans inscription ; l'offre vidéo payante prévue commence à 0,99 $ pour 5 secondes, mais l'achat payant n'est pas encore disponible et les résolutions plus élevées ou les durées plus longues ne sont pas disponibles dans cette version.",
+          "Téléversez une image JPEG, PNG, GIF ou WEBP de 10 Mo maximum. Indiquez le sujet à préserver et la zone à modifier, comparez l'original et le résultat, puis téléchargez la version finale. Le quota est de 1 modification par jour et par IP.",
       },
       {
         question: "Puis-je retirer un arrière-plan sans inscription ?",
         answer:
-          "Oui, téléversez votre image, décrivez le sujet à conserver et précisez le nouveau fond, la profondeur et les ombres souhaitées, sans inscription. Le quota gratuit comprend 3 images par jour, 1 modification photo par jour et 1 vidéo 480p de 5 secondes par jour et par IP ; l'offre vidéo payante prévue commence à 0,99 $ pour 5 secondes, mais l'achat payant n'est pas encore disponible et les résolutions plus élevées ou les durées plus longues ne sont pas disponibles dans cette version.",
+          "Oui. Téléversez une image de 10 Mo maximum, précisez les éléments à conserver et décrivez le nouveau fond, puis vérifiez l'avant et l'après avant de télécharger.",
       },
       {
         question: "Comment améliorer la lumière d'un portrait ?",
         answer:
-          "Téléversez le portrait, indiquez la direction et l'intensité de la lumière, puis nommez les traits et les textures à préserver pour garder un rendu naturel. Vous disposez de 3 images par jour, 1 modification photo par jour et 1 vidéo 480p de 5 secondes par jour et par IP sans inscription ; l'offre vidéo payante prévue commence à 0,99 $ pour 5 secondes, mais l'achat payant n'est pas encore disponible et les résolutions plus élevées ou les durées plus longues ne sont pas disponibles dans cette version.",
+          "Téléversez le portrait, indiquez la direction et l'intensité de la lumière, puis nommez les traits et les textures à préserver. Comparez l'avant et l'après avant de télécharger le résultat.",
       },
     ],
     steps: ["Décrivez la retouche", "Vérifiez", "Téléchargez"],
@@ -390,7 +390,7 @@ export const PAGE_CONTENT: Record<PageDefinition["key"], PageDefinition> = {
       "Améliorez un portrait en indiquant la lumière et le rendu naturel recherchés. Des consignes simples préservent les traits et l'expression. Précisez le contraste, la direction de la lumière et la texture de la peau si ces détails comptent pour le résultat.",
     ],
     examples: examples.fr,
-    trustPoints: ["Gratuit : 3 images/jour", "Sans inscription", "Vidéo 5s à partir de 0,99 $"],
+    trustPoints: ["Gratuit : 1 modification/jour", "Sans inscription", "Avant / Après"],
     extraLinks: [{ href: "/fr/photo-ia-gratuit", label: "Photo IA gratuit" }],
     toolKind: "edit",
     isVideo: false,
@@ -413,7 +413,7 @@ export const PAGE_CONTENT: Record<PageDefinition["key"], PageDefinition> = {
     ],
     sectionLeads: [
       "Schrijf een prompt met het onderwerp, de omgeving en de sfeer die je voor ogen hebt. Bekijk daarna rustig het resultaat en download het zodra de compositie bij je idee past. Als een detail niet klopt, verander dan één keuze tegelijk, zoals het licht, de uitsnede of de achtergrond. Zo leer je van iedere poging zonder het hele concept opnieuw te schrijven. De drie stappen blijven overzichtelijk, van de eerste zin tot het bestand dat je kunt bewaren voor een presentatie, concept of persoonlijk project.",
-      "Zonder account kun je direct beginnen met een eerste idee. De gratis bundel bevat 3 afbeeldingen per dag en 1 video van 480p/5 seconden per dag per IP; de geplande betaalde videooptie begint bij $0.99 voor 5 seconden, maar een betaalde aankoop is nog niet beschikbaar. Dat is handig wanneer je een richting wilt testen, een beeld voor een overleg nodig hebt of eerst wilt zien welke stijl bij je onderwerp past. Prompt en resultaat blijven in dezelfde browserstroom, zodat je kunt beoordelen wat werkt zonder profielinstellingen. Een kleine daglimiet moedigt duidelijke, gerichte prompts aan.",
+      "Zonder account kun je direct beginnen met een eerste idee. De gratis bundel bevat 3 afbeeldingen per dag per IP en 1 video van 480p/5 seconden per dag per IP. Dat is handig wanneer je een richting wilt testen, een beeld voor een overleg nodig hebt of eerst wilt zien welke stijl bij je onderwerp past. Prompt en resultaat blijven in dezelfde browserstroom, zodat je kunt beoordelen wat werkt zonder profielinstellingen. Een kleine daglimiet moedigt duidelijke, gerichte prompts aan.",
       "Noem een onderwerp, setting en visuele stijl om je idee vorm te geven. Je kunt starten met een avatar, productbeeld, landschap of illustratie. Beschrijf voor een avatar de uitdrukking en uitsnede; voor een product de ondergrond, materialen en lichtbron; voor een landschap het seizoen en tijdstip. Begin met het belangrijkste onderwerp en voeg daarna alleen details toe die de compositie begrijpelijker maken. Een concrete beschrijving geeft het beeld houvast zonder specialistische termen nodig te hebben.",
     ],
     sectionDetails: [
@@ -427,24 +427,24 @@ export const PAGE_CONTENT: Record<PageDefinition["key"], PageDefinition> = {
       ],
       [
         "Een productbeeld wordt duidelijker wanneer materiaal, oppervlak en camerastandpunt samen worden genoemd. Bij een landschap helpen horizon, weer en licht om de ruimte rustig en herkenbaar te maken. Beschrijf eerst de grote vormen en voeg pas daarna kleine accenten toe.",
-        "De drie voorbeelden zijn originele illustraties voor deze pagina. Ze tonen mogelijke onderwerpen en composities, maar zijn geen eerdere toolresultaten; gebruik ze als inspiratie voor je eigen beschrijving.",
+        "Deze drie prompt-richtingen geven scènes om te verkennen. Vergelijk compositie en sfeer en beschrijf daarna in je eigen prompt het onderwerp, de omgeving en het licht.",
       ],
     ],
     faq: [
       {
         question: "Kan ik gratis een AI-afbeelding maken zonder account?",
         answer:
-          "Ja, je kunt zonder account beginnen. De gratis bundel bevat 3 afbeeldingen per dag, 1 fotobewerking per dag en 1 video van 480p/5 seconden per dag per IP. De geplande betaalde videooptie begint bij $0.99 voor 5 seconden, maar een betaalde aankoop is nog niet beschikbaar; hogere resolutie en langere duur zijn in deze versie niet beschikbaar.",
+          "Ja. Schrijf een prompt zonder account en maak tot 3 afbeeldingen per dag per IP.",
       },
       {
         question: "Heb ik een account nodig om mijn afbeelding te downloaden?",
         answer:
-          "Nee, je hebt geen account of e-mail nodig om een voltooid beeld te downloaden. De gratis bundel bevat 3 afbeeldingen per dag, 1 fotobewerking per dag en 1 video van 480p/5 seconden per dag per IP. De geplande betaalde videooptie begint bij $0.99 voor 5 seconden, maar een betaalde aankoop is nog niet beschikbaar; hogere resolutie en langere duur zijn in deze versie niet beschikbaar.",
+          "Nee. Beschrijf de afbeelding in een prompt, genereer haar en download het voltooide bestand zonder een afbeelding te uploaden of een account te maken.",
       },
       {
         question: "Welke afbeeldingen kan ik maken?",
         answer:
-          "Je kunt avatars, productbeelden, landschappen en illustraties maken met een duidelijke prompt. De gratis bundel bevat 3 afbeeldingen per dag, 1 fotobewerking per dag en 1 video van 480p/5 seconden per dag per IP. De geplande betaalde videooptie begint bij $0.99 voor 5 seconden, maar een betaalde aankoop is nog niet beschikbaar; hogere resolutie en langere duur zijn in deze versie niet beschikbaar.",
+          "Beschrijf een avatar, productbeeld, landschap of ander beeldidee in een prompt en download het resultaat. De afbeeldingslimiet is 3 generaties per dag per IP.",
       },
     ],
     steps: ["Schrijf een prompt", "Genereren", "Downloaden"],
@@ -454,7 +454,7 @@ export const PAGE_CONTENT: Record<PageDefinition["key"], PageDefinition> = {
       "Verken een landschap met seizoen, sfeer, kleuren en perspectief. Benoem het tijdstip als de lucht en het licht de compositie sturen. Mist, wind of een lage horizon kan de ruimte een duidelijke richting geven.",
     ],
     examples: examples.nl,
-    trustPoints: ["Gratis: 3 afbeeldingen per dag", "Geen registratie", "Video 5s vanaf $0.99"],
+    trustPoints: ["Gratis: 3 afbeeldingen per dag", "Geen registratie", "Prompt → Afbeelding"],
     extraLinks: [{ href: "/nl/afbeeldingen-maken-met-ai", label: "Afbeeldingen maken met AI" }],
     toolKind: "image",
     isVideo: false,
@@ -477,7 +477,7 @@ export const PAGE_CONTENT: Record<PageDefinition["key"], PageDefinition> = {
     ],
     sectionLeads: [
       "Beschrijf je idee, bekijk het resultaat en download de afbeelding wanneer die klaar is. De stappen blijven overzichtelijk, van prompt tot bestand, zodat je eerst de richting kunt beoordelen voordat je verder werkt. Als het beeld niet precies aansluit, wijzig dan één keuze, bijvoorbeeld de stijl, de uitsnede of het licht. Zo wordt elke nieuwe poging informatief in plaats van willekeurig. De korte volgorde helpt bij een eerste concept, een presentatie of een visuele referentie die je later wilt bewaren.",
-      "Een duidelijke stijlkeuze helpt om het gewenste beeld af te bakenen. De gratis bundel bevat 3 afbeeldingen per dag en 1 video van 480p/5 seconden per dag per IP; de geplande betaalde videooptie begint bij $0.99 voor 5 seconden, maar een betaalde aankoop is nog niet beschikbaar. Zonder account kun je een eerste richting snel testen voor een overleg, een concept of een persoonlijk project. Prompt en resultaat blijven in dezelfde browserstroom, waardoor je kunt vergelijken zonder profielinstellingen. De dagelijkse hoeveelheid is bewust overzichtelijk: schrijf een duidelijke vraag, beoordeel het beeld en verbeter daarna één relevant detail.",
+      "Een duidelijke stijlkeuze helpt om het gewenste beeld af te bakenen. De gratis bundel bevat 3 afbeeldingen per dag per IP en 1 video van 480p/5 seconden per dag per IP. Zonder account kun je een eerste richting snel testen voor een overleg, een concept of een persoonlijk project. Prompt en resultaat blijven in dezelfde browserstroom, waardoor je kunt vergelijken zonder profielinstellingen. De dagelijkse hoeveelheid is bewust overzichtelijk: schrijf een duidelijke vraag, beoordeel het beeld en verbeter daarna één relevant detail.",
       "Noem onderwerp, compositie, licht, kleuren en stijl voor een gerichte prompt. Concrete details maken het eenvoudiger om je bedoeling te volgen. Begin met het element dat de kijker als eerste moet zien en beschrijf daarna de ruimte eromheen. Een product vraagt vaak om materiaal en camerastandpunt, een avatar om expressie en uitsnede, en een landschap om seizoen, weer en horizon. Met een heldere volgorde blijft de prompt leesbaar en krijgt de afbeelding een samenhangend uitgangspunt.",
     ],
     sectionDetails: [
@@ -491,24 +491,24 @@ export const PAGE_CONTENT: Record<PageDefinition["key"], PageDefinition> = {
       ],
       [
         "Een stijl wordt duidelijker wanneer je ook licht, materiaal en afstand noemt. Voor een illustratie helpt een kleurpalet, voor een product helpt een oppervlak, en voor een landschap helpen weer en tijdstip. Deze volgorde maakt het eenvoudiger om prioriteiten in je prompt te bewaren.",
-        "De drie voorbeelden zijn originele illustraties voor deze pagina. Ze tonen mogelijke onderwerpen en composities, maar zijn geen eerdere toolresultaten; gebruik ze als visuele aanleiding voor je eigen prompt.",
+        "Deze drie prompt-richtingen geven mogelijke onderwerpen en composities. Gebruik ze als aanleiding om je scène te bedenken en beschrijf daarna je eigen onderwerp, kader en licht.",
       ],
     ],
     faq: [
       {
         question: "Hoe kan ik afbeeldingen maken met AI?",
         answer:
-          "Beschrijf je idee met een prompt en kies een stijl zonder account. De gratis bundel bevat 3 afbeeldingen per dag, 1 fotobewerking per dag en 1 video van 480p/5 seconden per dag per IP. De geplande betaalde videooptie begint bij $0.99 voor 5 seconden, maar een betaalde aankoop is nog niet beschikbaar; hogere resolutie en langere duur zijn in deze versie niet beschikbaar.",
+          "Beschrijf je idee in een prompt en genereer de afbeelding zonder account. Je kunt tot 3 afbeeldingen per dag per IP maken en daarna downloaden.",
       },
       {
         question: "Welke stijlen en voorbeelden kan ik gebruiken?",
         answer:
-          "Je kunt zonder account een productbeeld, avatar, landschap of illustratie beschrijven en daar een stijl aan toevoegen. De gratis bundel bevat 3 afbeeldingen per dag, 1 fotobewerking per dag en 1 video van 480p/5 seconden per dag per IP. De geplande betaalde videooptie begint bij $0.99 voor 5 seconden, maar een betaalde aankoop is nog niet beschikbaar; hogere resolutie en langere duur zijn in deze versie niet beschikbaar.",
+          "Beschrijf zonder account een productbeeld, avatar, landschap of illustratie en voeg de gewenste stijl toe. Bekijk het resultaat en download het wanneer het past.",
       },
       {
         question: "Hoe krijg ik betere resultaten?",
         answer:
-          "Noem onderwerp, compositie, licht, kleuren en stijl om je gratis bundel gericht te gebruiken. Die bevat 3 afbeeldingen per dag, 1 fotobewerking per dag en 1 video van 480p/5 seconden per dag per IP. De geplande betaalde videooptie begint bij $0.99 voor 5 seconden, maar een betaalde aankoop is nog niet beschikbaar; hogere resolutie en langere duur zijn in deze versie niet beschikbaar.",
+          "Noem onderwerp, compositie, licht, kleuren en stijl. Begin met het belangrijkste element, wijzig één detail per poging en download de bruikbare versie.",
       },
     ],
     steps: ["Beschrijf je idee", "Genereren", "Downloaden"],
@@ -518,7 +518,7 @@ export const PAGE_CONTENT: Record<PageDefinition["key"], PageDefinition> = {
       "Maak een illustratie door sfeer, kleuren en compositie te benoemen. Een duidelijk referentiepunt helpt om de scène samenhangend te houden. Een seizoen, lichtbron of eenvoudige actie kan de gekozen stijl meer richting geven.",
     ],
     examples: examples.nl,
-    trustPoints: ["Gratis: 3 afbeeldingen per dag", "Geen registratie", "Video 5s vanaf $0.99"],
+    trustPoints: ["Gratis: 3 afbeeldingen per dag", "Geen registratie", "Prompt → Afbeelding"],
     extraLinks: [{ href: "/nl/", label: "AI afbeelding maken gratis" }],
     toolKind: "image",
     isVideo: false,

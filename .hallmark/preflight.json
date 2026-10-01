@@ -1,0 +1,25 @@
+{
+  "scope": "Ovanto UI productization rebuild",
+  "source": "OVANTO_RAPHAEL_INSPIRED_UI_FUNCTIONAL_REBUILD_V1.md",
+  "preserved": {
+    "font": "Manrope from app/layout.tsx",
+    "palette": ["ink", "muted", "line", "paper", "mint", "coral"],
+    "framework": "Next.js App Router + Tailwind CSS import",
+    "routes": "existing route tree",
+    "seo": "PageDefinition metadata, canonical, hreflang, JSON-LD, and link matrix"
+  },
+  "ui_changes": [
+    "compact hero",
+    "shared workbench layout hooks",
+    "tools row moved before SEO content",
+    "responsive overflow and interaction states"
+  ],
+  "checked_files": [
+    "app/layout.tsx",
+    "app/globals.css",
+    "components/PageShell.tsx",
+    "lib/content.ts",
+    "lib/seo.ts"
+  ],
+  "status": "recorded"
+}

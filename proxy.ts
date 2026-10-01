@@ -10,11 +10,17 @@ export function proxy(request: NextRequest) {
   requestHeaders.set("x-ovanto-locale", localeFromPath(pathname));
   requestHeaders.set("x-ovanto-path", pathname);
 
-  return NextResponse.next({
+  const response = NextResponse.next({
     request: {
       headers: requestHeaders,
     },
   });
+  // Preview deployments must not compete with the unchanged ovanto.ai canonicals.
+  const hostname = request.nextUrl.hostname.toLowerCase();
+  if (hostname === "ovanto.vercel.app" || hostname.endsWith(".vercel.app")) {
+    response.headers.set("X-Robots-Tag", "noindex, nofollow");
+  }
+  return response;
 }
 
 export const config = {
