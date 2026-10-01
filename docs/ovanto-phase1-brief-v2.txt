@@ -1,0 +1,257 @@
+# Ovanto.ai 首期建站任务书 v2（7 页 / 4 语言）
+
+你是这个项目的执行工程师。本文档中所有 URL、Title、Description、H1、H2 均为已定稿内容，
+必须逐字实现，不得改写、不得"优化"、不得自行增删页面。有疑问先提问，不要自行决定。
+
+## 0. 项目背景
+- 域名：ovanto.ai（已购入，全站统一【非 www】）
+- 定位：AI 图片 / 视频在线生成工具站，免注册即用
+- 首期上线 7 个页面，覆盖英语 / 意大利语 / 法语 / 荷兰语
+- 目标：每一页在各自语区的 Google 排到目标词前十
+
+## 1. 技术栈（如无异议按此实现）
+- Next.js 14+ (App Router) + TypeScript + Tailwind CSS
+- 渲染方式：**SSG 或 SSR**。禁止纯 CSR —— 爬虫首轮抓取时必须能拿到 Title / Description / H1 和正文
+- 部署：Vercel（或 Cloudflare Pages）
+- 图片生成结果用 CDN，不要本地存
+- 生成接口：`[[GENERATION_API]]`（待用户填入，Phase 2 前必须确认）
+
+## 2. 路由与文件结构
+
+app/
+├── layout.tsx                  # 全局 layout，注入 <head> 公共标签
+├── page.tsx                    # ① 英语根页 /
+├── it/page.tsx                 # ② /it/
+├── fr/
+│   ├── page.tsx                # ③ /fr/
+│   ├── photo-ia-gratuit/page.tsx        # ④
+│   └── modifier-photo-ia/page.tsx       # ⑤
+├── nl/
+│   ├── page.tsx                # ⑥ /nl/
+│   └── afbeeldingen-maken-met-ai/page.tsx  # ⑦
+├── sitemap.ts                  # 生成 sitemap.xml
+└── robots.ts                   # 生成 robots.txt
+
+URL 规则：**全部小写、目录结尾一律带斜杠**（/it/、/fr/、/nl/），
+内页不带斜杠（/fr/photo-ia-gratuit）。链接一律用绝对路径，不要相对路径。
+
+## 3. 每页完整规格
+
+### ① / 英语根页
+- URL: https://ovanto.ai/
+- Title: Free AI Image Generator, No Sign Up — Create in Seconds | Ovanto
+- Description: Generate AI images right in your browser — no sign-up, no login, no
+  credit card. Type a prompt and get your image in seconds. Free to try.
+- H1: Free AI Image Generator — No Sign Up, No Login
+- H2 骨架（按此顺序）:
+  1. Generate an AI Image in Three Steps
+  2. Why Use an Image Generator With No Sign Up
+  3. What You Can Create: Avatars, Product Shots, Concept Art
+  4. Free AI Image Generator — FAQ
+- 正文要点：
+  - 首屏下方紧接 3 步说明（写提示词 → 生成 → 下载）
+  - "无需注册"是本页核心卖点，必须在首屏与 Why 段落各出现一次
+  - Use Cases 段落每条 2-3 句，配 1 张示例图（alt 写清内容，如
+    "AI generated product photo of a white sneaker on marble"）
+- FAQ 3 条（用 FAQPage 结构化数据）:
+  1. Is this AI image generator really free and without sign up?
+  2. Do I need to create an account to download my image?
+  3. What can I generate with it?
+- 页面内出链：页脚链出 /it/、/fr/、/nl/
+
+### ② /it/ 意大利语首页（**首期第一优先上线**）
+- URL: https://ovanto.ai/it/
+- Title: Generatore Video AI Gratis Senza Registrazione — Crea Subito | Ovanto
+- Description: Genera video con l'AI gratis e senza registrazione. Scrivi il prompt,
+  premi genera e scarica il tuo video in pochi secondi. Nessun account richiesto.
+- H1: Generatore Video AI Gratis Senza Registrazione
+- H2 骨架:
+  1. Come Generare un Video con l'AI in 3 Passaggi
+  2. Perché Scegliere un Generatore Video AI Senza Registrazione
+  3. Cosa Puoi Creare con Ovanto
+  4. Domande Frequenti
+- FAQ 3 条:
+  1. Il generatore video AI è davvero gratis e senza registrazione?
+  2. Devo creare un account per scaricare il video?
+  3. In quali formati posso scaricare il video?
+
+### ③ /fr/ 法语首页
+- URL: https://ovanto.ai/fr/
+- Title: Générateur de Vidéo IA Gratuit Sans Inscription — Créez Maintenant | Ovanto
+- Description: Générez des vidéos avec l'IA gratuitement et sans inscription. Écrivez
+  votre prompt, lancez la génération et téléchargez votre vidéo en quelques secondes.
+- H1: Générateur de Vidéo IA Gratuit Sans Inscription
+- H2 骨架:
+  1. Comment Générer une Vidéo IA en 3 Étapes
+  2. Pourquoi Choisir un Générateur de Vidéo IA Sans Inscription
+  3. Ce Que Vous Pouvez Créer
+  4. Questions Fréquentes
+- FAQ 3 条:
+  1. Le générateur de vidéo IA est-il vraiment gratuit et sans inscription ?
+  2. Faut-il un compte pour télécharger la vidéo ?
+  3. Quels formats de vidéo sont disponibles ?
+- 页面内出链：本页 → /fr/photo-ia-gratuit、/fr/modifier-photo-ia
+
+### ④ /fr/photo-ia-gratuit（法语图片线：宽意图「免费用图」）
+- URL: https://ovanto.ai/fr/photo-ia-gratuit
+- Title: Photo IA Gratuit — Générez Vos Images en Ligne | Ovanto
+- Description: Photo IA gratuit : décrivez votre idée et générez une image en ligne,
+  sans inscription. Idéal pour avatars, visuels produits et illustrations.
+- H1: Photo IA Gratuit : Générez Vos Images en Ligne
+- H2 骨架（**注意：与 ⑤ 页严格区分，本页讲"生成"**）:
+  1. Générez une Photo IA Gratuitement, Sans Inscription
+  2. Idées de Photos à Générer : Avatars, Produits, Paysages
+  3. Comment Obtenir un Meilleur Résultat (Prompts)
+  4. Questions Fréquentes
+- 该页禁止出现的 H2 主题：retouche / modifier / édition（那是 ⑤ 页的主题）
+
+### ⑤ /fr/modifier-photo-ia（法语图片线：动作意图「改图」）
+- URL: https://ovanto.ai/fr/modifier-photo-ia
+- Title: Modifier Photo IA — Retouche et Édition en Ligne | Ovanto
+- Description: Modifiez vos photos avec l'IA : retirez l'arrière-plan, changez le style,
+  améliorez la lumière et retouchez vos portraits en ligne, sans inscription.
+- H1: Modifier Photo IA en Ligne
+- H2 骨架（**讲"改"，不讲"生成"**）:
+  1. Modifier une Photo avec l'IA en Ligne
+  2. Retirer l'Arrière-Plan et Changer le Fond
+  3. Améliorer et Retoucher un Portrait
+  4. Questions Fréquentes
+- 该页禁止出现的 H2 主题：générer une photo / photo ia gratuit（那是 ④ 页的主题）
+
+### ⑥ /nl/ 荷兰语首页
+- URL: https://ovanto.ai/nl/
+- Title: AI Afbeelding Maken Gratis — Zonder Account | Ovanto
+- Description: Maak gratis een AI afbeelding zonder account. Typ je prompt, genereer
+  en download je afbeelding binnen enkele seconden. Geen registratie nodig.
+- H1: AI Afbeelding Maken Gratis
+- H2 骨架:
+  1. In 3 Stappen een AI Afbeelding Maken
+  2. Waarom Zonder Account Werken Fijn Is
+  3. Wat Je Kunt Maken met Ovanto
+  4. Veelgestelde Vragen
+- 出链：→ /nl/afbeeldingen-maken-met-ai
+
+### ⑦ /nl/afbeeldingen-maken-met-ai
+- URL: https://ovanto.ai/nl/afbeeldingen-maken-met-ai
+- Title: Afbeeldingen Maken Met AI — Online Generator | Ovanto
+- Description: Afbeeldingen maken met AI: kies een stijl, beschrijf je idee en
+  genereer online afbeeldingen. Gratis, zonder account.
+- H1: Afbeeldingen Maken Met AI
+- H2 骨架:
+  1. Afbeeldingen Maken Met AI: Zo Werkt Het
+  2. Stijlen en Voorbeelden
+  3. Tips voor Betere Resultaten
+  4. Veelgestelde Vragen
+
+## 4. 全局 head 标签（每页都必须有）
+
+1. <title> / <meta name="description"> —— 用第 3 节的值
+2. <link rel="canonical" href="本页绝对 URL">（自指，不能指首页）
+3. hreflang —— **每页都放全这 5 条**，值固定：
+   <link rel="alternate" hreflang="en" href="https://ovanto.ai/">
+   <link rel="alternate" hreflang="it" href="https://ovanto.ai/it/">
+   <link rel="alternate" hreflang="fr" href="https://ovanto.ai/fr/">
+   <link rel="alternate" hreflang="nl" href="https://ovanto.ai/nl/">
+   <link rel="alternate" hreflang="x-default" href="https://ovanto.ai/">
+   ⚠️ /fr/photo-ia-gratuit 与 /fr/modifier-photo-ia **不要**放 hreflang 互指
+      （无对应语言版本），它们只与 /fr/ 做内链关联。
+4. <html lang="xx"> 按页面语言设置（en / it / fr / nl）
+5. Open Graph + Twitter Card：og:title / og:description / og:image / og:url / og:type
+6. 结构化数据：根页和各语区首页用 WebApplication，各页 FAQ 段落用 FAQPage
+7. ⚠️ **不要写 <meta name="keywords">**
+
+## 5. 首屏与工具本体（每页同一结构，文案按语言替换）
+
+从上到下：
+1. 页头：左侧 Logo "Ovanto"，右侧语言切换器（4 个 <a href> 硬链接）
+2. H1
+3. 一句话价值说明（= Title 核心词的自然改写）
+4. **工具本体**：一个输入框 + 一个生成按钮 + 结果区
+5. 三个信任点（横排小图标）：无需注册 / 完全免费 / 数秒出图
+6. 下方接第 3 节的 H2 正文内容
+7. 页脚：版权 + 链出 4 个语言首页
+
+工具本体的硬性要求：
+- **不得弹注册框、不得要求登录、不得要求邮箱**。点生成就出结果
+- 结果区要有下载按钮
+- 生成中要有 loading 态，失败要有明确错误提示
+- 首屏（不滚动）就能看到输入框和按钮
+
+## 6. 内链矩阵（照抄，锚文本不得改写）
+
+| 从 | 到 | 锚文本 |
+|---|---|---|
+| / 页脚 | /it/ | Generatore video AI gratis |
+| / 页脚 | /fr/ | Générateur de vidéo IA gratuit |
+| / 页脚 | /nl/ | AI afbeelding maken gratis |
+| /it/ | / | Ovanto — free AI tools |
+| /it/ | /fr/ | Générateur de vidéo IA gratuit |
+| /fr/ | / | Ovanto — free AI tools |
+| /fr/ | /fr/photo-ia-gratuit | Photo IA gratuit |
+| /fr/ | /fr/modifier-photo-ia | Modifier photo IA |
+| /fr/photo-ia-gratuit | /fr/ | Générateur de vidéo IA gratuit |
+| /fr/photo-ia-gratuit | /fr/modifier-photo-ia | Modifier photo IA |
+| /fr/modifier-photo-ia | /fr/ | Générateur de vidéo IA gratuit |
+| /fr/modifier-photo-ia | /fr/photo-ia-gratuit | Photo IA gratuit |
+| /nl/ | / | Ovanto — free AI tools |
+| /nl/ | /nl/afbeeldingen-maken-met-ai | Afbeeldingen maken met AI |
+| /nl/afbeeldingen-maken-met-ai | /nl/ | AI afbeelding maken gratis |
+| /nl/ | /fr/ | Générateur de vidéo IA gratuit |
+| /fr/ | /it/ | Generatore video AI gratis |
+| /it/ | /nl/ | AI afbeelding maken gratis |
+
+规则：不做全站农场式互链，不批量在每个页面互链所有页面。
+每页的出链数控制在 10 条以内（含页脚）。
+
+## 7. UI 文案对照表（照抄）
+
+| key | en | it | fr | nl |
+|---|---|---|---|---|
+| 按钮 | Generate | Genera | Générer | Genereren |
+| 输入框占位 | Describe the image you want… | Descrivi il video che vuoi… | Décrivez ce que vous voulez… | Beschrijf wat je wilt maken… |
+| 免注册提示 | No sign up needed | Nessuna registrazione | Aucune inscription | Geen account nodig |
+| 免费提示 | 100% free | 100% gratis | 100% gratuit | 100% gratis |
+| 下载 | Download | Scarica | Télécharger | Downloaden |
+| 生成中 | Generating… | Generazione… | Génération… | Genereren… |
+| 出错 | Something went wrong. Try again. | Qualcosa è andato storto. Riprova. | Une erreur est survenue. Réessayez. | Er ging iets mis. Probeer opnieuw. |
+| 语言切换 | English / Italiano / Français / Nederlands | 同 | 同 | 同 |
+
+⚠️ **拼写铁律**：法语一律写 **IA**（générateur de vidéo IA），
+意语 / 荷兰语 / 英语一律写 **AI**。写错就是自伤，法语用户搜的是 "ia"。
+
+## 8. SEO 文件
+
+robots.txt（app/robots.ts）:
+User-agent: *
+Allow: /
+Sitemap: https://ovanto.ai/sitemap.xml
+
+sitemap.xml：包含全部 7 个 URL，完整绝对地址，每条带 lastmod。
+
+## 9. 性能与体验（验收会看）
+- LCP < 2.5s，CLS < 0.1
+- 图片全部用 WebP/AVIF，加 width/height 避免抖动
+- 字体用 next/font 自托管，不引第三方
+- 无 console 报错
+- 移动端 375px 宽下首屏可用
+
+## 10. 分阶段执行（每阶段做完停下汇报，等确认再进下一阶段）
+
+Phase 1：搭骨架 —— 7 个路由 + 全局 layout + 第 4 节所有 head 标签 + 语言切换器。
+         交付后我检查 hreflang / canonical / lang 属性。
+Phase 2：工具本体 —— 接 [[GENERATION_API]]，做出可用、免注册的生成流程。
+Phase 3：**只上 /it/ 一页**（内容按第 3 节 ②）。上线后先验证收录与排名。
+Phase 4：/fr/ 三个页 + 内链矩阵中法语相关行。
+Phase 5：/nl/ 两个页 + 内链矩阵中荷兰语相关行。
+Phase 6：robots.txt / sitemap.xml / 提交 Google Search Console / 提交 Bing。
+
+⚠️ Phase 3 之前不要一次性把 7 页全上线。意语页是先验证的样本。
+
+## 11. 禁止事项（违反即返工）
+1. 不得改写任何 Title / H1 / URL / 锚文本
+2. 不得添加 <meta name="keywords">
+3. 不得用 JS 或 cookie 在同一个 URL 上切换语言
+4. 不得做自动跳转、不得按 IP 自动选语言
+5. 不得要求注册 / 登录 / 邮箱后才能用工具
+6. 不得在不同页面复用同一段 H2 文案（尤其法语 ④⑤ 两页）
+7. 不得为凑字数堆无意义段落，页面正文总量控制在 800-1500 词/页

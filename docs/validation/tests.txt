@@ -1,0 +1,27 @@
+
+> ovanto-ai@0.1.0 test
+> node scripts/test-runner.mjs
+
+✔ free constants keep the v3 quotas, integer costs, and exact $5 pools (2.4778ms)
+✔ trusted identity ignores spoofable forwarding headers outside explicitly allowed local development (3.5066ms)
+✔ Vercel identity only accepts platform headers and a known country (1.6384ms)
+✔ free regions IN and RU are blocked and unknown countries fail closed (0.9344ms)
+✔ generation input rejects extra controls and applies the fixed video prompt bound (3.961ms)
+✔ same-site Origin rejects cross-site requests before provider access (1.2487ms)
+✔ Turnstile failures stay generic and never invoke a provider (2.3299ms)
+✔ Replicate submission fixes model input to one WebP output (1.543ms)
+✔ FAL submission fixes Wan duration, resolution, aspect ratio, safety, and no audio input (1.3188ms)
+✔ provider status errors fail closed and output URLs require HTTPS allowlisted CDN hosts (2.03ms)
+✔ status ownership requires both the signed anonymous owner and current trusted IP bucket (0.7929ms)
+✔ Redis reservation EVAL script enforces per-IP limits and idempotency (fengari command shim) (25.4403ms)
+✔ Redis reservation EVAL script hits exact separate daily pool boundaries and resets by UTC key (408.8529ms)
+✔ 100-request same-IP burst reserves only the first 3 image slots (17.8652ms)
+✔ release EVAL script refunds a definite provider rejection once (1.1114ms)
+ℹ tests 15
+ℹ suites 0
+ℹ pass 15
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 684.8038

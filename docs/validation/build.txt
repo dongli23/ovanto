@@ -1,0 +1,45 @@
+
+> ovanto-ai@0.1.0 build
+> next build
+
+▲ Next.js 16.3.7 (Turbopack)
+✓ Running next.config.ts took 30ms
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 913ms
+  Running TypeScript ...
+  Finished TypeScript in 2.1s ...
+  Collecting page data using 15 workers ...
+  Generating static pages using 15 workers (0/11) ...
+  Generating static pages using 15 workers (2/11) 
+  Generating static pages using 15 workers (5/11) 
+  Generating static pages using 15 workers (8/11) 
+✓ Generating static pages using 15 workers (11/11) in 1566ms
+  Finalizing page optimization ...
+
+Route (app)
+┌ ƒ /
+├ ƒ /_not-found
+├ ƒ /api/generations
+├ ƒ /api/generations/[id]
+├ ƒ /api/quota
+├ ƒ /fr
+├ ƒ /fr/modifier-photo-ia
+├ ƒ /fr/photo-ia-gratuit
+├ ○ /icon.svg
+├ ƒ /it
+├ ƒ /nl
+├ ƒ /nl/afbeeldingen-maken-met-ai
+└ ○ /opengraph-image
+
+
+ƒ Proxy (Middleware)
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
+npm notice
+npm notice New minor version of npm available! 11.8.0 -> 11.20.0
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v11.20.0
+npm notice To update run: npm install -g npm@11.20.0
+npm notice

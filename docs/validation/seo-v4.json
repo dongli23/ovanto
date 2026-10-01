@@ -1,0 +1,72 @@
+{
+  "checkedAt": "2026-09-30T17:08:59.656Z",
+  "base": "http://localhost:3001",
+  "source": "docs/ovanto-brief-v4.txt",
+  "passed": true,
+  "pages": [
+    {
+      "path": "/",
+      "locale": "en",
+      "status": 200,
+      "links": 8,
+      "faq": 3,
+      "examples": 6,
+      "words": 988
+    },
+    {
+      "path": "/it/",
+      "locale": "it",
+      "status": 200,
+      "links": 8,
+      "faq": 3,
+      "examples": 6,
+      "words": 899
+    },
+    {
+      "path": "/fr/",
+      "locale": "fr",
+      "status": 200,
+      "links": 10,
+      "faq": 3,
+      "examples": 6,
+      "words": 942
+    },
+    {
+      "path": "/fr/photo-ia-gratuit",
+      "locale": "fr",
+      "status": 200,
+      "links": 9,
+      "faq": 3,
+      "examples": 6,
+      "words": 943
+    },
+    {
+      "path": "/fr/modifier-photo-ia",
+      "locale": "fr",
+      "status": 200,
+      "links": 9,
+      "faq": 3,
+      "examples": 6,
+      "words": 901
+    },
+    {
+      "path": "/nl/",
+      "locale": "nl",
+      "status": 200,
+      "links": 9,
+      "faq": 3,
+      "examples": 6,
+      "words": 855
+    },
+    {
+      "path": "/nl/afbeeldingen-maken-met-ai",
+      "locale": "nl",
+      "status": 200,
+      "links": 9,
+      "faq": 3,
+      "examples": 6,
+      "words": 845
+    }
+  ],
+  "failures": []
+}

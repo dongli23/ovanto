@@ -1,0 +1,337 @@
+# Ovanto.ai 首期建站任务书 v3（定稿）
+版本：v3 ｜ 定稿日：2026-09-30 ｜ **本版替代 v2，全部作废 v2 中冲突内容**
+执行要求：本文档所有 URL、Title、Description、H1、H2、锚文本、数值参数均为已定稿内容，
+必须逐字实现。不得改写、不得「优化」、不得自行增删页面。有疑问先停下提问，不要自行决定。
+
+## 0. 项目背景与目标
+- 域名：ovanto.ai（已购入，全站统一【非 www】）
+- 定位：AI 图片 / 视频在线生成工具站，免注册即用
+- 首期 7 个页面，覆盖英语 / 意大利语 / 法语 / 荷兰语
+- 目标：每页在各自语区 Google 排到目标词前十
+- 画像参照：搜索与直访各占约四成（免注册工具的典型结构），首期把「直访可记、可拼」和「首屏可用」做扎实
+
+## 1. 技术栈
+- Next.js 14+ (App Router) + TypeScript + Tailwind CSS
+- 渲染：**SSG 或 SSR**。禁止纯 CSR——爬虫首轮抓取必须能拿到 Title / Description / H1 与正文
+- 部署：Vercel（或 Cloudflare Pages）
+- 生成产物走 CDN，不落本地磁盘
+- 生成服务：见第 8 节
+
+## 2. 路由与文件结构
+
+app/
+├── layout.tsx                              # 全局 layout，注入 <head> 公共标签
+├── page.tsx                                # ① 英语根页 /
+├── it/page.tsx                             # ② /it/
+├── fr/
+│   ├── page.tsx                            # ③ /fr/
+│   ├── photo-ia-gratuit/page.tsx           # ④
+│   └── modifier-photo-ia/page.tsx          # ⑤
+├── nl/
+│   ├── page.tsx                            # ⑥ /nl/
+│   └── afbeeldingen-maken-met-ai/page.tsx  # ⑦
+├── sitemap.ts
+└── robots.ts
+
+URL 规则：目录结尾带斜杠（/it/、/fr/、/nl/），内页不带斜杠（/fr/photo-ia-gratuit）。
+链接一律绝对路径。全部小写。
+
+## 3. 七页完整规格
+
+### ① / 英语根页
+- URL: https://ovanto.ai/
+- Title: Free AI Image Generator, No Sign Up — Create in Seconds | Ovanto
+- Description: Generate AI images right in your browser — no sign-up, no login, no
+  credit card. Type a prompt and get your image in seconds. Free to try.
+- H1: Free AI Image Generator — No Sign Up, No Login
+- H2:
+  1. Generate an AI Image in Three Steps
+  2. Why Use an Image Generator With No Sign Up
+  3. What You Can Create: Avatars, Product Shots, Concept Art
+  4. Free AI Image Generator — FAQ
+- 正文要点：首屏下方紧接 3 步说明；「无需注册」在首屏与 Why 段落各出现一次；
+  Use Cases 每条 2-3 句 + 1 张示例图（alt 写清内容）
+- 页内出链：页脚链出 /it/、/fr/、/nl/
+
+### ② /it/ 意大利语首页（**首期第一优先上线**）
+- URL: https://ovanto.ai/it/
+- Title: Generatore Video AI Gratis Senza Registrazione — Crea Subito | Ovanto
+- Description: Genera video con l'AI gratis e senza registrazione. Scrivi il prompt,
+  premi genera e scarica il tuo video in pochi secondi. Nessun account richiesto.
+- H1: Generatore Video AI Gratis Senza Registrazione
+- H2:
+  1. Come Generare un Video con l'AI in 3 Passaggi
+  2. Perché Scegliere un Generatore Video AI Senza Registrazione
+  3. Cosa Puoi Creare con Ovanto
+  4. Domande Frequenti
+
+### ③ /fr/ 法语首页
+- URL: https://ovanto.ai/fr/
+- Title: Générateur de Vidéo IA Gratuit Sans Inscription — Créez Maintenant | Ovanto
+- Description: Générez des vidéos avec l'IA gratuitement et sans inscription. Écrivez
+  votre prompt, lancez la génération et téléchargez votre vidéo en quelques secondes.
+- H1: Générateur de Vidéo IA Gratuit Sans Inscription
+- H2:
+  1. Comment Générer une Vidéo IA en 3 Étapes
+  2. Pourquoi Choisir un Générateur de Vidéo IA Sans Inscription
+  3. Ce Que Vous Pouvez Créer
+  4. Questions Fréquentes
+- 页内出链：→ /fr/photo-ia-gratuit、/fr/modifier-photo-ia
+
+### ④ /fr/photo-ia-gratuit（宽意图「免费用图」）
+- URL: https://ovanto.ai/fr/photo-ia-gratuit
+- Title: Photo IA Gratuit — Générez Vos Images en Ligne | Ovanto
+- Description: Photo IA gratuit : décrivez votre idée et générez une image en ligne,
+  sans inscription. Idéal pour avatars, visuels produits et illustrations.
+- H1: Photo IA Gratuit : Générez Vos Images en Ligne
+- H2:
+  1. Générez une Photo IA Gratuitement, Sans Inscription
+  2. Idées de Photos à Générer : Avatars, Produits, Paysages
+  3. Comment Obtenir un Meilleur Résultat (Prompts)
+  4. Questions Fréquentes
+- ⚠️ 本页禁止出现 retouche / modifier / édition 主题（属 ⑤ 页）
+
+### ⑤ /fr/modifier-photo-ia（动作意图「改图」）
+- URL: https://ovanto.ai/fr/modifier-photo-ia
+- Title: Modifier Photo IA — Retouche et Édition en Ligne | Ovanto
+- Description: Modifiez vos photos avec l'IA : retirez l'arrière-plan, changez le style,
+  améliorez la lumière et retouchez vos portraits en ligne, sans inscription.
+- H1: Modifier Photo IA en Ligne
+- H2:
+  1. Modifier une Photo avec l'IA en Ligne
+  2. Retirer l'Arrière-Plan et Changer le Fond
+  3. Améliorer et Retoucher un Portrait
+  4. Questions Fréquentes
+- ⚠️ 本页禁止出现 générer une photo / photo ia gratuit 主题（属 ④ 页）
+
+### ⑥ /nl/ 荷兰语首页
+- URL: https://ovanto.ai/nl/
+- Title: AI Afbeelding Maken Gratis — Zonder Account | Ovanto
+- Description: Maak gratis een AI afbeelding zonder account. Typ je prompt, genereer
+  en download je afbeelding binnen enkele seconden. Geen registratie nodig.
+- H1: AI Afbeelding Maken Gratis
+- H2:
+  1. In 3 Stappen een AI Afbeelding Maken
+  2. Waarom Zonder Account Werken Fijn Is
+  3. Wat Je Kunt Maken met Ovanto
+  4. Veelgestelde Vragen
+- 出链：→ /nl/afbeeldingen-maken-met-ai
+
+### ⑦ /nl/afbeeldingen-maken-met-ai
+- URL: https://ovanto.ai/nl/afbeeldingen-maken-met-ai
+- Title: Afbeeldingen Maken Met AI — Online Generator | Ovanto
+- Description: Afbeeldingen maken met AI: kies een stijl, beschrijf je idee en
+  genereer online afbeeldingen. Gratis, zonder account.
+- H1: Afbeeldingen Maken Met AI
+- H2:
+  1. Afbeeldingen Maken Met AI: Zo Werkt Het
+  2. Stijlen en Voorbeelden
+  3. Tips voor Betere Resultaten
+  4. Veelgestelde Vragen
+
+### 3.1 各页 FAQ（每页 3 条，用 FAQPage 结构化数据）
+- 问题用小标题（H3），答案 2-3 句
+- **答案必须正面说明免费额度与超出的价格**，格式参照：
+  「免费档：每天 3 张图片、1 条 480p/5 秒视频，无需注册。
+    更高清晰度、更长时长按次付费（视频 5 秒起 $0.99）。」
+- ⚠️ 禁止出现只否定 H1 的答案（如「视频生成是付费功能」这种单独成句的表述），
+  必须「免费额度 + 超出如何付费」一起说
+
+## 4. 全局 head 标签（每页必须有）
+1. <title> / <meta name="description">（用第 3 节值）
+2. <link rel="canonical" href="本页绝对 URL">（自指，不得指首页）
+3. hreflang —— 每页放全 5 条：
+   <link rel="alternate" hreflang="en" href="https://ovanto.ai/">
+   <link rel="alternate" hreflang="it" href="https://ovanto.ai/it/">
+   <link rel="alternate" hreflang="fr" href="https://ovanto.ai/fr/">
+   <link rel="alternate" hreflang="nl" href="https://ovanto.ai/nl/">
+   <link rel="alternate" hreflang="x-default" href="https://ovanto.ai/">
+   ⚠️ /fr/photo-ia-gratuit 与 /fr/modifier-photo-ia **不放 hreflang 互指**
+      （无对应语言版本），只与 /fr/ 做内链关联
+4. <html lang="xx"> 按页面语言（en / it / fr / nl）
+5. Open Graph + Twitter Card（og:title / og:description / og:image / og:url / og:type）
+6. 结构化数据：根页与各语区首页用 WebApplication；FAQ 段落用 FAQPage
+7. ⚠️ 不写 <meta name="keywords">
+
+## 5. 首屏与工具本体（每页同结构，文案按语言替换）
+
+5.0 信息顺序固定，不得调整：
+  1. H1（定稿文案，一字不改）
+  2. 三个信任点（横排，移动端换行）
+  3. 工具本体
+  4. 示例区（3 张，alt 写清内容）
+
+5.1 信任点定稿（**禁止 100% Free / Unlimited**）
+  en: Free: 3 images/day · No sign up · Video 5s from $0.99
+  it: Gratis: 3 immagini al giorno · Senza registrazione · Video 5s da $0.99
+  fr: Gratuit : 3 images/jour · Sans inscription · Vidéo 5s à partir de 0,99 $
+  nl: Gratis: 3 afbeeldingen per dag · Geen registratie · Video 5s vanaf $0.99
+
+5.2 工具本体控件（首期只做这 3 个，不得增加）
+  - prompt 输入框
+  - 生成按钮（**按钮旁显示本次消耗**：免费档 "Free (3/3 today)"，付费档 "$0.99"）
+  - 结果区（含下载按钮）
+  ⚠️ 不要现在抄对标站的 7 个控件（模型/比例/数量/分辨率/质量/风格/reference），
+     等付费档上线再逐级加
+
+5.3 首屏配比
+  - 桌面端 H1 最多 2 行，字号降一档；工具本体是首屏视觉重心
+  - 移动端 375×667 首屏必须可见输入框与生成按钮（Phase 1 已通过，改动后需回归）
+
+5.4 交互要求
+  - 不得弹注册框、不得要求登录 / 邮箱 / 信用卡
+  - 生成中要有 loading 态，失败要有明确错误提示
+  - 结果区要有下载按钮；免费档图片不加水印，付费档可去水印由配置决定
+
+5.5 用户可见文案禁令（详见第 13 节）
+  - 不得出现 "Phase 1" / "Anteprima" / "segnaposto" / "non ancora collegata"
+    等开发语境字样
+  - 不得出现禁用的假按钮、虚线占位框
+
+5.6 信任点以外的免费表述
+  - Title / Description / H1 中的 gratis / gratuit / Free / Gratis **一律保留**
+    （核心词字面含「免费」，删即放弃排名）
+  - 「免费」的兑现方式是免费档额度，不写模糊的「完全免费」
+
+## 6. 内链矩阵（照抄，锚文本不得改写）
+
+| 从 | 到 | 锚文本 |
+|---|---|---|
+| / 页脚 | /it/ | Generatore video AI gratis |
+| / 页脚 | /fr/ | Générateur de vidéo IA gratuit |
+| / 页脚 | /nl/ | AI afbeelding maken gratis |
+| /it/ | / | Ovanto — free AI tools |
+| /it/ | /fr/ | Générateur de vidéo IA gratuit |
+| /fr/ | / | Ovanto — free AI tools |
+| /fr/ | /fr/photo-ia-gratuit | Photo IA gratuit |
+| /fr/ | /fr/modifier-photo-ia | Modifier photo IA |
+| /fr/photo-ia-gratuit | /fr/ | Générateur de vidéo IA gratuit |
+| /fr/photo-ia-gratuit | /fr/modifier-photo-ia | Modifier photo IA |
+| /fr/modifier-photo-ia | /fr/ | Générateur de vidéo IA gratuit |
+| /fr/modifier-photo-ia | /fr/photo-ia-gratuit | Photo IA gratuit |
+| /nl/ | / | Ovanto — free AI tools |
+| /nl/ | /nl/afbeeldingen-maken-met-ai | Afbeeldingen maken met AI |
+| /nl/afbeeldingen-maken-met-ai | /nl/ | AI afbeelding maken gratis |
+| /nl/ | /fr/ | Générateur de vidéo IA gratuit |
+| /fr/ | /it/ | Generatore video AI gratis |
+| /it/ | /nl/ | AI afbeelding maken gratis |
+
+规则：不做全站农场式互链；每页出链 ≤10 条（含页脚）；页眉页脚用统一组件即可。
+每个语区首页保留一个「最新页面」位，新内页上线即挂上去。
+
+## 7. UI 文案对照表（照抄）
+
+| key | en | it | fr | nl |
+|---|---|---|---|---|
+| 按钮 | Generate | Genera | Générer | Genereren |
+| 输入框占位 | Describe the image you want… | Descrivi il video che vuoi… | Décrivez ce que vous voulez… | Beschrijf wat je wilt maken… |
+| 免注册提示 | No sign up needed | Nessuna registrazione | Aucune inscription | Geen account nodig |
+| 免费额度 | 3 free images/day | 3 immagini gratis al giorno | 3 images gratuites/jour | 3 gratis afbeeldingen/dag |
+| 视频起价 | Video 5s from $0.99 | Video 5s da $0.99 | Vidéo 5s à partir de 0,99 $ | Video 5s vanaf $0.99 |
+| 下载 | Download | Scarica | Télécharger | Downloaden |
+| 生成中 | Generating… | Generazione… | Génération… | Genereren… |
+| 出错 | Something went wrong. Try again. | Qualcosa è andato storto. Riprova. | Une erreur est survenue. Réessayez. | Er ging iets mis. Probeer opnieuw. |
+| 额度用尽 | Daily free limit reached | Limite giornaliero raggiunto | Limite journalière atteinte | Daglimiet bereikt |
+| 语言切换 | English / Italiano / Français / Nederlands（四条硬链接） |
+
+⚠️ 拼写铁律：法语一律 **IA**；意语 / 荷兰语 / 英语一律 **AI**。
+
+## 8. 生成服务接入
+
+供应商：Replicate（图片）+ fal（视频）。两个账号都开，按型号路由。
+
+图片：
+  flux-schnell（免费档）  Replicate   $0.003/张
+  flux-dev（付费档）      Replicate   $0.025/张
+
+视频：
+  Wan 2.5（免费档）             fal  $0.05/秒  → 5 秒 $0.25
+  Kling 2.5 Turbo Pro（付费档）  fal  $0.07/秒  → 5 秒 $0.35
+  Veo 3（高端付费档，暂不开）     fal  $0.4/秒
+
+密钥占位：[[REPLICATE_API_KEY]] [[FAL_API_KEY]]（由用户填入）
+
+⚠️ 单价以上为官方价目页口径，接入后需在后台跑一次真实计费复核再定价。
+
+## 9. 免费档 / 付费档 / 限流 / 熔断（**全部服务端强制，前端不可绕过**）
+
+免费档：
+  图片：flux-schnell，3 次 / IP / 天
+  视频：Wan 2.5，**5 秒 / 480p 服务端写死**，1 次 / IP / 天
+  入口：通过 Cloudflare Turnstile 人机验证后才发上游请求
+
+付费档：
+  图片：flux-dev，$0.025/张
+  视频：Kling 2.5 Turbo Pro，5 秒 = $0.35，定价 $0.99 ~ $1.49/条
+
+熔断：免费池 $5 图片 + $5 视频 = **$10/天**；达标即暂停免费档、转付费引导，
+      付费用户不受影响
+
+地区：IN / RU 不发免费额度
+
+充值：按最小额充（fal 可透支，需防刷）
+
+## 10. SEO 文件
+
+robots.txt（app/robots.ts）：
+User-agent: *
+Allow: /
+Sitemap: https://ovanto.ai/sitemap.xml
+
+sitemap.xml：包含全部 7 个 URL，绝对地址，每条带 lastmod。
+
+## 11. 性能与体验（验收项）
+- LCP < 2.5s，CLS < 0.1
+- 图片用 WebP/AVIF，带 width/height 避免抖动
+- 字体 next/font 自托管，不引第三方
+- 无 console 报错
+- 移动端 375px 宽下首屏可用
+
+## 12. 分阶段执行（每阶段做完停下汇报，等确认再进下一阶段）
+
+Phase 1：骨架 —— 7 路由 + 全局 layout + 第 4 节 head 标签 + 语言切换器。【已完成，验收通过】
+Phase 2：工具本体 + 首屏 UI 修正 —— 接第 8/9 节服务与限流，并完成：
+         a) H1 桌面端收敛到 2 行内、字号降一档
+         b) 信任点改为第 5.1 节定稿的写法（具体额度，不写 100% Free）
+         c) 清掉全部开发语境文案（PHASE 1 徽章、"segnaposto"、"non ancora collegata" 说明）
+         d) 撤掉禁用的假按钮与虚线占位框
+         e) 四语首页 FAQ 答案按第 3.1 节重写（免费额度 + 超出价格一起说）
+Phase 3：**只上 /it/ 一页**（内容按第 3 节②）。上线后验证收录与排名
+Phase 4：/fr/ 三页 + 内链矩阵中法语各行
+Phase 5：/nl/ 两页 + 内链矩阵中荷兰语各行
+Phase 6：robots.txt / sitemap.xml / 提交 Google Search Console / 提交 Bing
+Phase 7：流量骨架扩容 —— 模型卡区（每个在售模型一个独立页）+ 视频示例画廊
+         （12 条，带名字、可播）+ 模板区（两步式）+ 定价区（三档）
+
+⚠️ Phase 3 之前不得一次性把 7 页全上线。意语页是先验证的样本。
+⚠️ Phase 7 的模型页与工具页是本任务书之外的第二批，届时另出规格，不要在首期塞进来。
+
+## 13. 禁止事项（违反即返工）
+
+1. 不得改写任何 Title / Description / H1 / URL / 锚文本
+2. 不得添加 <meta name="keywords">
+3. 不得用 JS 或 cookie 在同一个 URL 上切换语言
+4. 不得做自动跳转、不得按 IP 自动选语言
+5. 不得要求注册 / 登录 / 邮箱 / 信用卡后才能用工具
+6. 不得在不同页面复用同一段 H2 文案（尤其法语 ④⑤ 两页）
+7. 不得为凑字数堆无意义段落，正文总量控制在 800-1500 词/页
+8. 不得在前端传参控制视频秒数与分辨率（必须服务端写死 5s / 480p）
+9. 不得只做 IP 限流而不加人机验证（几千 IP 池可直接刷穿）
+10. 不得一次性发放大额免费额度（改为每日少量）
+11. 不得在免费档调用任何按秒计费的高价模型
+12. 不得在用户可见文案里出现开发语境字样（Phase 1 / Anteprima / segnaposto / non ancora collegata）
+13. 不得出现禁用的假按钮、虚线占位框
+14. 不得写 100% Free / 100% gratis / Unlimited / 完全免费 等模糊免费表述
+15. 不得让 FAQ 出现只否定 H1 的答案（必须「免费额度 + 超出如何付费」一起说）
+16. 不得删改 Title / H1 里的 gratis / gratuit / Free / Gratis
+
+## 14. 验收与汇报
+
+每阶段完成后按以下四项回报，等确认再进下一阶段：
+1. 本阶段改动的文件清单
+2. 七页 SEO 检查结果（Title / Description / canonical / hreflang / lang / 内链）
+3. 移动端 375×667 首屏截图
+4. 已知未完成项与阻塞点
+
+Phase 2 额外需回报：上游计费复核结果（真实跑一次生成，核对第 8 节单价）、
+限流与熔断的实测触发记录。

@@ -1,0 +1,60 @@
+
+> ovanto-ai@0.1.0 test
+> node scripts/test-runner.mjs
+
+✔ free constants keep the v4 quotas, integer costs, and separate pools (3.8422ms)
+✔ trusted identity ignores spoofable forwarding headers outside explicitly allowed local development (4.5506ms)
+✔ Vercel identity only accepts platform headers and a known country (1.9099ms)
+✔ free regions IN and RU are blocked and unknown countries fail closed (1.0486ms)
+✔ paid edit entitlement can opt uploads out of free-region blocking (1.2046ms)
+✔ generation input rejects extra controls and applies the fixed video prompt bound (4.7949ms)
+✔ edit input requires exactly one server-owned asset id (2.8032ms)
+✔ upload validation requires matching magic bytes and a real sharp decode (14.6657ms)
+✔ same-site Origin rejects cross-site requests before provider access (1.4801ms)
+✔ Turnstile failures stay generic and never invoke a provider (3.2207ms)
+✔ Replicate submission fixes model input to one WebP output (1.8919ms)
+✔ FAL submission fixes Wan duration, resolution, aspect ratio, safety, and no audio input (1.4112ms)
+✔ Replicate Kontext edit submission only forwards the server-owned source URL (1.7697ms)
+✔ paid provider helper keeps fixed model schemas and is separate from free routing (1.3663ms)
+✔ provider status errors fail closed and output URLs require HTTPS allowlisted CDN hosts (2.4948ms)
+✔ FAL completed image result supports Kontext image payload and parent queue URLs (2.3901ms)
+✔ status ownership requires both the signed anonymous owner and current trusted IP bucket (1.5244ms)
+✔ Redis reservation EVAL enforces idempotency, conflict, and per-kind limits (35.8873ms)
+✔ exact v4 isolated budgets: image 1000, edit 86, video 20 (453.8113ms)
+✔ separate pools can be used together, but the overall 10 dollar cap is atomic (2.2183ms)
+✔ overall budget boundary blocks a request even when its kind pool has room (1.1259ms)
+✔ UTC day reset starts fresh counters and same-IP burst remains bounded (31.0416ms)
+✔ release EVAL refunds kind and overall reservation once (1.4173ms)
+✔ upload abuse guard is atomic and independent from generation counters (1.3944ms)
+✔ paid input rejects browser-controlled model, duration, and price fields (8.0432ms)
+✔ paid input rejects oversized bodies, missing edit assets, and malformed UUIDs (1.9627ms)
+✔ paid input accepts the three server-owned product shapes (1.6408ms)
+✔ paid input hashes are distinct from free hashes and bind the edit asset (0.5653ms)
+✔ public paid jobs redact provider metadata and mark uncertain pending submissions (0.3108ms)
+✔ webhook fulfillment is idempotent for duplicate events and different events on one session (1548.0969ms)
+✔ mismatched paid amount rolls back event receipt and all fulfillment state (1077.3487ms)
+✔ a checkout failed before Stripe session creation cannot receive a later grant (1092.3116ms)
+✔ checkout sessions for the same email stay scoped to their own order credits (1172.0574ms)
+✔ paid credit reservation is idempotent and release/finalize transitions happen once (1117.0165ms)
+✔ same idempotency key remains one job when requests are serialized by the embedded engine (1035.2599ms)
+✔ login challenges expire, stop after five attempts, and activation tokens are single use (1062.8333ms)
+✔ retail prices are server configuration and video stays within the approved range (1.8449ms)
+✔ catalog fails closed when a retail price is missing (0.9543ms)
+✔ checkout claim cookie requires a UUID order and nontrivial browser secret (1.0105ms)
+✔ outbox token envelope is decryptable only with the server secret (2.9032ms)
+✔ Stripe webhook signature tampering fails before event handling (6.6157ms)
+✔ checkout request uses the unit price once and reconciles quantity three metadata (2.9302ms)
+✔ Resend adapter rejects redirects, disables caching, and sends stable retry idempotency (3.7742ms)
+ℹ tests 43
+ℹ suites 0
+ℹ pass 43
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 8625.9526
+npm notice
+npm notice New minor version of npm available! 11.8.0 -> 11.20.0
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v11.20.0
+npm notice To update run: npm install -g npm@11.20.0
+npm notice
