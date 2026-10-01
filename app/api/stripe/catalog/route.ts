@@ -10,7 +10,7 @@ export async function GET() {
     try {
       const unitAmountCents = retailPriceCents(product.key);
       const minQuantity = Math.max(1, Math.ceil(50 / unitAmountCents));
-      if (minQuantity > MAX_PAID_QUANTITY || !process.env[product.provider === "replicate" ? "REPLICATE_API_KEY" : "FAL_API_KEY"]) return [];
+      if (minQuantity > MAX_PAID_QUANTITY || !process.env[product.provider === "replicate" ? "REPLICATE_API_TOKEN" : "FAL_KEY"]) return [];
       if (product.key === "edit" && (!process.env.UPSTASH_REDIS_REST_URL || !process.env.UPSTASH_REDIS_REST_TOKEN || !process.env.IP_HASH_SECRET)) return [];
       return [{ key: product.key, model: product.model, unitAmountCents, minQuantity, maxQuantity: MAX_PAID_QUANTITY }];
     } catch { return []; }

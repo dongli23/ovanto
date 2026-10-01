@@ -16,7 +16,7 @@ export interface GenerateInput {
   assetId?: string;
 }
 
-const BASE_BODY_KEYS = ["idempotencyKey", "kind", "prompt", "turnstileToken"];
+const BASE_BODY_KEYS = ["idempotencyKey", "task", "tier", "prompt", "turnstileToken"];
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
 export async function parseGenerateInput(request: Request): Promise<GenerateInput> {
@@ -72,13 +72,14 @@ export async function parseGenerateInput(request: Request): Promise<GenerateInpu
   }
 
   const body = parsed as Record<string, unknown>;
-  const { kind, prompt, turnstileToken, idempotencyKey, assetId } = body;
+  const { task: kind, tier, prompt, turnstileToken, idempotencyKey, assetId } = body;
   if (!isGenerationKind(kind)) throw new GenerationError("INVALID_KIND", 400, "Generation kind is invalid.");
+  if (tier !== "free") throw new GenerationError("INVALID_TIER", 400, "Only the free tier is available through this endpoint.");
   const expectedKeys = kind === "edit" ? [...BASE_BODY_KEYS, "assetId"] : BASE_BODY_KEYS;
   const actualKeys = Object.keys(body).sort();
   const sortedExpected = expectedKeys.slice().sort();
   if (actualKeys.length !== sortedExpected.length || actualKeys.some((key, index) => key !== sortedExpected[index])) {
-    throw new GenerationError("INVALID_REQUEST", 400, kind === "edit" ? "Only kind, prompt, turnstileToken, idempotencyKey, and assetId are accepted." : "Only kind, prompt, turnstileToken, and idempotencyKey are accepted.");
+    throw new GenerationError("INVALID_REQUEST", 400, "Only task, tier, prompt, turnstileToken, idempotencyKey, and an edit assetId are accepted.");
   }
   if (typeof prompt !== "string") throw new GenerationError("INVALID_PROMPT", 400, "Prompt is invalid.");
   const normalizedPrompt = prompt.trim();

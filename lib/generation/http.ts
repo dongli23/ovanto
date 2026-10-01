@@ -41,7 +41,6 @@ export function assertGenerationConfig(kind: GenerationKind): void {
   const missing: string[] = [];
   if (!process.env.TURNSTILE_SECRET_KEY) missing.push("TURNSTILE_SECRET_KEY");
   if (!process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY) missing.push("NEXT_PUBLIC_TURNSTILE_SITE_KEY");
-  if (!process.env.TURNSTILE_HOSTNAME) missing.push("TURNSTILE_HOSTNAME");
   if (missing.length) throw new GenerationError("CONFIGURATION_UNAVAILABLE", 503, "Generation is temporarily unavailable.");
 }
 
@@ -50,9 +49,8 @@ export function assertUploadConfig(): void {
   if (!process.env.IP_HASH_SECRET) missing.push("IP_HASH_SECRET");
   if (!process.env.UPSTASH_REDIS_REST_URL) missing.push("UPSTASH_REDIS_REST_URL");
   if (!process.env.UPSTASH_REDIS_REST_TOKEN) missing.push("UPSTASH_REDIS_REST_TOKEN");
-  if (!process.env.FAL_API_KEY) missing.push("FAL_API_KEY");
+  if (!process.env.FAL_KEY) missing.push("FAL_KEY");
   if (!process.env.TURNSTILE_SECRET_KEY) missing.push("TURNSTILE_SECRET_KEY");
-  if (!process.env.TURNSTILE_HOSTNAME) missing.push("TURNSTILE_HOSTNAME");
   if (!process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY) missing.push("NEXT_PUBLIC_TURNSTILE_SITE_KEY");
   if (missing.length) throw new GenerationError("CONFIGURATION_UNAVAILABLE", 503, "Generation is temporarily unavailable.");
 }

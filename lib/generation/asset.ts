@@ -95,7 +95,7 @@ export async function getOwnedValidatedAsset(redis: RedisLike, assetId: string, 
 }
 
 export async function initiateFalUpload(assetId: string, contentType: AllowedUploadType): Promise<{ uploadUrl: string; fileUrl?: string }> {
-  const key = process.env.FAL_API_KEY;
+  const key = process.env.FAL_KEY;
   if (!key) throw new GenerationError("CONFIGURATION_UNAVAILABLE", 503, "Generation is temporarily unavailable.");
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 12_000);
@@ -131,7 +131,7 @@ export async function completeFalUpload(asset: AssetRecord): Promise<AssetRecord
   if (source.bytes.byteLength !== asset.size) throw new GenerationError("INVALID_UPLOAD", 400, "Uploaded file size is invalid.");
   if (source.contentType !== asset.contentType) throw new GenerationError("INVALID_UPLOAD", 400, "Uploaded file type is invalid.");
   await validateImageBytes(source.bytes, asset.contentType);
-  const key = process.env.FAL_API_KEY;
+  const key = process.env.FAL_KEY;
   if (!key) throw new GenerationError("CONFIGURATION_UNAVAILABLE", 503, "Generation is temporarily unavailable.");
   fal.config({ credentials: key });
   const fileBytes = new Uint8Array(source.bytes.byteLength);

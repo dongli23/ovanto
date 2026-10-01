@@ -1,9 +1,8 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { Generator, type PromptExample } from "./Generator";
 import type { ToolKind } from "../lib/content";
-import type { Locale } from "../lib/site";
+import { ROUTES, type Locale } from "../lib/site";
 
 export type GeneratorMode = ToolKind;
 
@@ -123,11 +122,14 @@ const examples: Record<Locale, Record<GeneratorMode, readonly PromptExample[]>> 
 };
 
 function routeForMode(locale: Locale, mode: GeneratorMode) {
-  if (mode === "edit") return "/fr/modifier-photo-ia";
-  if (mode === "video") return locale === "fr" ? "/fr/" : "/it/";
-  if (locale === "nl") return "/nl/";
-  if (locale === "fr") return "/fr/photo-ia-gratuit";
-  return "/";
+  if (locale === "fr") {
+    if (mode === "image") return ROUTES.frGenerate;
+    if (mode === "edit") return ROUTES.frEdit;
+    return ROUTES.fr;
+  }
+  if (locale === "it") return mode === "video" ? ROUTES.it : null;
+  if (locale === "nl") return mode === "image" ? ROUTES.nl : null;
+  return mode === "image" ? ROUTES.en : null;
 }
 
 export function GeneratorWorkbench({
@@ -143,7 +145,6 @@ export function GeneratorWorkbench({
   mode: GeneratorMode;
   turnstileSiteKey?: string;
 }) {
-  const router = useRouter();
   const localized = modeCopy[locale];
   const labels: Record<GeneratorMode, string> = {
     image: localized.image,
@@ -159,19 +160,20 @@ export function GeneratorWorkbench({
   return (
     <div className="workbench-shell" aria-label={title}>
       <nav className="workbench-modes" aria-label="Generator mode">
-        {(Object.keys(labels) as GeneratorMode[]).map((nextMode) => (
-          <button
-            type="button"
-            className={`workbench-mode${nextMode === mode ? " is-active" : ""}`}
-            key={nextMode}
-            aria-current={nextMode === mode ? "page" : undefined}
-            onClick={() => {
-              if (nextMode !== mode) router.push(routeForMode(locale, nextMode));
-            }}
-          >
-            {labels[nextMode]}
-          </button>
-        ))}
+        {(Object.keys(labels) as GeneratorMode[]).map((nextMode) => {
+          const href = routeForMode(locale, nextMode);
+          if (!href) return null;
+          return (
+            <a
+              className={`workbench-mode${nextMode === mode ? " is-active" : ""}`}
+              href={href}
+              key={nextMode}
+              aria-current={nextMode === mode ? "page" : undefined}
+            >
+              {labels[nextMode]}
+            </a>
+          );
+        })}
       </nav>
       <Generator
         locale={locale}

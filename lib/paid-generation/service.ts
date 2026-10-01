@@ -22,7 +22,7 @@ export function publicPaidJob(job: PaidJobRecord, remaining: number) {
 
 export async function startPaidGeneration(input: PaidGenerationInput, session: PaidSession, sourceImageUrl?: string) {
   const provider = providerFor(input.kind, "paid");
-  if (!process.env[provider.provider === "replicate" ? "REPLICATE_API_KEY" : "FAL_API_KEY"]) throw new PaymentError("PAYMENT_CONFIGURATION_UNAVAILABLE", 503);
+  if (!process.env[provider.provider === "replicate" ? "REPLICATE_API_TOKEN" : "FAL_KEY"]) throw new PaymentError("PAYMENT_CONFIGURATION_UNAVAILABLE", 503);
   const reserved = await reservePaidCredit(session.accountId, input.kind, input.idempotencyKey, paidInputHash(input), randomUUID(), session.scopeOrderId);
   if (reserved.state === "existing") return reserved;
   const job = reserved.job;

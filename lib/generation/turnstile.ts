@@ -2,13 +2,14 @@ import { GenerationError } from "./errors";
 import { TURNSTILE_REQUEST_TIMEOUT_MS } from "./config";
 
 const VERIFY_URL = "https://challenges.cloudflare.com/turnstile/v0/siteverify";
+const ALLOWED_HOSTNAMES = new Set(["www.ovanto.ai", "ovanto.vercel.app"]);
 
 export async function verifyTurnstile(token: string, remoteIp: string): Promise<void> {
   const secret = process.env.TURNSTILE_SECRET_KEY;
-  const configuredHostname = process.env.TURNSTILE_HOSTNAME?.trim();
-  if (!secret || !configuredHostname) {
+  if (!secret) {
     throw new GenerationError("CONFIGURATION_UNAVAILABLE", 503, "Generation is temporarily unavailable.");
   }
+  if (!token) throw new GenerationError("TURNSTILE_REQUIRED", 400, "Human verification is required.");
 
   const form = new URLSearchParams({ secret, response: token, remoteip: remoteIp });
   const controller = new AbortController();
@@ -42,7 +43,7 @@ export async function verifyTurnstile(token: string, remoteIp: string): Promise<
       hostname?: unknown;
     };
     if (payload.success !== true) throw new GenerationError("TURNSTILE_FAILED", 403, "Human verification failed.");
-    if (payload.action !== "generate" || payload.hostname !== configuredHostname) {
+    if (payload.action !== "generate" || typeof payload.hostname !== "string" || !ALLOWED_HOSTNAMES.has(payload.hostname)) {
       throw new GenerationError("TURNSTILE_FAILED", 403, "Human verification failed.");
     }
   } catch (error) {

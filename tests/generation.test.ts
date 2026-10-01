@@ -59,7 +59,7 @@ test("paid edit entitlement can opt uploads out of free-region blocking", () => 
 });
 
 test("generation input rejects extra controls and applies the fixed video prompt bound", async () => {
-  const base = { kind: "video", prompt: "short scene", turnstileToken: "token", idempotencyKey: "550e8400-e29b-41d4-a716-446655440000" };
+  const base = { task: "video", tier: "free", prompt: "short scene", turnstileToken: "token", idempotencyKey: "550e8400-e29b-41d4-a716-446655440000" };
   const extra = new Request("https://ovanto.ai/api/generations", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ ...base, duration: "60" }) });
   await assert.rejects(parseGenerateInput(extra), (error: unknown) => error instanceof GenerationError && error.code === "INVALID_REQUEST");
   const tooLong = new Request("https://ovanto.ai/api/generations", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ ...base, prompt: "x".repeat(1501) }) });
@@ -67,7 +67,7 @@ test("generation input rejects extra controls and applies the fixed video prompt
 });
 
 test("edit input requires exactly one server-owned asset id", async () => {
-  const base = { kind: "edit", prompt: "brighten portrait", turnstileToken: "token", idempotencyKey: "550e8400-e29b-41d4-a716-446655440000" };
+  const base = { task: "edit", tier: "free", prompt: "brighten portrait", turnstileToken: "token", idempotencyKey: "550e8400-e29b-41d4-a716-446655440000" };
   const missing = new Request("https://ovanto.ai/api/generate", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(base) });
   await assert.rejects(parseGenerateInput(missing), (error: unknown) => error instanceof GenerationError && error.code === "INVALID_REQUEST");
   const valid = new Request("https://ovanto.ai/api/generate", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ ...base, assetId: "550e8400-e29b-41d4-a716-446655440001" }) });
@@ -88,7 +88,6 @@ test("same-site Origin rejects cross-site requests before provider access", () =
 
 test("Turnstile failures stay generic and never invoke a provider", async () => {
   process.env.TURNSTILE_SECRET_KEY = "turnstile-secret";
-  process.env.TURNSTILE_HOSTNAME = "ovanto.ai";
   let calls = 0;
   globalThis.fetch = async () => {
     calls += 1;
@@ -96,13 +95,33 @@ test("Turnstile failures stay generic and never invoke a provider", async () => 
   };
   await assert.rejects(verifyTurnstile("replayed-token", "203.0.113.8"), (error: unknown) => error instanceof GenerationError && error.code === "TURNSTILE_FAILED");
   assert.equal(calls, 1);
-  process.env.TURNSTILE_HOSTNAME = "configured.example";
   globalThis.fetch = async () => new Response(JSON.stringify({ success: true, action: "other", hostname: "configured.example" }), { status: 200 });
   await assert.rejects(verifyTurnstile("wrong-action", "203.0.113.8"), (error: unknown) => error instanceof GenerationError && error.code === "TURNSTILE_FAILED");
 });
 
+test("Turnstile accepts only the two deployment hostnames and the generate action", async () => {
+  process.env.TURNSTILE_SECRET_KEY = "test-secret";
+  for (const hostname of ["www.ovanto.ai", "ovanto.vercel.app"]) {
+    globalThis.fetch = async () => new Response(JSON.stringify({ success: true, action: "generate", hostname }));
+    await verifyTurnstile("valid-test-token", "203.0.113.8");
+  }
+  globalThis.fetch = async () => new Response(JSON.stringify({ success: true, action: "generate", hostname: "attacker.example" }));
+  await assert.rejects(verifyTurnstile("test-token", "203.0.113.8"), (error: unknown) => error instanceof GenerationError && error.code === "TURNSTILE_FAILED");
+  await assert.rejects(verifyTurnstile("", "203.0.113.8"), (error: unknown) => error instanceof GenerationError && error.code === "TURNSTILE_REQUIRED");
+});
+
+test("free input accepts task and tier while rejecting a paid tier or browser model controls", async () => {
+  const body = { task: "image", tier: "free", prompt: "blue cat", turnstileToken: "test-token", idempotencyKey: "550e8400-e29b-41d4-a716-446655440000" };
+  const request = (value: unknown) => new Request("https://www.ovanto.ai/api/generate", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(value) });
+  assert.equal((await parseGenerateInput(request(body))).kind, "image");
+  await assert.rejects(parseGenerateInput(request({ ...body, tier: "paid" })), (error: unknown) => error instanceof GenerationError && error.code === "INVALID_TIER");
+  for (const extra of [{ slug: "arbitrary" }, { model: "arbitrary" }, { duration: 10 }, { resolution: "1080p" }]) {
+    await assert.rejects(parseGenerateInput(request({ ...body, ...extra })), (error: unknown) => error instanceof GenerationError && error.code === "INVALID_REQUEST");
+  }
+});
+
 test("Replicate submission fixes model input to one WebP output", async () => {
-  process.env.REPLICATE_API_KEY = "test-replicate";
+  process.env.REPLICATE_API_TOKEN = "test-replicate";
   let call: { url: string; init: RequestInit } | undefined;
   globalThis.fetch = async (input, init) => {
     call = { url: String(input), init: init ?? {} };
@@ -116,35 +135,32 @@ test("Replicate submission fixes model input to one WebP output", async () => {
 });
 
 test("FAL submission fixes Wan duration, resolution, aspect ratio, safety, and no audio input", async () => {
-  process.env.FAL_API_KEY = "test-fal";
+  process.env.FAL_KEY = "test-fal";
   globalThis.fetch = async (_input, init) => {
     const body = JSON.parse(String(init?.body));
     assert.deepEqual(body, { prompt: "a calm lake", duration: "5", resolution: "480p", aspect_ratio: "16:9", enable_prompt_expansion: false, enable_safety_checker: true });
-    return new Response(JSON.stringify({ request_id: "fal-id", status_url: "https://queue.fal.run/fal-ai/wan-25-preview/requests/fal-id/status", response_url: "https://queue.fal.run/fal-ai/wan-25-preview/requests/fal-id" }), { status: 200 });
+    return new Response(JSON.stringify({ request_id: "fal-id", status_url: "https://queue.fal.run/fal-ai/wan-25-preview/text-to-video/requests/fal-id/status", response_url: "https://queue.fal.run/fal-ai/wan-25-preview/text-to-video/requests/fal-id" }), { status: 200 });
   };
   const result = await submitGeneration("video", "a calm lake");
   assert.equal(result.requestId, "fal-id");
-  assert.equal(result.statusUrl, "https://queue.fal.run/fal-ai/wan-25-preview/requests/fal-id/status");
+  assert.equal(result.statusUrl, "https://queue.fal.run/fal-ai/wan-25-preview/text-to-video/requests/fal-id/status");
 });
 
 test("Replicate Kontext edit submission only forwards the server-owned source URL", async () => {
-  process.env.REPLICATE_API_KEY = "test-replicate";
+  process.env.REPLICATE_API_TOKEN = "test-replicate";
   let call: { url: string; init: RequestInit } | undefined;
   globalThis.fetch = async (input, init) => {
-    if (String(input) === "https://api.replicate.com/v1/models/black-forest-labs/flux-kontext-dev") {
-      return new Response(JSON.stringify({ latest_version: { id: "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef" } }), { status: 200 });
-    }
     call = { url: String(input), init: init ?? {} };
     return new Response(JSON.stringify({ id: "kontext-id" }), { status: 201 });
   };
   const result = await submitGeneration("edit", "remove the background", "https://v3b.fal.media/files/a/source.png");
   assert.equal(result.requestId, "kontext-id");
-  assert.equal(call?.url, "https://api.replicate.com/v1/predictions");
-  assert.deepEqual(JSON.parse(String(call?.init.body)), { version: "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef", input: { prompt: "remove the background", input_image: "https://v3b.fal.media/files/a/source.png" } });
+  assert.equal(call?.url, "https://api.replicate.com/v1/models/black-forest-labs/flux-kontext-dev/predictions");
+  assert.deepEqual(JSON.parse(String(call?.init.body)), { input: { prompt: "remove the background", input_image: "https://v3b.fal.media/files/a/source.png" } });
 });
 
 test("paid provider helper keeps fixed model schemas and is separate from free routing", async () => {
-  process.env.FAL_API_KEY = "test-fal";
+  process.env.FAL_KEY = "test-fal";
   let call: { url: string; init: RequestInit } | undefined;
   globalThis.fetch = async (input, init) => {
     call = { url: String(input), init: init ?? {} };
@@ -157,7 +173,7 @@ test("paid provider helper keeps fixed model schemas and is separate from free r
 });
 
 test("provider status errors fail closed and output URLs require HTTPS allowlisted CDN hosts", async () => {
-  process.env.REPLICATE_API_KEY = "test-replicate";
+  process.env.REPLICATE_API_TOKEN = "test-replicate";
   globalThis.fetch = async () => new Response(JSON.stringify({ status: "succeeded", output: "https://evil.example/output.webp" }), { status: 200 });
   await assert.rejects(pollGeneration("replicate", "prediction-id", "image"), (error: unknown) => error instanceof Error && error.name === "ProviderProtocolError");
   globalThis.fetch = async () => new Response(JSON.stringify({ status: "succeeded", output: "https://user:secret@replicate.delivery/prediction/output.webp" }), { status: 200 });
@@ -168,15 +184,15 @@ test("provider status errors fail closed and output URLs require HTTPS allowlist
 });
 
 test("FAL completed image result supports Kontext image payload and parent queue URLs", async () => {
-  process.env.FAL_API_KEY = "test-fal";
+  process.env.FAL_KEY = "test-fal";
   let calls = 0;
   globalThis.fetch = async (input) => {
     calls += 1;
     if (calls === 1) return new Response(JSON.stringify({ status: "COMPLETED" }), { status: 200 });
-    assert.equal(String(input), "https://queue.fal.run/fal-ai/wan-25-preview/requests/fal-image");
+    assert.equal(String(input), "https://queue.fal.run/fal-ai/wan-25-preview/text-to-video/requests/fal-image");
     return new Response(JSON.stringify({ images: [{ url: "https://v3b.fal.media/files/a/result.png" }] }), { status: 200 });
   };
-  const result = await pollGeneration("fal", "fal-image", "edit", { model: "fal-ai/wan-25-preview", statusUrl: "https://queue.fal.run/fal-ai/wan-25-preview/requests/fal-image/status" });
+  const result = await pollGeneration("fal", "fal-image", "edit", { model: "fal-ai/wan-25-preview/text-to-video", statusUrl: "https://queue.fal.run/fal-ai/wan-25-preview/text-to-video/requests/fal-image/status" });
   assert.deepEqual(result, { state: "succeeded", result: { url: "https://v3b.fal.media/files/a/result.png", mediaType: "image" } });
 });
 

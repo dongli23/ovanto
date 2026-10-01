@@ -22,13 +22,12 @@ export async function POST(request: Request) {
     assertGenerationConfig(input.kind);
     const cookieStore = await cookies();
     const identity = getDailyIdentity(request, cookieStore);
-    assertFreeRegion(identity.country);
-
     const redis = getRedis();
     // Turnstile is verified before the reservation and therefore before any
     // provider request. A replayed token can never create a second spend: the
     // idempotency key is consumed only by the atomic Redis script below.
     await verifyTurnstile(input.turnstileToken, identity.ip);
+    assertFreeRegion(identity.country);
     const reservation = await reserveGeneration(redis, {
       id: randomUUID(),
       kind: input.kind,

@@ -155,7 +155,7 @@ export const PAGE_CONTENT: Record<PageDefinition["key"], PageDefinition> = {
     ],
     sectionLeads: [
       "Scrivi un prompt indicando soggetto, ambiente, azione e atmosfera, poi controlla il risultato quando la scena è pronta. Se il movimento o l'inquadratura non seguono l'idea, modifica un dettaglio preciso e prova una nuova direzione. Quando la sequenza comunica ciò che volevi, scarica il file per una presentazione, una bozza o un progetto personale. La sequenza in tre passaggi mantiene il lavoro semplice e leggibile, anche quando stai imparando a descrivere il ritmo di una scena. Parti da un'immagine mentale chiara e lascia che ogni tentativo aggiunga una scelta utile.",
-      "Senza registrazione puoi concentrarti sul contenuto prima di creare un account. Il piano gratuito include un video AI 480p di 5 secondi al giorno per IP. Le generazioni aggiuntive di 5 secondi saranno disponibili in futuro a partire da 0,99 USD. Questo rende facile verificare una direzione per una storia, un prodotto o una presentazione senza preparare un profilo. Il prompt e il risultato restano nello stesso percorso del browser, quindi puoi valutare la scena con calma. Una quota giornaliera contenuta invita a fare prove intenzionali: cambia il soggetto, la luce o il movimento e osserva quale scelta migliora il risultato.",
+      "Senza registrazione puoi concentrarti sul contenuto prima di creare un account. Il piano gratuito include un video AI 480p di 5 secondi al giorno per IP. Le generazioni aggiuntive di 5 secondi partono da 0,99 USD. Questo rende facile verificare una direzione per una storia, un prodotto o una presentazione senza preparare un profilo. Il prompt e il risultato restano nello stesso percorso del browser, quindi puoi valutare la scena con calma. Una quota giornaliera contenuta invita a fare prove intenzionali: cambia il soggetto, la luce o il movimento e osserva quale scelta migliora il risultato.",
       "Imposta soggetto, ambiente e movimento per costruire una scena leggibile. Puoi partire da un concept, una clip prodotto o un momento narrativo. Indica il punto di vista, la velocità percepita e ciò che deve restare fermo mentre la scena cambia. Per un prodotto, specifica la superficie e la direzione della luce; per un racconto, aggiungi l'emozione e il gesto principale. Dettagli concreti aiutano a mantenere il focus senza trasformare il prompt in un elenco confuso. Prima definisci il centro della scena, poi aggiungi il contesto che rende credibile l'azione.",
     ],
     sectionDetails: [
@@ -184,9 +184,9 @@ export const PAGE_CONTENT: Record<PageDefinition["key"], PageDefinition> = {
           "No. Scrivi il prompt, genera il video e scarica il file completato senza creare un account.",
       },
       {
-        question: "In quali formati posso scaricare il video?",
+        question: "Quanto costa una generazione video aggiuntiva?",
         answer:
-          "Il video viene scaricato nel formato restituito dal servizio, senza conversione nel browser.",
+          "Ogni IP può creare gratuitamente 1 video AI di 5 secondi in 480p al giorno. Le generazioni aggiuntive di 5 secondi sono a pagamento e partono da 0,99 USD.",
       },
     ],
     steps: ["Scrivi il prompt", "Genera", "Scarica"],
@@ -196,7 +196,7 @@ export const PAGE_CONTENT: Record<PageDefinition["key"], PageDefinition> = {
       "Esplora un concept visivo con ambiente, punto di vista e stile. Puoi aggiungere una stagione o un'azione per orientare la scena. Un dettaglio sensoriale, come nebbia, vento o luce calda, aiuta a rendere l'atmosfera più coerente.",
     ],
     examples: examples.it,
-    trustPoints: ["Gratis: 1 video AI al giorno", "5 secondi · 480p", "Senza registrazione"],
+    trustPoints: ["Gratis: 1 video AI al giorno", "5 secondi · 480p", "Video 5s da $0.99"],
     toolKind: "video",
     isVideo: true,
   },
@@ -218,7 +218,7 @@ export const PAGE_CONTENT: Record<PageDefinition["key"], PageDefinition> = {
     ],
     sectionLeads: [
       "Écrivez un prompt qui précise le sujet, le décor, le mouvement et l'atmosphère, puis vérifiez la scène lorsqu'elle est prête. Si le rythme ou le cadrage ne correspondent pas à votre idée, modifiez un détail précis et relancez une direction. Lorsque la séquence devient claire, téléchargez le fichier pour une présentation, une maquette ou un projet personnel. Les trois étapes restent faciles à suivre, même lorsque vous apprenez à décrire un mouvement. Commencez par l'intention principale et laissez chaque essai vous aider à affiner la scène.",
-      "Sans inscription, vous pouvez vous concentrer sur votre idée avant de créer un compte. Le forfait gratuit inclut une vidéo IA 480p de 5 secondes par jour et par IP. Des générations supplémentaires de 5 secondes seront proposées à l’avenir à partir de 0,99 $US. Vous pouvez ainsi tester une direction pour un récit, un produit ou une présentation sans préparer de profil. Le prompt et le résultat restent dans le même parcours du navigateur, ce qui laisse la place à une décision créative réfléchie. Une petite limite quotidienne encourage des essais précis : changez le sujet, la lumière ou le mouvement et observez ce qui améliore la scène.",
+      "Sans inscription, vous pouvez vous concentrer sur votre idée avant de créer un compte. Le forfait gratuit inclut une vidéo IA 480p de 5 secondes par jour et par IP. Les générations supplémentaires de 5 secondes commencent à 0,99 $US. Vous pouvez ainsi tester une direction pour un récit, un produit ou une présentation sans préparer de profil. Le prompt et le résultat restent dans le même parcours du navigateur, ce qui laisse la place à une décision créative réfléchie. Une petite limite quotidienne encourage des essais précis : changez le sujet, la lumière ou le mouvement et observez ce qui améliore la scène.",
       "Décrivez le sujet, le décor et le mouvement pour construire une scène lisible. Vous pouvez partir d'un concept, d'un produit ou d'un moment narratif. Ajoutez le point de vue, la vitesse ressentie et l'élément qui doit rester stable pendant l'action. Pour un produit, indiquez la surface et la direction de la lumière ; pour un récit, précisez l'émotion et le geste central. Les détails concrets gardent le regard sur le sujet sans transformer le prompt en liste confuse. Définissez d'abord le centre de la scène, puis le contexte qui rend l'action crédible.",
     ],
     sectionDetails: [
@@ -247,9 +247,9 @@ export const PAGE_CONTENT: Record<PageDefinition["key"], PageDefinition> = {
           "Non. Écrivez le prompt, générez la vidéo et téléchargez le fichier terminé sans créer de compte.",
       },
       {
-        question: "Quels formats de vidéo sont disponibles ?",
+        question: "Combien coûte une génération vidéo supplémentaire ?",
         answer:
-          "La vidéo se télécharge dans le format fourni par le service, sans conversion dans le navigateur.",
+          "Chaque IP peut créer gratuitement 1 vidéo IA de 5 secondes en 480p par jour. Les générations supplémentaires de 5 secondes sont payantes et commencent à 0,99 $US.",
       },
     ],
     steps: ["Écrivez le prompt", "Générez", "Téléchargez"],
@@ -259,7 +259,7 @@ export const PAGE_CONTENT: Record<PageDefinition["key"], PageDefinition> = {
       "Explorez un concept visuel en décrivant le décor, le point de vue et le style. Vous pouvez préciser une saison ou une action pour orienter la scène. Un détail sensoriel comme la brume, le vent ou une lumière chaude aide à stabiliser l'atmosphère.",
     ],
     examples: examples.fr,
-    trustPoints: ["Gratuit : 1 vidéo IA/jour", "5 secondes · 480p", "Sans inscription"],
+    trustPoints: ["Gratuit : 1 vidéo IA/jour", "5 secondes · 480p", "Vidéo 5s à partir de 0,99 $"],
     extraLinks: [
       { href: "/fr/photo-ia-gratuit", label: "Photo IA gratuit" },
       { href: "/fr/modifier-photo-ia", label: "Modifier photo IA" },

@@ -1,0 +1,65 @@
+{
+  "checkedAt": "2026-10-01T15:59:58.249Z",
+  "base": "http://localhost:3002",
+  "source": "actual HTTP",
+  "cachePath": null,
+  "baselineCommit": "3277957",
+  "passed": false,
+  "pending": [
+    "/fr/photo-ia-gratuit: trailing-slash normalization pending; canonicalUrl currently ends with /",
+    "/fr/modifier-photo-ia: trailing-slash normalization pending; canonicalUrl currently ends with /",
+    "/nl/afbeeldingen-maken-met-ai: trailing-slash normalization pending; canonicalUrl currently ends with /"
+  ],
+  "failures": [],
+  "pages": [
+    {
+      "path": "/",
+      "canonical": "https://www.ovanto.ai/",
+      "mode": "image",
+      "status": 200,
+      "source": "actual HTTP"
+    },
+    {
+      "path": "/it/",
+      "canonical": "https://www.ovanto.ai/it/",
+      "mode": "video",
+      "status": 200,
+      "source": "actual HTTP"
+    },
+    {
+      "path": "/fr/",
+      "canonical": "https://www.ovanto.ai/fr/",
+      "mode": "video",
+      "status": 200,
+      "source": "actual HTTP"
+    },
+    {
+      "path": "/fr/photo-ia-gratuit",
+      "canonical": "https://www.ovanto.ai/fr/photo-ia-gratuit/",
+      "mode": "image",
+      "status": 200,
+      "source": "actual HTTP"
+    },
+    {
+      "path": "/fr/modifier-photo-ia",
+      "canonical": "https://www.ovanto.ai/fr/modifier-photo-ia/",
+      "mode": "edit",
+      "status": 200,
+      "source": "actual HTTP"
+    },
+    {
+      "path": "/nl/",
+      "canonical": "https://www.ovanto.ai/nl/",
+      "mode": "image",
+      "status": 200,
+      "source": "actual HTTP"
+    },
+    {
+      "path": "/nl/afbeeldingen-maken-met-ai",
+      "canonical": "https://www.ovanto.ai/nl/afbeeldingen-maken-met-ai/",
+      "mode": "image",
+      "status": 200,
+      "source": "actual HTTP"
+    }
+  ]
+}

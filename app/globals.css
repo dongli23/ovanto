@@ -1026,6 +1026,8 @@ textarea:focus-visible {
 
 .workbench-modes button,
 .workbench-mode {
+  display: inline-flex;
+  align-items: center;
   flex: 0 0 auto;
   min-height: 44px;
   border: 1px solid var(--ovanto-line);
@@ -1036,6 +1038,7 @@ textarea:focus-visible {
   font-size: 0.875rem;
   font-weight: 800;
   line-height: 1.2;
+  text-decoration: none;
   white-space: nowrap;
   transition: border-color 150ms var(--ovanto-ease-out), background-color 150ms var(--ovanto-ease-out), color 150ms var(--ovanto-ease-out);
 }

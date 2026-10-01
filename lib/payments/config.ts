@@ -1,4 +1,5 @@
 import { createHash, randomBytes } from "node:crypto";
+import { MODELS } from "../../src/lib/models";
 
 export type PaidProductKey = "image" | "edit" | "video";
 export type PaidProvider = "replicate" | "fal";
@@ -21,30 +22,30 @@ export interface PaidProductDefinition {
 export const PAID_PRODUCTS: Record<PaidProductKey, PaidProductDefinition> = {
   image: {
     key: "image",
-    provider: "replicate",
-    model: "black-forest-labs/flux-dev",
+    provider: MODELS["image.paid"].provider,
+    model: MODELS["image.paid"].slug,
     label: "AI image generation",
     priceEnv: "PAID_IMAGE_PRICE_CENTS",
-    expectedCostMicroUsd: 25_000,
-    costMicroUsd: 25_000,
+    expectedCostMicroUsd: Math.round(MODELS["image.paid"].cost * 1_000_000),
+    costMicroUsd: Math.round(MODELS["image.paid"].cost * 1_000_000),
   },
   edit: {
     key: "edit",
-    provider: "fal",
-    model: "fal-ai/flux-pro/kontext",
+    provider: MODELS["edit.paid"].provider,
+    model: MODELS["edit.paid"].slug,
     label: "AI photo editing",
     priceEnv: "PAID_EDIT_PRICE_CENTS",
-    expectedCostMicroUsd: 40_000,
-    costMicroUsd: 40_000,
+    expectedCostMicroUsd: Math.round(MODELS["edit.paid"].cost * 1_000_000),
+    costMicroUsd: Math.round(MODELS["edit.paid"].cost * 1_000_000),
   },
   video: {
     key: "video",
-    provider: "fal",
-    model: "fal-ai/kling-video/v2.5-turbo/pro/text-to-video",
+    provider: MODELS["video.paid"].provider,
+    model: MODELS["video.paid"].slug,
     label: "AI video generation (5 seconds)",
     priceEnv: "PAID_VIDEO_PRICE_CENTS",
-    expectedCostMicroUsd: 350_000,
-    costMicroUsd: 350_000,
+    expectedCostMicroUsd: Math.round(MODELS["video.paid"].cost * MODELS["video.paid"].fixedSeconds * 1_000_000),
+    costMicroUsd: Math.round(MODELS["video.paid"].cost * MODELS["video.paid"].fixedSeconds * 1_000_000),
   },
 };
 

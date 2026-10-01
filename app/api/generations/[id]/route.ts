@@ -3,7 +3,7 @@ import { GenerationError, errorResponse } from "../../../../lib/generation/error
 import { assertQuotaConfig, noStoreJson, publicJob } from "../../../../lib/generation/http";
 import { getDailyIdentity } from "../../../../lib/generation/identity";
 import { pollGeneration, ProviderProtocolError, ProviderUnavailableError } from "../../../../lib/generation/provider";
-import { providerFor } from "../../../../lib/generation/config";
+import { providerEnvKey, providerFor } from "../../../../lib/generation/config";
 import { getRedis } from "../../../../lib/generation/redis";
 import { canReadJob, getJob, getQuotaSnapshot, updateJob } from "../../../../lib/generation/store";
 
@@ -33,7 +33,7 @@ export async function GET(request: Request, context: { params: Promise<{ id: str
       throw new GenerationError("PROVIDER_UNAVAILABLE", 502, "Generation status is temporarily unavailable.");
     }
 
-    const providerKey = job.provider === "replicate" ? "REPLICATE_API_KEY" : "FAL_API_KEY";
+    const providerKey = providerEnvKey(job.kind, job.tier);
     if (!process.env[providerKey]) throw new GenerationError("CONFIGURATION_UNAVAILABLE", 503, "Generation is temporarily unavailable.");
 
     let polled;

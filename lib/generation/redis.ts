@@ -1,3 +1,4 @@
+import { Redis } from "@upstash/redis";
 import { REDIS_REQUEST_TIMEOUT_MS } from "./config";
 import { storageError } from "./errors";
 
@@ -8,102 +9,78 @@ export interface RedisLike {
 }
 
 class UpstashRedis implements RedisLike {
-  private readonly url: string;
-  private readonly token: string;
+  private readonly client: Redis;
 
   constructor(url: string, token: string) {
-    this.url = url.replace(/\/$/, "");
-    this.token = token;
+    const parsedUrl = parseRedisUrl(url);
+    this.client = new Redis({
+      url: parsedUrl,
+      token,
+      automaticDeserialization: false,
+      responseEncoding: false,
+      retry: { retries: 0 },
+      enableAutoPipelining: false,
+      signal: () => AbortSignal.timeout(REDIS_REQUEST_TIMEOUT_MS),
+    });
   }
 
   async command<T>(command: string[]): Promise<T> {
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), REDIS_REQUEST_TIMEOUT_MS);
+    if (command.length === 0 || !command[0]) throw storageError();
     try {
-      const response = await fetch(this.url, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${this.token}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(command),
-        cache: "no-store",
-        redirect: "error",
-        signal: controller.signal,
-      });
-      if (!response.ok) {
-        // Do not include the response body: Upstash errors may contain request
-        // metadata and should never reach an API client.
-        throw storageError();
-      }
-      const bytes = await readResponseBytes(response, 256 * 1024);
-      if (!bytes) throw storageError();
-      const payload = JSON.parse(new TextDecoder().decode(bytes)) as { result?: T; error?: unknown };
-      if (payload.error !== undefined || !("result" in payload)) throw storageError();
-      return payload.result as T;
+      const args: [string, ...(string | number | boolean)[]] = [command[0], ...command.slice(1)];
+      return await this.client.exec<T>(args);
     } catch (error) {
       if (error instanceof Error && error.name === "GenerationError") throw error;
       throw storageError();
-    } finally {
-      clearTimeout(timeout);
     }
   }
 
-  eval<T>(script: string, keys: string[], args: string[]): Promise<T> {
-    return this.command<T>(["EVAL", script, String(keys.length), ...keys, ...args]);
+  async eval<T>(script: string, keys: string[], args: string[]): Promise<T> {
+    try {
+      return await this.client.eval<string[], T>(script, keys, args);
+    } catch (error) {
+      if (error instanceof Error && error.name === "GenerationError") throw error;
+      throw storageError();
+    }
   }
 
   async get(key: string): Promise<string | null> {
-    const value = await this.command<unknown>(["GET", key]);
-    return value === null || value === undefined ? null : String(value);
+    try {
+      const value = await this.client.get<string>(key);
+      return value === null || value === undefined ? null : String(value);
+    } catch (error) {
+      if (error instanceof Error && error.name === "GenerationError") throw error;
+      throw storageError();
+    }
   }
 }
 
-async function readResponseBytes(response: Response, maxBytes: number): Promise<Uint8Array | null> {
-  if (!response.body) return null;
-  const reader = response.body.getReader();
-  const chunks: Uint8Array[] = [];
-  let total = 0;
+function parseRedisUrl(value: string): string {
   try {
-    while (true) {
-      const part = await reader.read();
-      if (part.done) break;
-      const chunk = part.value;
-      total += chunk.byteLength;
-      if (total > maxBytes) {
-        await reader.cancel();
-        return null;
-      }
-      chunks.push(chunk);
+    const parsed = new URL(value);
+    if (parsed.protocol !== "https:" || !parsed.hostname || parsed.username || parsed.password || parsed.search || parsed.hash) {
+      throw new Error("invalid redis url");
     }
+    return parsed.toString().replace(/\/$/, "");
   } catch {
-    try {
-      await reader.cancel();
-    } catch {
-      // The caller maps all upstream body failures to a generic storage error.
-    }
-    return null;
+    // Never include the configured URL or token in the error surface.
+    throw storageError();
   }
-
-  const bytes = new Uint8Array(total);
-  let offset = 0;
-  for (const chunk of chunks) {
-    bytes.set(chunk, offset);
-    offset += chunk.byteLength;
-  }
-  return bytes;
 }
 
 let testRedis: RedisLike | undefined;
 
 /** Test-only injection. Production always uses the configured Upstash REST store. */
 export function setRedisForTests(redis: RedisLike | undefined): void {
-  if (process.env.NODE_ENV === "production" || process.env.VERCEL === "1") throw new Error("Test Redis is unavailable in production.");
+  if ((process.env.NODE_ENV !== "test" && process.env.NODE_ENV !== "development") || process.env.VERCEL === "1") {
+    throw new Error("Test Redis is unavailable outside test/development.");
+  }
   testRedis = redis;
 }
 
 export function getRedis(): RedisLike {
-  if (testRedis) return testRedis;
+  const testEnvironment = process.env.NODE_ENV === "test" || process.env.NODE_ENV === "development";
+  if (testRedis && testEnvironment && process.env.VERCEL !== "1") return testRedis;
   const url = process.env.UPSTASH_REDIS_REST_URL;
   const token = process.env.UPSTASH_REDIS_REST_TOKEN;
   if (!url || !token) throw storageError();

@@ -694,7 +694,8 @@ export function Generator({
         payload = await pollGeneration(pendingJobId.current, pendingPaid.current);
       } else {
         const requestBody: Record<string, string> = {
-          kind,
+          task: kind,
+          tier: "free",
           prompt: trimmedPrompt,
           idempotencyKey: idempotencyKey.current ?? newIdempotencyKey(),
         };
@@ -804,14 +805,8 @@ export function Generator({
       ];
 
   const quotaLabel = quota
-    ? quota.available
-      ? `${locale === "en" ? "Free" : locale === "it" ? "Gratis" : locale === "fr" ? "Gratuit" : "Gratis"} (${quota.remaining}/${quota.limit} ${locale === "en" ? "today" : locale === "it" ? "oggi" : locale === "fr" ? "aujourd'hui" : "vandaag"})`
-      : quota.code === "REGION_BLOCKED" || quota.code === "FREE_POOL_EXHAUSTED"
-        ? localized.unavailable
-        : localized.limitReached
-    : quotaError
-      ? localized.unavailable
-      : localized.checking;
+    ? `Free (${quota.remaining}/${quota.limit} today)`
+    : "Free (unknown/unknown today)";
   const generateDisabled = status === "loading" || (isEdit && (uploadState !== "ready" || !uploadedAsset));
 
   const promptDescription = error ? `${kind}-status ${kind}-error` : `${kind}-status`;

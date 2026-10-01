@@ -13,6 +13,9 @@ const entries = [
   [path.join(root, "tests", "payments.test.ts"), "payments.test.cjs"],
   [path.join(root, "tests", "payment-sql.test.ts"), "payment-sql.test.cjs"],
   [path.join(root, "tests", "paid-generation.test.ts"), "paid-generation.test.cjs"],
+  [path.join(root, "tests", "deploy-contract.test.ts"), "deploy-contract.test.cjs"],
+  [path.join(root, "tests", "deploy-providers.test.ts"), "deploy-providers.test.cjs"],
+  [path.join(root, "tests", "deploy-redis.test.ts"), "deploy-redis.test.cjs"],
 ];
 const outputs = [];
 for (const [entry, name] of entries) {

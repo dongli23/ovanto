@@ -154,14 +154,28 @@ const toolsCopy: Record<
 
 function ToolsLinks({ page }: { page: PageDefinition }) {
   const copy = toolsCopy[page.locale];
+  const links = page.locale === "fr"
+    ? [
+        { href: ROUTES.frGenerate, label: copy.imageLink },
+        { href: ROUTES.frEdit, label: copy.editLink },
+        { href: ROUTES.fr, label: copy.videoLink },
+      ]
+    : page.locale === "it"
+      ? [{ href: ROUTES.it, label: copy.videoLink }]
+      : page.locale === "nl"
+        ? [{ href: ROUTES.nl, label: copy.imageLink }]
+        : [{ href: ROUTES.en, label: copy.imageLink }];
 
   return (
     <section className="tools-section" aria-label={copy.label}>
       <p className="tools-label">{copy.label}</p>
       <p className="tools-summary">
-        {copy.summaryIntro} <a href={ROUTES.en}>{copy.imageLink}</a> ·{" "}
-        <a href={ROUTES.frEdit}>{copy.editLink}</a> ·{" "}
-        <a href={ROUTES.it}>{copy.videoLink}</a>.
+        {copy.summaryIntro} {links.map((link, index) => (
+          <span key={link.href}>
+            {index > 0 ? " · " : null}
+            <a href={link.href}>{link.label}</a>
+          </span>
+        ))}.
       </p>
       {page.extraLinks && page.extraLinks.length > 0 ? (
         <nav className="context-links" aria-label="Related Ovanto tools">
