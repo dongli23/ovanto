@@ -118,22 +118,37 @@ function SectionCopy({ page, index }: { page: PageDefinition; index: number }) {
   );
 }
 
-const toolsCopy: Record<PageDefinition["locale"], { label: string; summary: string }> = {
+const toolsCopy: Record<
+  PageDefinition["locale"],
+  { label: string; summaryIntro: string; imageLink: string; editLink: string; videoLink: string }
+> = {
   en: {
     label: "Tools",
-    summary: "Image: write a prompt · Edit: upload an image and describe the change · Video: write a prompt for a 5s, 480p clip.",
+    summaryIntro: "Choose the workflow that fits your idea:",
+    imageLink: "create an AI image",
+    editLink: "edit a photo with AI",
+    videoLink: "create an AI video",
   },
   it: {
     label: "Strumenti",
-    summary: "Immagine: scrivi un prompt · Modifica: carica un'immagine e descrivi il cambiamento · Video: scrivi un prompt per un clip di 5 s in 480p.",
+    summaryIntro: "Scegli il flusso adatto alla tua idea:",
+    imageLink: "crea un'immagine con l'AI",
+    editLink: "modifica una foto con l'AI",
+    videoLink: "crea un video con l'AI",
   },
   fr: {
     label: "Outils",
-    summary: "Image : écrivez un prompt · Modifier : téléversez une image et décrivez le changement · Vidéo : écrivez un prompt pour une vidéo de 5 s en 480p.",
+    summaryIntro: "Choisissez le parcours adapté à votre idée :",
+    imageLink: "créez une image avec l'IA",
+    editLink: "modifiez une photo avec l'IA",
+    videoLink: "créez une vidéo avec l'IA",
   },
   nl: {
     label: "Hulpmiddelen",
-    summary: "Afbeelding: schrijf een prompt · Bewerken: upload een afbeelding en beschrijf de wijziging · Video: schrijf een prompt voor een clip van 5 s in 480p.",
+    summaryIntro: "Kies de workflow die bij je idee past:",
+    imageLink: "maak een AI-afbeelding",
+    editLink: "bewerk een foto met AI",
+    videoLink: "maak een AI-video",
   },
 };
 
@@ -143,7 +158,11 @@ function ToolsLinks({ page }: { page: PageDefinition }) {
   return (
     <section className="tools-section" aria-label={copy.label}>
       <p className="tools-label">{copy.label}</p>
-      <p className="tools-summary">{copy.summary}</p>
+      <p className="tools-summary">
+        {copy.summaryIntro} <a href={ROUTES.en}>{copy.imageLink}</a> ·{" "}
+        <a href={ROUTES.frEdit}>{copy.editLink}</a> ·{" "}
+        <a href={ROUTES.it}>{copy.videoLink}</a>.
+      </p>
       {page.extraLinks && page.extraLinks.length > 0 ? (
         <nav className="context-links" aria-label="Related Ovanto tools">
           {page.extraLinks.map((link) => (

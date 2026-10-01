@@ -1,0 +1,67 @@
+{
+  "checkedAt": "2026-10-01T08:36:12.613Z",
+  "base": "http://localhost:3001",
+  "source": "actual HTTP",
+  "cachePath": null,
+  "baselineCommit": "6210ea612a57695cb4aa2721ef77c6245950c369",
+  "passed": true,
+  "pages": [
+    {
+      "path": "/",
+      "mode": "image",
+      "status": 200,
+      "trailingSlashCanonical": "https://www.ovanto.ai/",
+      "internalLinks": 11,
+      "source": "actual HTTP"
+    },
+    {
+      "path": "/it/",
+      "mode": "video",
+      "status": 200,
+      "trailingSlashCanonical": "https://www.ovanto.ai/it/",
+      "internalLinks": 11,
+      "source": "actual HTTP"
+    },
+    {
+      "path": "/fr/",
+      "mode": "video",
+      "status": 200,
+      "trailingSlashCanonical": "https://www.ovanto.ai/fr/",
+      "internalLinks": 13,
+      "source": "actual HTTP"
+    },
+    {
+      "path": "/fr/photo-ia-gratuit",
+      "mode": "image",
+      "status": 200,
+      "trailingSlashCanonical": "https://www.ovanto.ai/fr/photo-ia-gratuit/",
+      "internalLinks": 12,
+      "source": "actual HTTP"
+    },
+    {
+      "path": "/fr/modifier-photo-ia",
+      "mode": "edit",
+      "status": 200,
+      "trailingSlashCanonical": "https://www.ovanto.ai/fr/modifier-photo-ia/",
+      "internalLinks": 12,
+      "source": "actual HTTP"
+    },
+    {
+      "path": "/nl/",
+      "mode": "image",
+      "status": 200,
+      "trailingSlashCanonical": "https://www.ovanto.ai/nl/",
+      "internalLinks": 12,
+      "source": "actual HTTP"
+    },
+    {
+      "path": "/nl/afbeeldingen-maken-met-ai",
+      "mode": "image",
+      "status": 200,
+      "trailingSlashCanonical": "https://www.ovanto.ai/nl/afbeeldingen-maken-met-ai/",
+      "internalLinks": 12,
+      "source": "actual HTTP"
+    }
+  ],
+  "failures": []
+}

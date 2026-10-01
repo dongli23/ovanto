@@ -1,4 +1,4 @@
-import type { Locale } from "./site";
+import { ABSOLUTE_ROUTES, type Locale } from "./site";
 
 export type ToolKind = "image" | "video" | "edit";
 
@@ -78,7 +78,7 @@ export const PAGE_CONTENT: Record<PageDefinition["key"], PageDefinition> = {
     key: "en",
     locale: "en",
     path: "/",
-    url: "https://ovanto.ai/",
+    url: ABSOLUTE_ROUTES.en,
     title: "Free AI Image Generator, No Sign Up — Create in Seconds | Ovanto",
     description:
       "Generate AI images right in your browser — no sign-up, no login, no credit card. Type a prompt and get your image in seconds. Free to try.",
@@ -118,7 +118,7 @@ export const PAGE_CONTENT: Record<PageDefinition["key"], PageDefinition> = {
       {
         question: "Do I need to create an account to download my image?",
         answer:
-          "No. Enter a prompt, generate the image, and download the finished file without uploading an image or creating an account.",
+          "No. Enter a prompt, generate the image, and download the finished file without creating an account.",
       },
       {
         question: "What can I generate with it?",
@@ -141,7 +141,7 @@ export const PAGE_CONTENT: Record<PageDefinition["key"], PageDefinition> = {
     key: "it",
     locale: "it",
     path: "/it/",
-    url: "https://ovanto.ai/it/",
+    url: ABSOLUTE_ROUTES.it,
     title: "Generatore Video AI Gratis Senza Registrazione — Crea Subito | Ovanto",
     description:
       "Genera video con l'AI gratis e senza registrazione. Scrivi il prompt, premi genera e scarica il tuo video in pochi secondi. Nessun account richiesto.",
@@ -155,7 +155,7 @@ export const PAGE_CONTENT: Record<PageDefinition["key"], PageDefinition> = {
     ],
     sectionLeads: [
       "Scrivi un prompt indicando soggetto, ambiente, azione e atmosfera, poi controlla il risultato quando la scena è pronta. Se il movimento o l'inquadratura non seguono l'idea, modifica un dettaglio preciso e prova una nuova direzione. Quando la sequenza comunica ciò che volevi, scarica il file per una presentazione, una bozza o un progetto personale. La sequenza in tre passaggi mantiene il lavoro semplice e leggibile, anche quando stai imparando a descrivere il ritmo di una scena. Parti da un'immagine mentale chiara e lascia che ogni tentativo aggiunga una scelta utile.",
-      "Senza registrazione puoi concentrarti sul contenuto prima di creare un account. Il piano gratuito include un video AI 480p di 5 secondi al giorno per IP. Questo rende facile verificare una direzione per una storia, un prodotto o una presentazione senza preparare un profilo. Il prompt e il risultato restano nello stesso percorso del browser, quindi puoi valutare la scena con calma. Una quota giornaliera contenuta invita a fare prove intenzionali: cambia il soggetto, la luce o il movimento e osserva quale scelta migliora il risultato.",
+      "Senza registrazione puoi concentrarti sul contenuto prima di creare un account. Il piano gratuito include un video AI 480p di 5 secondi al giorno per IP. Le generazioni aggiuntive di 5 secondi saranno disponibili in futuro a partire da 0,99 USD. Questo rende facile verificare una direzione per una storia, un prodotto o una presentazione senza preparare un profilo. Il prompt e il risultato restano nello stesso percorso del browser, quindi puoi valutare la scena con calma. Una quota giornaliera contenuta invita a fare prove intenzionali: cambia il soggetto, la luce o il movimento e osserva quale scelta migliora il risultato.",
       "Imposta soggetto, ambiente e movimento per costruire una scena leggibile. Puoi partire da un concept, una clip prodotto o un momento narrativo. Indica il punto di vista, la velocità percepita e ciò che deve restare fermo mentre la scena cambia. Per un prodotto, specifica la superficie e la direzione della luce; per un racconto, aggiungi l'emozione e il gesto principale. Dettagli concreti aiutano a mantenere il focus senza trasformare il prompt in un elenco confuso. Prima definisci il centro della scena, poi aggiungi il contesto che rende credibile l'azione.",
     ],
     sectionDetails: [
@@ -204,7 +204,7 @@ export const PAGE_CONTENT: Record<PageDefinition["key"], PageDefinition> = {
     key: "fr",
     locale: "fr",
     path: "/fr/",
-    url: "https://ovanto.ai/fr/",
+    url: ABSOLUTE_ROUTES.fr,
     title: "Générateur de Vidéo IA Gratuit Sans Inscription — Créez Maintenant | Ovanto",
     description:
       "Générez des vidéos avec l'IA gratuitement et sans inscription. Écrivez votre prompt, lancez la génération et téléchargez votre vidéo en quelques secondes.",
@@ -218,7 +218,7 @@ export const PAGE_CONTENT: Record<PageDefinition["key"], PageDefinition> = {
     ],
     sectionLeads: [
       "Écrivez un prompt qui précise le sujet, le décor, le mouvement et l'atmosphère, puis vérifiez la scène lorsqu'elle est prête. Si le rythme ou le cadrage ne correspondent pas à votre idée, modifiez un détail précis et relancez une direction. Lorsque la séquence devient claire, téléchargez le fichier pour une présentation, une maquette ou un projet personnel. Les trois étapes restent faciles à suivre, même lorsque vous apprenez à décrire un mouvement. Commencez par l'intention principale et laissez chaque essai vous aider à affiner la scène.",
-      "Sans inscription, vous pouvez vous concentrer sur votre idée avant de créer un compte. Le forfait gratuit inclut une vidéo IA 480p de 5 secondes par jour et par IP. Vous pouvez ainsi tester une direction pour un récit, un produit ou une présentation sans préparer de profil. Le prompt et le résultat restent dans le même parcours du navigateur, ce qui laisse la place à une décision créative réfléchie. Une petite limite quotidienne encourage des essais précis : changez le sujet, la lumière ou le mouvement et observez ce qui améliore la scène.",
+      "Sans inscription, vous pouvez vous concentrer sur votre idée avant de créer un compte. Le forfait gratuit inclut une vidéo IA 480p de 5 secondes par jour et par IP. Des générations supplémentaires de 5 secondes seront proposées à l’avenir à partir de 0,99 $US. Vous pouvez ainsi tester une direction pour un récit, un produit ou une présentation sans préparer de profil. Le prompt et le résultat restent dans le même parcours du navigateur, ce qui laisse la place à une décision créative réfléchie. Une petite limite quotidienne encourage des essais précis : changez le sujet, la lumière ou le mouvement et observez ce qui améliore la scène.",
       "Décrivez le sujet, le décor et le mouvement pour construire une scène lisible. Vous pouvez partir d'un concept, d'un produit ou d'un moment narratif. Ajoutez le point de vue, la vitesse ressentie et l'élément qui doit rester stable pendant l'action. Pour un produit, indiquez la surface et la direction de la lumière ; pour un récit, précisez l'émotion et le geste central. Les détails concrets gardent le regard sur le sujet sans transformer le prompt en liste confuse. Définissez d'abord le centre de la scène, puis le contexte qui rend l'action crédible.",
     ],
     sectionDetails: [
@@ -271,7 +271,7 @@ export const PAGE_CONTENT: Record<PageDefinition["key"], PageDefinition> = {
     key: "frGenerate",
     locale: "fr",
     path: "/fr/photo-ia-gratuit",
-    url: "https://ovanto.ai/fr/photo-ia-gratuit",
+    url: ABSOLUTE_ROUTES.frGenerate,
     title: "Photo IA Gratuit — Générez Vos Images en Ligne | Ovanto",
     description:
       "Photo IA gratuit : décrivez votre idée et générez une image en ligne, sans inscription. Idéal pour avatars, visuels produits et illustrations.",
@@ -335,7 +335,7 @@ export const PAGE_CONTENT: Record<PageDefinition["key"], PageDefinition> = {
     key: "frEdit",
     locale: "fr",
     path: "/fr/modifier-photo-ia",
-    url: "https://ovanto.ai/fr/modifier-photo-ia",
+    url: ABSOLUTE_ROUTES.frEdit,
     title: "Modifier Photo IA — Retouche et Édition en Ligne | Ovanto",
     description:
       "Modifiez vos photos avec l'IA : retirez l'arrière-plan, changez le style, améliorez la lumière et retouchez vos portraits en ligne, sans inscription.",
@@ -399,7 +399,7 @@ export const PAGE_CONTENT: Record<PageDefinition["key"], PageDefinition> = {
     key: "nl",
     locale: "nl",
     path: "/nl/",
-    url: "https://ovanto.ai/nl/",
+    url: ABSOLUTE_ROUTES.nl,
     title: "AI Afbeelding Maken Gratis — Zonder Account | Ovanto",
     description:
       "Maak gratis een AI afbeelding zonder account. Typ je prompt, genereer en download je afbeelding binnen enkele seconden. Geen registratie nodig.",
@@ -463,7 +463,7 @@ export const PAGE_CONTENT: Record<PageDefinition["key"], PageDefinition> = {
     key: "nlGenerate",
     locale: "nl",
     path: "/nl/afbeeldingen-maken-met-ai",
-    url: "https://ovanto.ai/nl/afbeeldingen-maken-met-ai",
+    url: ABSOLUTE_ROUTES.nlGenerate,
     title: "Afbeeldingen Maken Met AI — Online Generator | Ovanto",
     description:
       "Afbeeldingen maken met AI: kies een stijl, beschrijf je idee en genereer online afbeeldingen. Gratis, zonder account.",

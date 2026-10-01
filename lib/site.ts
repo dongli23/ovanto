@@ -1,4 +1,4 @@
-export const SITE_URL = "https://ovanto.ai";
+export const SITE_URL = "https://www.ovanto.ai";
 
 export const ROUTES = {
   en: "/",
@@ -10,14 +10,24 @@ export const ROUTES = {
   nlGenerate: "/nl/afbeeldingen-maken-met-ai",
 } as const;
 
+export function canonicalPath(pathname: string): string {
+  if (pathname === "/") return "/";
+  const path = pathname.startsWith("/") ? pathname : `/${pathname}`;
+  return `${path.replace(/\/+$/, "")}/`;
+}
+
+export function canonicalUrl(pathname: string): string {
+  return `${SITE_URL}${canonicalPath(pathname)}`;
+}
+
 export const ABSOLUTE_ROUTES = {
-  en: `${SITE_URL}${ROUTES.en}`,
-  it: `${SITE_URL}${ROUTES.it}`,
-  fr: `${SITE_URL}${ROUTES.fr}`,
-  nl: `${SITE_URL}${ROUTES.nl}`,
-  frGenerate: `${SITE_URL}${ROUTES.frGenerate}`,
-  frEdit: `${SITE_URL}${ROUTES.frEdit}`,
-  nlGenerate: `${SITE_URL}${ROUTES.nlGenerate}`,
+  en: canonicalUrl(ROUTES.en),
+  it: canonicalUrl(ROUTES.it),
+  fr: canonicalUrl(ROUTES.fr),
+  nl: canonicalUrl(ROUTES.nl),
+  frGenerate: canonicalUrl(ROUTES.frGenerate),
+  frEdit: canonicalUrl(ROUTES.frEdit),
+  nlGenerate: canonicalUrl(ROUTES.nlGenerate),
 } as const;
 
 export const SUPPORTED_LOCALES = ["en", "it", "fr", "nl"] as const;

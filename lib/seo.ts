@@ -36,6 +36,7 @@ export function faqJsonLd(page: PageDefinition) {
   return {
     "@context": "https://schema.org",
     "@type": "FAQPage",
+    url: page.url,
     mainEntity: page.faq.map((item) => ({
       "@type": "Question",
       name: item.question,

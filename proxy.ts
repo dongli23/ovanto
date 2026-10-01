@@ -15,9 +15,10 @@ export function proxy(request: NextRequest) {
       headers: requestHeaders,
     },
   });
-  // Preview deployments must not compete with the unchanged ovanto.ai canonicals.
+  // Preview deployments must not compete with the canonical www.ovanto.ai URLs.
   const hostname = request.nextUrl.hostname.toLowerCase();
-  if (hostname === "ovanto.vercel.app" || hostname.endsWith(".vercel.app")) {
+  const isPreviewDeployment = process.env.VERCEL_ENV === "preview";
+  if (isPreviewDeployment || hostname === "ovanto.vercel.app" || hostname.endsWith(".vercel.app")) {
     response.headers.set("X-Robots-Tag", "noindex, nofollow");
   }
   return response;
