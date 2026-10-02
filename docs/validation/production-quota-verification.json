@@ -1,0 +1,51 @@
+{
+  "checkedAt": "2026-10-02T15:34:00Z",
+  "domain": "https://www.ovanto.ai",
+  "deploymentId": "dpl_2CsDUtHXv5RJ3hWJ3FqW34yhiAuL",
+  "applicationCommit": "957e3339ff8e1d4c71ffb2ba12afc684f4c06422",
+  "quota": {
+    "image": {
+      "status": 200,
+      "body": {
+        "remaining": 3,
+        "limit": 3,
+        "available": true
+      }
+    },
+    "edit": {
+      "status": 200,
+      "body": {
+        "remaining": 1,
+        "limit": 1,
+        "available": true
+      }
+    },
+    "video": {
+      "status": 200,
+      "body": {
+        "remaining": 1,
+        "limit": 1,
+        "available": true
+      }
+    }
+  },
+  "browser": {
+    "secureContext": true,
+    "quotaSchemaValid": true,
+    "promptVisible": true,
+    "generateButton": "Generate Image",
+    "quotaLabel": "Free (3/3 today)",
+    "loadedMainImages": 10,
+    "runtimeErrors": []
+  },
+  "tests": {
+    "passed": 62,
+    "failed": 0,
+    "typecheck": "PASS"
+  },
+  "productionBuild": "PASS",
+  "deploymentErrorLogs": 0,
+  "generationCalls": 0,
+  "redisWriteSmoke": "NOT_RUN",
+  "status": "PASS"
+}
