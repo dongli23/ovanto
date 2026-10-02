@@ -9,6 +9,7 @@ import {
   ProviderRejectedError,
   ProviderUnavailableError,
 } from "../src/lib/providers";
+import { logReplicateFailure, type ReplicateDiagnosticEvent } from "../src/lib/providers/replicate-diagnostics";
 import { generateKie } from "../src/lib/providers/kie";
 
 const originalFetch = globalThis.fetch;
@@ -102,6 +103,130 @@ test("provider errors map HTTP rejection and availability without leaking upstre
 
   globalThis.fetch = async () => new Response("upstream down", { status: 503 });
   await assert.rejects(generate("image", "free", { prompt: "cat" }), (error: unknown) => error instanceof ProviderUnavailableError);
+});
+
+async function captureReplicateDiagnostic(response: Response): Promise<ReplicateDiagnosticEvent> {
+  let event: ReplicateDiagnosticEvent | undefined;
+  await logReplicateFailure(response, MODELS["image.free"].slug, (nextEvent) => {
+    event = nextEvent;
+  });
+  assert.ok(event);
+  return event;
+}
+
+test("Replicate diagnostics classify billing, authentication, and safe invalid fields", async () => {
+  const billing = await captureReplicateDiagnostic(new Response(JSON.stringify({
+    error: {
+      type: "insufficient_quota",
+      code: "insufficient_quota",
+      message: "account has insufficient credit",
+    },
+  }), { status: 402 }));
+  assert.equal(billing.provider, "replicate");
+  assert.equal(billing.http_status, 402);
+  assert.equal(billing.provider_error_type, "insufficient_quota");
+  assert.equal(billing.provider_error_code, "insufficient_quota");
+  assert.equal(billing.provider_error_summary, "Provider account has insufficient credit.");
+
+  const authentication = await captureReplicateDiagnostic(new Response(JSON.stringify({ detail: "Invalid API token" }), { status: 401 }));
+  assert.equal(authentication.provider_error_type, null);
+  assert.equal(authentication.provider_error_code, null);
+  assert.equal(authentication.provider_error_summary, "Provider authentication failed.");
+
+  const invalidField = await captureReplicateDiagnostic(new Response(JSON.stringify({
+    error: { type: "validation_error", field: "prompt", message: "field is invalid" },
+  }), { status: 422 }));
+  assert.equal(invalidField.provider_error_type, "validation_error");
+  assert.equal(invalidField.provider_error_code, null);
+  assert.equal(invalidField.provider_error_summary, "Provider rejected input field: prompt.");
+});
+
+test("Replicate diagnostics never serialize prompt, secret, URL, or nested body data", async () => {
+  const secret = "r8_sensitive-provider-token";
+  const prompt = "private prompt that must not be logged";
+  const event = await captureReplicateDiagnostic(new Response(JSON.stringify({
+    detail: "request rejected",
+    error: {
+      body: {
+        detail: `authentication failed for ${prompt}`,
+        token: secret,
+        url: "https://api.replicate.com/v1/models/private",
+      },
+    },
+    nested: { prompt, secret },
+  }), { status: 400 }));
+  const serialized = JSON.stringify(event);
+  assert.equal(event.provider_error_type, null);
+  assert.equal(event.provider_error_summary, "Provider rejected the request fields.");
+  assert.ok(event.provider_error_summary.length <= 500);
+  assert.equal(serialized.includes(secret), false);
+  assert.equal(serialized.includes(prompt), false);
+  assert.equal(serialized.includes("api.replicate.com"), false);
+  assert.equal(serialized.includes("authentication failed"), false);
+});
+
+test("Replicate diagnostics do not serialize sensitive top-level scalar detail or error values", async () => {
+  const secret = "r8_scalar-provider-token";
+  const prompt = "top-level private prompt";
+  const event = await captureReplicateDiagnostic(new Response(JSON.stringify({
+    detail: `request rejected ${prompt} ${secret}`,
+    error: `provider detail ${prompt} ${secret}`,
+  }), { status: 400 }));
+  const serialized = JSON.stringify(event);
+  assert.equal(event.provider_error_type, null);
+  assert.equal(event.provider_error_summary, "Provider rejected the request fields.");
+  assert.equal(serialized.includes(secret), false);
+  assert.equal(serialized.includes(prompt), false);
+});
+
+test("Replicate diagnostic read and logger failures preserve reject/unavailable errors", async () => {
+  const originalConsoleError = console.error;
+  console.error = () => undefined;
+  process.env.REPLICATE_API_TOKEN = "replicate-test";
+  try {
+    globalThis.fetch = async () => new Response("not json", { status: 400 });
+    await assert.rejects(generate("image", "free", { prompt: "cat" }), (error: unknown) => error instanceof ProviderRejectedError);
+
+    globalThis.fetch = async () => new Response("x".repeat(16 * 1024 + 1), { status: 503 });
+    await assert.rejects(generate("image", "free", { prompt: "cat" }), (error: unknown) => error instanceof ProviderUnavailableError);
+
+    const nonJson = await captureReplicateDiagnostic(new Response("not json", { status: 400 }));
+    assert.equal(nonJson.provider_error_type, null);
+    assert.equal(nonJson.provider_error_summary, "Provider returned a non-JSON error response; details omitted");
+
+    const oversized = await captureReplicateDiagnostic(new Response("x".repeat(16 * 1024 + 1), { status: 503 }));
+    assert.equal(oversized.provider_error_type, null);
+    assert.equal(oversized.provider_error_summary, "Provider error response exceeded diagnostic limit; details omitted");
+
+    const unreadable = await captureReplicateDiagnostic(new Response(null, { status: 400 }));
+    assert.equal(unreadable.provider_error_type, null);
+    assert.equal(unreadable.provider_error_summary, "Provider error response could not be read; details omitted");
+
+    await assert.doesNotReject(() => logReplicateFailure(
+      new Response(JSON.stringify({ detail: "bad request" }), { status: 400 }),
+      MODELS["image.free"].slug,
+      () => { throw new Error("logger failure"); },
+    ));
+    await new Promise<void>((resolve) => setImmediate(resolve));
+  } finally {
+    console.error = originalConsoleError;
+  }
+});
+
+test("Replicate diagnostics do not log successful responses", async () => {
+  process.env.REPLICATE_API_TOKEN = "replicate-test";
+  const originalConsoleError = console.error;
+  let logCount = 0;
+  console.error = () => { logCount += 1; };
+  try {
+    globalThis.fetch = async () => new Response(JSON.stringify({ id: "replicate-success-id" }), { status: 201 });
+    const submitted = await generate("image", "free", { prompt: "cat" });
+    assert.equal(submitted.requestId, "replicate-success-id");
+    await new Promise<void>((resolve) => setImmediate(resolve));
+    assert.equal(logCount, 0);
+  } finally {
+    console.error = originalConsoleError;
+  }
 });
 
 test("provider input and output URLs reject unsafe hosts", async () => {

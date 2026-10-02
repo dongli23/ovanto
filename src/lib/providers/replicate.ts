@@ -1,6 +1,7 @@
 import { modelFor, MODELS, type GenerationTask, type GenerationTier, type ModelDefinition } from "../models";
 import { PROVIDER_REQUEST_TIMEOUT_MS } from "../../../lib/generation/config";
 import { GenerationError } from "../../../lib/generation/errors";
+import { logReplicateFailure } from "./replicate-diagnostics";
 
 export type ProviderName = "replicate" | "fal";
 
@@ -62,6 +63,7 @@ export async function submitReplicate(model: ModelDefinition, options: GenerateO
       headers: headersFor(token),
       body: JSON.stringify({ input }),
     },
+    model.slug,
   );
   if (response.kind === "reject") throw new ProviderRejectedError();
   if (response.kind === "unavailable") throw new ProviderUnavailableError();
@@ -83,6 +85,7 @@ export async function pollReplicate(
   const response = await providerFetch(
     `https://api.replicate.com/v1/predictions/${encodeURIComponent(requestId)}`,
     { method: "GET", headers: { Authorization: `Bearer ${token}` } },
+    model.slug,
   );
   if (response.kind === "unavailable") throw new ProviderUnavailableError();
   if (response.kind === "reject") throw new ProviderProtocolError();
@@ -114,13 +117,19 @@ function headersFor(token: string): Record<string, string> {
 
 type FetchResult = { kind: "ok"; payload: unknown } | { kind: "reject" } | { kind: "unavailable" };
 
-async function providerFetch(url: string, init: RequestInit): Promise<FetchResult> {
+async function providerFetch(url: string, init: RequestInit, modelSlug: string): Promise<FetchResult> {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), PROVIDER_REQUEST_TIMEOUT_MS);
   try {
     const response = await fetch(url, { ...init, signal: controller.signal, cache: "no-store", redirect: "error" });
-    if (response.status >= 400 && response.status < 500) return { kind: "reject" };
-    if (!response.ok) return { kind: "unavailable" };
+    if (response.status >= 400 && response.status < 500) {
+      await logReplicateFailure(response, modelSlug).catch(() => undefined);
+      return { kind: "reject" };
+    }
+    if (!response.ok) {
+      await logReplicateFailure(response, modelSlug).catch(() => undefined);
+      return { kind: "unavailable" };
+    }
     const bytes = await readResponseBytes(response, 128 * 1024);
     if (!bytes) return { kind: "unavailable" };
     try {
