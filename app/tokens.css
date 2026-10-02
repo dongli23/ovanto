@@ -1,14 +1,14 @@
 :root {
-  --ovanto-ink: #162023;
-  --ovanto-muted: #647176;
-  --ovanto-line: #dfe7e3;
-  --ovanto-paper: #fbfcf9;
+  --ovanto-ink: #111817;
+  --ovanto-muted: #66706c;
+  --ovanto-line: #e4e8e5;
+  --ovanto-paper: #fafaf7;
   --ovanto-surface: #ffffff;
-  --ovanto-soft: #f5f8f4;
-  --ovanto-mint: #cfeee0;
-  --ovanto-mint-strong: #9dd8bf;
-  --ovanto-coral: #ef7f63;
-  --ovanto-coral-dark: #c85a42;
+  --ovanto-soft: #f3f6f2;
+  --ovanto-mint: #ddf4e8;
+  --ovanto-mint-strong: #bce8d3;
+  --ovanto-coral: #ff7557;
+  --ovanto-coral-dark: #b54832;
   --ovanto-space-1: 4px;
   --ovanto-space-2: 8px;
   --ovanto-space-3: 12px;
@@ -20,6 +20,11 @@
   --ovanto-radius-md: 16px;
   --ovanto-radius-lg: 22px;
   --ovanto-focus: 3px solid #527a67;
-  --ovanto-shadow: 0 18px 48px rgba(27, 54, 45, 0.08);
+  --ovanto-shadow: 0 12px 40px rgba(17, 24, 23, 0.06);
+  --ovanto-container: 1120px;
+  --ovanto-prose: 800px;
+  --ovanto-brand-soft: #fff0eb;
+  --ovanto-space-12: 48px;
+  --ovanto-space-16: 64px;
   --ovanto-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
 }

@@ -933,7 +933,13 @@ export function Generator({
           <div className="result-panel" id={`${kind}-status`} aria-live="polite">
             {status === "loading" ? <p className="status-loading">{localized.generating}</p> : null}
             {error ? <p className="status-error" id={`${kind}-error`} role="alert">{error}</p> : null}
-            {status === "idle" && !error && !uploadedAsset ? <p>{localized.waiting}</p> : null}
+            {status === "idle" && !error && !uploadedAsset ? (
+              <div className="workbench-empty">
+                <svg viewBox="0 0 40 40" fill="none" aria-hidden="true"><rect x="5" y="5" width="30" height="30" rx="7" stroke="currentColor" strokeWidth="1.5"/><circle cx="15" cy="15" r="3" stroke="currentColor" strokeWidth="1.5"/><path d="m7 29 9-9 6 6 5-5 7 8" stroke="currentColor" strokeWidth="1.5"/></svg>
+                <strong>{localized.waiting}</strong>
+                {locale === "en" ? <p>Your generated image will appear here.</p> : null}
+              </div>
+            ) : null}
             {isEdit && uploadedAsset && status === "success" && result ? (
               <div className="result-compare">
                 <figure className="result-side original-preview">

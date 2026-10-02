@@ -1,6 +1,7 @@
 import type { PageDefinition } from "../lib/content";
 import { ROUTES } from "../lib/site";
 import { GeneratorWorkbench } from "./GeneratorWorkbench";
+import { HomePlatform } from "./HomePlatform";
 
 const languageLinks = [
   { key: "en", label: "English", href: ROUTES.en },
@@ -95,14 +96,14 @@ function SectionCopy({ page, index }: { page: PageDefinition; index: number }) {
 
   if (index === 3) {
     return (
-      <section className="content-section" aria-labelledby={`${page.key}-section-${index}`}>
+      <section className="content-section" id="faq" aria-labelledby={`${page.key}-section-${index}`}>
         <h2 id={`${page.key}-section-${index}`}>{heading}</h2>
         <div className="faq-list">
           {page.faq.map((item) => (
-            <article className="faq-item" key={item.question}>
-              <h3>{item.question}</h3>
+            <details className="faq-item" key={item.question}>
+              <summary><h3>{item.question}</h3></summary>
               <p>{item.answer}</p>
-            </article>
+            </details>
           ))}
         </div>
       </section>
@@ -196,12 +197,20 @@ export function PageShell({ page }: { page: PageDefinition }) {
   const turnstileSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
 
   return (
-    <div className="site-shell">
+    <div className={`site-shell${page.key === "en" ? " platform-home" : ""}`}>
       <header className="site-header">
-        <span className="logo-mark" aria-label="Ovanto">
+        <a className="logo-mark" href="/" aria-label="Ovanto home">
           <span className="logo-dot" aria-hidden="true" />
           <span>Ovanto</span>
-        </span>
+        </a>
+        {page.key === "en" ? (
+          <nav className="product-nav" aria-label="AI creation tools">
+            <a href="#image-workbench">AI Image</a>
+            <a href={ROUTES.fr}>AI Video <small>FR</small></a>
+            <a href={ROUTES.frEdit}>AI Photo Editor <small>FR</small></a>
+            <a href="#ai-tools">AI Tools</a>
+          </nav>
+        ) : null}
         <nav className="language-nav" aria-label="Language switcher">
           {languageLinks.map((link) => (
             <a
@@ -219,16 +228,17 @@ export function PageShell({ page }: { page: PageDefinition }) {
         <section className={`hero${page.toolKind === "edit" ? " hero-edit" : ""}`} aria-labelledby={`${page.key}-title`}>
           <div className="hero-intro">
             <h1 id={`${page.key}-title`}>{page.h1}</h1>
+            {page.key === "en" ? <p className="hero-subtitle">Create polished AI images in seconds, directly in your browser.</p> : null}
             <div className="trust-row" aria-label="Trust points">
-              {page.trustPoints.map((trustPoint, index) => (
+              {page.trustPoints.map((trustPoint) => (
                 <div className="trust-point" key={trustPoint}>
-                  <span className="trust-icon" aria-hidden="true">0{index + 1}</span>
+                  <span className="trust-icon" aria-hidden="true">✓</span>
                   <span>{trustPoint}</span>
                 </div>
               ))}
             </div>
           </div>
-          <div className="tool-wrap">
+          <div className="tool-wrap" id={page.key === "en" ? "image-workbench" : undefined}>
             <GeneratorWorkbench
               locale={page.locale}
               title={page.h1}
@@ -239,7 +249,7 @@ export function PageShell({ page }: { page: PageDefinition }) {
           </div>
         </section>
 
-        <ToolsLinks page={page} />
+        {page.key === "en" ? <HomePlatform /> : <ToolsLinks page={page} />}
 
         <div className="content-wrap">
           {page.h2s.map((_, index) => (
@@ -250,9 +260,15 @@ export function PageShell({ page }: { page: PageDefinition }) {
       </main>
 
       <footer className="site-footer">
+        {page.key === "en" ? <div className="platform-footer-grid">
+          <div><a className="logo-mark" href="/"><span className="logo-dot" aria-hidden="true" />Ovanto</a><p>A light workspace for images, video and creative ideas.</p></div>
+          <nav aria-label="Footer AI tools"><h3>AI Tools</h3><a href="#image-workbench">Image Generator</a><a href={ROUTES.fr}>AI Video (French)</a><a href={ROUTES.frEdit}>Photo Editor (French)</a></nav>
+          <nav aria-label="Footer resources"><h3>Resources</h3><a href="#inspiration">Inspiration</a><a href="#how-it-works">How it works</a><a href="#faq">FAQ</a></nav>
+          <nav aria-label="Footer languages"><h3>Language</h3>{languageLinks.map(link => <a href={link.href} key={link.key}>{link.label}</a>)}</nav>
+        </div> : null}
         <div className="footer-row">
           <span>© {new Date().getFullYear()} Ovanto.ai</span>
-          <nav className="footer-links" aria-label="Ovanto language pages">
+          <nav className="footer-links" aria-label="Ovanto language pages" hidden={page.key === "en"}>
             {languageLinks.map((link) => (
               <a href={link.href} key={link.key}>
                 {labels[link.key]}

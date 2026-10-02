@@ -1,0 +1,1837 @@
+{
+  "baseline": "a7950d9",
+  "checks": [
+    {
+      "name": "http-390",
+      "pass": true,
+      "details": {}
+    },
+    {
+      "name": "overflow-390",
+      "pass": true,
+      "details": []
+    },
+    {
+      "name": "controls-390",
+      "pass": true,
+      "details": [
+        {
+          "name": "Generate Image",
+          "width": 328,
+          "height": 44
+        },
+        {
+          "name": "Try again",
+          "width": 90.21875,
+          "height": 44
+        },
+        {
+          "name": "Editorial portraitA natural editorial portrait in soft morning light, warm neutral tones",
+          "width": 142.40625,
+          "height": 44
+        },
+        {
+          "name": "Product sceneA clean product scene on pale stone with one strong shadow",
+          "width": 127.53125,
+          "height": 44
+        },
+        {
+          "name": "Quiet landscapeA quiet mountain landscape at blue hour, atmospheric and detailed",
+          "width": 140.109375,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "prompt-order-390",
+      "pass": true,
+      "details": {}
+    },
+    {
+      "name": "gallery-390",
+      "pass": true,
+      "details": {}
+    },
+    {
+      "name": "hero-lines-390",
+      "pass": true,
+      "details": {
+        "lines": 2
+      }
+    },
+    {
+      "name": "single-column-390",
+      "pass": true,
+      "details": {
+        "columns": "328px"
+      }
+    },
+    {
+      "name": "http-430",
+      "pass": true,
+      "details": {}
+    },
+    {
+      "name": "overflow-430",
+      "pass": true,
+      "details": []
+    },
+    {
+      "name": "controls-430",
+      "pass": true,
+      "details": [
+        {
+          "name": "Generate Image",
+          "width": 368,
+          "height": 44
+        },
+        {
+          "name": "Try again",
+          "width": 90.21875,
+          "height": 44
+        },
+        {
+          "name": "Editorial portraitA natural editorial portrait in soft morning light, warm neutral tones",
+          "width": 142.40625,
+          "height": 44
+        },
+        {
+          "name": "Product sceneA clean product scene on pale stone with one strong shadow",
+          "width": 127.53125,
+          "height": 44
+        },
+        {
+          "name": "Quiet landscapeA quiet mountain landscape at blue hour, atmospheric and detailed",
+          "width": 140.109375,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "prompt-order-430",
+      "pass": true,
+      "details": {}
+    },
+    {
+      "name": "gallery-430",
+      "pass": true,
+      "details": {}
+    },
+    {
+      "name": "hero-lines-430",
+      "pass": true,
+      "details": {
+        "lines": 2
+      }
+    },
+    {
+      "name": "single-column-430",
+      "pass": true,
+      "details": {
+        "columns": "368px"
+      }
+    },
+    {
+      "name": "http-768",
+      "pass": true,
+      "details": {}
+    },
+    {
+      "name": "overflow-768",
+      "pass": true,
+      "details": []
+    },
+    {
+      "name": "controls-768",
+      "pass": true,
+      "details": [
+        {
+          "name": "Generate Image",
+          "width": 144.359375,
+          "height": 44
+        },
+        {
+          "name": "Try again",
+          "width": 90.21875,
+          "height": 44
+        },
+        {
+          "name": "Editorial portraitA natural editorial portrait in soft morning light, warm neutral tones",
+          "width": 142.40625,
+          "height": 44
+        },
+        {
+          "name": "Product sceneA clean product scene on pale stone with one strong shadow",
+          "width": 127.53125,
+          "height": 44
+        },
+        {
+          "name": "Quiet landscapeA quiet mountain landscape at blue hour, atmospheric and detailed",
+          "width": 140.109375,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "prompt-order-768",
+      "pass": true,
+      "details": {}
+    },
+    {
+      "name": "gallery-768",
+      "pass": true,
+      "details": {}
+    },
+    {
+      "name": "http-1440",
+      "pass": true,
+      "details": {}
+    },
+    {
+      "name": "overflow-1440",
+      "pass": true,
+      "details": []
+    },
+    {
+      "name": "controls-1440",
+      "pass": true,
+      "details": [
+        {
+          "name": "Generate Image",
+          "width": 144.359375,
+          "height": 44
+        },
+        {
+          "name": "Try again",
+          "width": 90.21875,
+          "height": 44
+        },
+        {
+          "name": "Editorial portraitA natural editorial portrait in soft morning light, warm neutral tones",
+          "width": 142.40625,
+          "height": 44
+        },
+        {
+          "name": "Product sceneA clean product scene on pale stone with one strong shadow",
+          "width": 127.53125,
+          "height": 44
+        },
+        {
+          "name": "Quiet landscapeA quiet mountain landscape at blue hour, atmospheric and detailed",
+          "width": 140.109375,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "name": "prompt-order-1440",
+      "pass": true,
+      "details": {}
+    },
+    {
+      "name": "gallery-1440",
+      "pass": true,
+      "details": {}
+    },
+    {
+      "name": "source-content-unchanged",
+      "pass": true,
+      "details": {}
+    },
+    {
+      "name": "seo-en",
+      "pass": true,
+      "details": {
+        "title": "Free AI Image Generator, No Sign Up — Create in Seconds | Ovanto",
+        "description": "Generate AI images right in your browser — no sign-up, no login, no credit card. Type a prompt and get your image in seconds. Free to try.",
+        "h1": "Free AI Image Generator — No Sign Up, No Login",
+        "canonical": "https://www.ovanto.ai/",
+        "alternates": [
+          {
+            "lang": "en",
+            "href": "https://www.ovanto.ai/"
+          },
+          {
+            "lang": "it",
+            "href": "https://www.ovanto.ai/it/"
+          },
+          {
+            "lang": "fr",
+            "href": "https://www.ovanto.ai/fr/"
+          },
+          {
+            "lang": "nl",
+            "href": "https://www.ovanto.ai/nl/"
+          },
+          {
+            "lang": "x-default",
+            "href": "https://www.ovanto.ai/"
+          }
+        ],
+        "schemas": [
+          {
+            "@context": "https://schema.org",
+            "@type": "WebApplication",
+            "name": "Ovanto",
+            "url": "https://www.ovanto.ai/",
+            "applicationCategory": "MultimediaApplication",
+            "operatingSystem": "Web",
+            "browserRequirements": "Requires a modern web browser",
+            "isAccessibleForFree": true,
+            "description": "Generate AI images right in your browser — no sign-up, no login, no credit card. Type a prompt and get your image in seconds. Free to try."
+          },
+          {
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "url": "https://www.ovanto.ai/",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "Is this AI image generator really free and without sign up?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes. Start without an account, write a prompt, and create up to 3 images per day per IP."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Do I need to create an account to download my image?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "No. Enter a prompt, generate the image, and download the finished file without creating an account."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "What can I generate with it?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Describe an avatar, product scene, landscape, or other image idea in a prompt, then review and download the result. The image allowance is 3 generations per day per IP."
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "faq-schema-en",
+      "pass": true,
+      "details": {}
+    },
+    {
+      "name": "seo-copy-en",
+      "pass": true,
+      "details": {}
+    },
+    {
+      "name": "seo-it",
+      "pass": true,
+      "details": {
+        "title": "Generatore Video AI Gratis Senza Registrazione — Crea Subito | Ovanto",
+        "description": "Genera video con l'AI gratis e senza registrazione. Scrivi il prompt, premi genera e scarica il tuo video in pochi secondi. Nessun account richiesto.",
+        "h1": "Generatore Video AI Gratis Senza Registrazione",
+        "canonical": "https://www.ovanto.ai/it/",
+        "alternates": [
+          {
+            "lang": "en",
+            "href": "https://www.ovanto.ai/"
+          },
+          {
+            "lang": "it",
+            "href": "https://www.ovanto.ai/it/"
+          },
+          {
+            "lang": "fr",
+            "href": "https://www.ovanto.ai/fr/"
+          },
+          {
+            "lang": "nl",
+            "href": "https://www.ovanto.ai/nl/"
+          },
+          {
+            "lang": "x-default",
+            "href": "https://www.ovanto.ai/"
+          }
+        ],
+        "schemas": [
+          {
+            "@context": "https://schema.org",
+            "@type": "WebApplication",
+            "name": "Ovanto",
+            "url": "https://www.ovanto.ai/it/",
+            "applicationCategory": "MultimediaApplication",
+            "operatingSystem": "Web",
+            "browserRequirements": "Requires a modern web browser",
+            "isAccessibleForFree": true,
+            "description": "Genera video con l'AI gratis e senza registrazione. Scrivi il prompt, premi genera e scarica il tuo video in pochi secondi. Nessun account richiesto."
+          },
+          {
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "url": "https://www.ovanto.ai/it/",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "Il generatore video AI è davvero gratis e senza registrazione?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Sì. Puoi scrivere un prompt senza registrazione e generare 1 video AI al giorno per IP, con durata di 5 secondi e risoluzione 480p."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Devo creare un account per scaricare il video?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "No. Scrivi il prompt, genera il video e scarica il file completato senza creare un account."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Quanto costa una generazione video aggiuntiva?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Ogni IP può creare gratuitamente 1 video AI di 5 secondi in 480p al giorno. Le generazioni aggiuntive di 5 secondi sono a pagamento e partono da 0,99 USD."
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "faq-schema-it",
+      "pass": true,
+      "details": {}
+    },
+    {
+      "name": "seo-copy-it",
+      "pass": true,
+      "details": {}
+    },
+    {
+      "name": "seo-fr",
+      "pass": true,
+      "details": {
+        "title": "Générateur de Vidéo IA Gratuit Sans Inscription — Créez Maintenant | Ovanto",
+        "description": "Générez des vidéos avec l'IA gratuitement et sans inscription. Écrivez votre prompt, lancez la génération et téléchargez votre vidéo en quelques secondes.",
+        "h1": "Générateur de Vidéo IA Gratuit Sans Inscription",
+        "canonical": "https://www.ovanto.ai/fr/",
+        "alternates": [
+          {
+            "lang": "en",
+            "href": "https://www.ovanto.ai/"
+          },
+          {
+            "lang": "it",
+            "href": "https://www.ovanto.ai/it/"
+          },
+          {
+            "lang": "fr",
+            "href": "https://www.ovanto.ai/fr/"
+          },
+          {
+            "lang": "nl",
+            "href": "https://www.ovanto.ai/nl/"
+          },
+          {
+            "lang": "x-default",
+            "href": "https://www.ovanto.ai/"
+          }
+        ],
+        "schemas": [
+          {
+            "@context": "https://schema.org",
+            "@type": "WebApplication",
+            "name": "Ovanto",
+            "url": "https://www.ovanto.ai/fr/",
+            "applicationCategory": "MultimediaApplication",
+            "operatingSystem": "Web",
+            "browserRequirements": "Requires a modern web browser",
+            "isAccessibleForFree": true,
+            "description": "Générez des vidéos avec l'IA gratuitement et sans inscription. Écrivez votre prompt, lancez la génération et téléchargez votre vidéo en quelques secondes."
+          },
+          {
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "url": "https://www.ovanto.ai/fr/",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "Le générateur de vidéo IA est-il vraiment gratuit et sans inscription ?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Oui. Écrivez un prompt sans inscription et générez 1 vidéo IA par jour et par IP, en 5 secondes et 480p."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Faut-il un compte pour télécharger la vidéo ?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Non. Écrivez le prompt, générez la vidéo et téléchargez le fichier terminé sans créer de compte."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Combien coûte une génération vidéo supplémentaire ?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Chaque IP peut créer gratuitement 1 vidéo IA de 5 secondes en 480p par jour. Les générations supplémentaires de 5 secondes sont payantes et commencent à 0,99 $US."
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "faq-schema-fr",
+      "pass": true,
+      "details": {}
+    },
+    {
+      "name": "seo-copy-fr",
+      "pass": true,
+      "details": {}
+    },
+    {
+      "name": "seo-frGenerate",
+      "pass": true,
+      "details": {
+        "title": "Photo IA Gratuit — Générez Vos Images en Ligne | Ovanto",
+        "description": "Photo IA gratuit : décrivez votre idée et générez une image en ligne, sans inscription. Idéal pour avatars, visuels produits et illustrations.",
+        "h1": "Photo IA Gratuit : Générez Vos Images en Ligne",
+        "canonical": "https://www.ovanto.ai/fr/photo-ia-gratuit/",
+        "alternates": [
+          {
+            "lang": "en",
+            "href": "https://www.ovanto.ai/"
+          },
+          {
+            "lang": "it",
+            "href": "https://www.ovanto.ai/it/"
+          },
+          {
+            "lang": "fr",
+            "href": "https://www.ovanto.ai/fr/"
+          },
+          {
+            "lang": "nl",
+            "href": "https://www.ovanto.ai/nl/"
+          },
+          {
+            "lang": "x-default",
+            "href": "https://www.ovanto.ai/"
+          }
+        ],
+        "schemas": [
+          {
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "url": "https://www.ovanto.ai/fr/photo-ia-gratuit/",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "Comment créer une photo IA sans inscription ?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Décrivez l'image dans un prompt et lancez la génération sans inscription. Vous pouvez créer jusqu'à 3 images par jour et par IP, puis télécharger le résultat."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Quels types d'images puis-je créer ?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Vous pouvez décrire un avatar, un visuel produit, un paysage ou toute autre idée d'image dans un prompt, puis télécharger le résultat."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Comment écrire un meilleur prompt ?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Indiquez le sujet, le cadrage, la lumière et le style. Commencez par l'élément principal, ajustez un détail à la fois, puis téléchargez la version qui vous convient."
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "faq-schema-frGenerate",
+      "pass": true,
+      "details": {}
+    },
+    {
+      "name": "seo-copy-frGenerate",
+      "pass": true,
+      "details": {}
+    },
+    {
+      "name": "seo-frEdit",
+      "pass": true,
+      "details": {
+        "title": "Modifier Photo IA — Retouche et Édition en Ligne | Ovanto",
+        "description": "Modifiez vos photos avec l'IA : retirez l'arrière-plan, changez le style, améliorez la lumière et retouchez vos portraits en ligne, sans inscription.",
+        "h1": "Modifier Photo IA en Ligne",
+        "canonical": "https://www.ovanto.ai/fr/modifier-photo-ia/",
+        "alternates": [
+          {
+            "lang": "en",
+            "href": "https://www.ovanto.ai/"
+          },
+          {
+            "lang": "it",
+            "href": "https://www.ovanto.ai/it/"
+          },
+          {
+            "lang": "fr",
+            "href": "https://www.ovanto.ai/fr/"
+          },
+          {
+            "lang": "nl",
+            "href": "https://www.ovanto.ai/nl/"
+          },
+          {
+            "lang": "x-default",
+            "href": "https://www.ovanto.ai/"
+          }
+        ],
+        "schemas": [
+          {
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "url": "https://www.ovanto.ai/fr/modifier-photo-ia/",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "Comment modifier une photo avec l'IA en ligne ?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Téléversez une image JPEG, PNG, GIF ou WEBP de 10 Mo maximum. Indiquez le sujet à préserver et la zone à modifier, comparez l'original et le résultat, puis téléchargez la version finale. Le quota est de 1 modification par jour et par IP."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Puis-je retirer un arrière-plan sans inscription ?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Oui. Téléversez une image de 10 Mo maximum, précisez les éléments à conserver et décrivez le nouveau fond, puis vérifiez l'avant et l'après avant de télécharger."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Comment améliorer la lumière d'un portrait ?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Téléversez le portrait, indiquez la direction et l'intensité de la lumière, puis nommez les traits et les textures à préserver. Comparez l'avant et l'après avant de télécharger le résultat."
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "faq-schema-frEdit",
+      "pass": true,
+      "details": {}
+    },
+    {
+      "name": "seo-copy-frEdit",
+      "pass": true,
+      "details": {}
+    },
+    {
+      "name": "seo-nl",
+      "pass": true,
+      "details": {
+        "title": "AI Afbeelding Maken Gratis — Zonder Account | Ovanto",
+        "description": "Maak gratis een AI afbeelding zonder account. Typ je prompt, genereer en download je afbeelding binnen enkele seconden. Geen registratie nodig.",
+        "h1": "AI Afbeelding Maken Gratis",
+        "canonical": "https://www.ovanto.ai/nl/",
+        "alternates": [
+          {
+            "lang": "en",
+            "href": "https://www.ovanto.ai/"
+          },
+          {
+            "lang": "it",
+            "href": "https://www.ovanto.ai/it/"
+          },
+          {
+            "lang": "fr",
+            "href": "https://www.ovanto.ai/fr/"
+          },
+          {
+            "lang": "nl",
+            "href": "https://www.ovanto.ai/nl/"
+          },
+          {
+            "lang": "x-default",
+            "href": "https://www.ovanto.ai/"
+          }
+        ],
+        "schemas": [
+          {
+            "@context": "https://schema.org",
+            "@type": "WebApplication",
+            "name": "Ovanto",
+            "url": "https://www.ovanto.ai/nl/",
+            "applicationCategory": "MultimediaApplication",
+            "operatingSystem": "Web",
+            "browserRequirements": "Requires a modern web browser",
+            "isAccessibleForFree": true,
+            "description": "Maak gratis een AI afbeelding zonder account. Typ je prompt, genereer en download je afbeelding binnen enkele seconden. Geen registratie nodig."
+          },
+          {
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "url": "https://www.ovanto.ai/nl/",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "Kan ik gratis een AI-afbeelding maken zonder account?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Ja. Schrijf een prompt zonder account en maak tot 3 afbeeldingen per dag per IP."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Heb ik een account nodig om mijn afbeelding te downloaden?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Nee. Beschrijf de afbeelding in een prompt, genereer haar en download het voltooide bestand zonder een afbeelding te uploaden of een account te maken."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Welke afbeeldingen kan ik maken?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Beschrijf een avatar, productbeeld, landschap of ander beeldidee in een prompt en download het resultaat. De afbeeldingslimiet is 3 generaties per dag per IP."
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "faq-schema-nl",
+      "pass": true,
+      "details": {}
+    },
+    {
+      "name": "seo-copy-nl",
+      "pass": true,
+      "details": {}
+    },
+    {
+      "name": "seo-nlGenerate",
+      "pass": true,
+      "details": {
+        "title": "Afbeeldingen Maken Met AI — Online Generator | Ovanto",
+        "description": "Afbeeldingen maken met AI: kies een stijl, beschrijf je idee en genereer online afbeeldingen. Gratis, zonder account.",
+        "h1": "Afbeeldingen Maken Met AI",
+        "canonical": "https://www.ovanto.ai/nl/afbeeldingen-maken-met-ai/",
+        "alternates": [
+          {
+            "lang": "en",
+            "href": "https://www.ovanto.ai/"
+          },
+          {
+            "lang": "it",
+            "href": "https://www.ovanto.ai/it/"
+          },
+          {
+            "lang": "fr",
+            "href": "https://www.ovanto.ai/fr/"
+          },
+          {
+            "lang": "nl",
+            "href": "https://www.ovanto.ai/nl/"
+          },
+          {
+            "lang": "x-default",
+            "href": "https://www.ovanto.ai/"
+          }
+        ],
+        "schemas": [
+          {
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "url": "https://www.ovanto.ai/nl/afbeeldingen-maken-met-ai/",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "Hoe kan ik afbeeldingen maken met AI?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Beschrijf je idee in een prompt en genereer de afbeelding zonder account. Je kunt tot 3 afbeeldingen per dag per IP maken en daarna downloaden."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Welke stijlen en voorbeelden kan ik gebruiken?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Beschrijf zonder account een productbeeld, avatar, landschap of illustratie en voeg de gewenste stijl toe. Bekijk het resultaat en download het wanneer het past."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Hoe krijg ik betere resultaten?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Noem onderwerp, compositie, licht, kleuren en stijl. Begin met het belangrijkste element, wijzig één detail per poging en download de bruikbare versie."
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "faq-schema-nlGenerate",
+      "pass": true,
+      "details": {}
+    },
+    {
+      "name": "seo-copy-nlGenerate",
+      "pass": true,
+      "details": {}
+    },
+    {
+      "name": "nav-/",
+      "pass": true,
+      "details": {}
+    },
+    {
+      "name": "anchor-#image-workbench",
+      "pass": true,
+      "details": {}
+    },
+    {
+      "name": "nav-/fr/",
+      "pass": true,
+      "details": {}
+    },
+    {
+      "name": "nav-/fr/modifier-photo-ia",
+      "pass": true,
+      "details": {}
+    },
+    {
+      "name": "anchor-#ai-tools",
+      "pass": true,
+      "details": {}
+    },
+    {
+      "name": "nav-/it/",
+      "pass": true,
+      "details": {}
+    },
+    {
+      "name": "nav-/nl/",
+      "pass": true,
+      "details": {}
+    },
+    {
+      "name": "anchor-#inspiration",
+      "pass": true,
+      "details": {}
+    },
+    {
+      "name": "anchor-#how-it-works",
+      "pass": true,
+      "details": {}
+    },
+    {
+      "name": "anchor-#faq",
+      "pass": true,
+      "details": {}
+    },
+    {
+      "name": "faq-toggle",
+      "pass": true,
+      "details": {}
+    },
+    {
+      "name": "faq-keyboard",
+      "pass": true,
+      "details": {}
+    },
+    {
+      "name": "example-fill",
+      "pass": true,
+      "details": {}
+    },
+    {
+      "name": "actual-unavailable",
+      "pass": true,
+      "details": {}
+    },
+    {
+      "name": "retry-clears-error",
+      "pass": true,
+      "details": {}
+    },
+    {
+      "name": "protected-lib/seo.ts",
+      "pass": true,
+      "details": {}
+    },
+    {
+      "name": "protected-lib/site.ts",
+      "pass": true,
+      "details": {}
+    },
+    {
+      "name": "protected-app/robots.ts",
+      "pass": true,
+      "details": {}
+    },
+    {
+      "name": "protected-app/sitemap.ts",
+      "pass": true,
+      "details": {}
+    },
+    {
+      "name": "protected-lib/generation",
+      "pass": true,
+      "details": {}
+    },
+    {
+      "name": "protected-src/lib/models.ts",
+      "pass": true,
+      "details": {}
+    },
+    {
+      "name": "crawl-/robots.txt",
+      "pass": true,
+      "details": {}
+    },
+    {
+      "name": "crawl-/sitemap.xml",
+      "pass": true,
+      "details": {}
+    },
+    {
+      "name": "browser-errors",
+      "pass": true,
+      "details": {
+        "errors": []
+      }
+    },
+    {
+      "name": "mock-loading",
+      "pass": true,
+      "details": {}
+    },
+    {
+      "name": "mock-success",
+      "pass": true,
+      "details": {}
+    },
+    {
+      "name": "mock-download",
+      "pass": true,
+      "details": {}
+    },
+    {
+      "name": "mock-error",
+      "pass": true,
+      "details": {
+        "text": "Generation is temporarily unavailable. Please try again shortly."
+      }
+    },
+    {
+      "name": "mock-retry-error",
+      "pass": true,
+      "details": {}
+    },
+    {
+      "name": "mock-limit",
+      "pass": true,
+      "details": {
+        "text": "Daily free limit reached. Try again tomorrow or choose a paid option."
+      }
+    },
+    {
+      "name": "mock-retry-limit",
+      "pass": true,
+      "details": {}
+    },
+    {
+      "name": "mock-retry-success",
+      "pass": true,
+      "details": {}
+    },
+    {
+      "name": "mock-turnstile-execute",
+      "pass": true,
+      "details": {
+        "tokenCalls": 4,
+        "attempts": 4
+      }
+    },
+    {
+      "name": "mock-request-contract",
+      "pass": true,
+      "details": {
+        "bodies": [
+          {
+            "task": "image",
+            "tier": "free",
+            "prompt": "A clean product scene on pale stone",
+            "idempotencyKey": "ebf8bd60-7e26-40fa-803a-43bab3b48f8a",
+            "turnstileToken": "fixture-token"
+          },
+          {
+            "task": "image",
+            "tier": "free",
+            "prompt": "A different product scene error",
+            "idempotencyKey": "dea9ee10-d35a-4d9b-b41e-3b2a8559d266",
+            "turnstileToken": "fixture-token"
+          },
+          {
+            "task": "image",
+            "tier": "free",
+            "prompt": "A different product scene limit",
+            "idempotencyKey": "ae28e216-d2ff-4e15-8b87-a668f75b7508",
+            "turnstileToken": "fixture-token"
+          },
+          {
+            "task": "image",
+            "tier": "free",
+            "prompt": "A different product scene limit",
+            "idempotencyKey": "ae28e216-d2ff-4e15-8b87-a668f75b7508",
+            "turnstileToken": "fixture-token"
+          }
+        ]
+      }
+    },
+    {
+      "name": "fixture-browser-errors",
+      "pass": true,
+      "details": {
+        "errors": []
+      }
+    }
+  ],
+  "responsive": [
+    {
+      "width": 390,
+      "scrollWidth": 390,
+      "overflow": [],
+      "heroLines": 2,
+      "controls": [
+        {
+          "name": "Generate Image",
+          "width": 328,
+          "height": 44
+        },
+        {
+          "name": "Try again",
+          "width": 90.21875,
+          "height": 44
+        },
+        {
+          "name": "Editorial portraitA natural editorial portrait in soft morning light, warm neutral tones",
+          "width": 142.40625,
+          "height": 44
+        },
+        {
+          "name": "Product sceneA clean product scene on pale stone with one strong shadow",
+          "width": 127.53125,
+          "height": 44
+        },
+        {
+          "name": "Quiet landscapeA quiet mountain landscape at blue hour, atmospheric and detailed",
+          "width": 140.109375,
+          "height": 44
+        }
+      ],
+      "promptBeforePreview": true,
+      "columns": "328px",
+      "images": [
+        {
+          "complete": true,
+          "width": 390,
+          "alt": "Colorful illustrated character portrait",
+          "loading": "lazy"
+        },
+        {
+          "complete": true,
+          "width": 390,
+          "alt": "Illustration of a white sneaker on a stone surface",
+          "loading": "lazy"
+        },
+        {
+          "complete": true,
+          "width": 960,
+          "alt": "Original abstract poster concept with coral and mint geometric shapes",
+          "loading": "lazy"
+        },
+        {
+          "complete": true,
+          "width": 960,
+          "alt": "Original line illustration of a calm room with a chair and a large window",
+          "loading": "lazy"
+        },
+        {
+          "complete": true,
+          "width": 390,
+          "alt": "Illustrated mountain landscape under a blue evening sky",
+          "loading": "lazy"
+        },
+        {
+          "complete": true,
+          "width": 960,
+          "alt": "Original botanical illustration with mint leaves and a coral sun",
+          "loading": "lazy"
+        }
+      ]
+    },
+    {
+      "width": 430,
+      "scrollWidth": 430,
+      "overflow": [],
+      "heroLines": 2,
+      "controls": [
+        {
+          "name": "Generate Image",
+          "width": 368,
+          "height": 44
+        },
+        {
+          "name": "Try again",
+          "width": 90.21875,
+          "height": 44
+        },
+        {
+          "name": "Editorial portraitA natural editorial portrait in soft morning light, warm neutral tones",
+          "width": 142.40625,
+          "height": 44
+        },
+        {
+          "name": "Product sceneA clean product scene on pale stone with one strong shadow",
+          "width": 127.53125,
+          "height": 44
+        },
+        {
+          "name": "Quiet landscapeA quiet mountain landscape at blue hour, atmospheric and detailed",
+          "width": 140.109375,
+          "height": 44
+        }
+      ],
+      "promptBeforePreview": true,
+      "columns": "368px",
+      "images": [
+        {
+          "complete": true,
+          "width": 430,
+          "alt": "Colorful illustrated character portrait",
+          "loading": "lazy"
+        },
+        {
+          "complete": true,
+          "width": 430,
+          "alt": "Illustration of a white sneaker on a stone surface",
+          "loading": "lazy"
+        },
+        {
+          "complete": true,
+          "width": 960,
+          "alt": "Original abstract poster concept with coral and mint geometric shapes",
+          "loading": "lazy"
+        },
+        {
+          "complete": true,
+          "width": 960,
+          "alt": "Original line illustration of a calm room with a chair and a large window",
+          "loading": "lazy"
+        },
+        {
+          "complete": true,
+          "width": 430,
+          "alt": "Illustrated mountain landscape under a blue evening sky",
+          "loading": "lazy"
+        },
+        {
+          "complete": true,
+          "width": 960,
+          "alt": "Original botanical illustration with mint leaves and a coral sun",
+          "loading": "lazy"
+        }
+      ]
+    },
+    {
+      "width": 768,
+      "scrollWidth": 768,
+      "overflow": [],
+      "heroLines": 1,
+      "controls": [
+        {
+          "name": "Generate Image",
+          "width": 144.359375,
+          "height": 44
+        },
+        {
+          "name": "Try again",
+          "width": 90.21875,
+          "height": 44
+        },
+        {
+          "name": "Editorial portraitA natural editorial portrait in soft morning light, warm neutral tones",
+          "width": 142.40625,
+          "height": 44
+        },
+        {
+          "name": "Product sceneA clean product scene on pale stone with one strong shadow",
+          "width": 127.53125,
+          "height": 44
+        },
+        {
+          "name": "Quiet landscapeA quiet mountain landscape at blue hour, atmospheric and detailed",
+          "width": 140.109375,
+          "height": 44
+        }
+      ],
+      "promptBeforePreview": true,
+      "columns": "678px",
+      "images": [
+        {
+          "complete": true,
+          "width": 384,
+          "alt": "Colorful illustrated character portrait",
+          "loading": "lazy"
+        },
+        {
+          "complete": true,
+          "width": 384,
+          "alt": "Illustration of a white sneaker on a stone surface",
+          "loading": "lazy"
+        },
+        {
+          "complete": true,
+          "width": 960,
+          "alt": "Original abstract poster concept with coral and mint geometric shapes",
+          "loading": "lazy"
+        },
+        {
+          "complete": true,
+          "width": 960,
+          "alt": "Original line illustration of a calm room with a chair and a large window",
+          "loading": "lazy"
+        },
+        {
+          "complete": true,
+          "width": 384,
+          "alt": "Illustrated mountain landscape under a blue evening sky",
+          "loading": "lazy"
+        },
+        {
+          "complete": true,
+          "width": 960,
+          "alt": "Original botanical illustration with mint leaves and a coral sun",
+          "loading": "lazy"
+        }
+      ]
+    },
+    {
+      "width": 1440,
+      "scrollWidth": 1440,
+      "overflow": [],
+      "heroLines": 2,
+      "controls": [
+        {
+          "name": "Generate Image",
+          "width": 144.359375,
+          "height": 44
+        },
+        {
+          "name": "Try again",
+          "width": 90.21875,
+          "height": 44
+        },
+        {
+          "name": "Editorial portraitA natural editorial portrait in soft morning light, warm neutral tones",
+          "width": 142.40625,
+          "height": 44
+        },
+        {
+          "name": "Product sceneA clean product scene on pale stone with one strong shadow",
+          "width": 127.53125,
+          "height": 44
+        },
+        {
+          "name": "Quiet landscapeA quiet mountain landscape at blue hour, atmospheric and detailed",
+          "width": 140.109375,
+          "height": 44
+        }
+      ],
+      "promptBeforePreview": true,
+      "columns": "472.5px 577.5px",
+      "images": [
+        {
+          "complete": true,
+          "width": 475,
+          "alt": "Colorful illustrated character portrait",
+          "loading": "lazy"
+        },
+        {
+          "complete": true,
+          "width": 475,
+          "alt": "Illustration of a white sneaker on a stone surface",
+          "loading": "lazy"
+        },
+        {
+          "complete": true,
+          "width": 960,
+          "alt": "Original abstract poster concept with coral and mint geometric shapes",
+          "loading": "lazy"
+        },
+        {
+          "complete": true,
+          "width": 960,
+          "alt": "Original line illustration of a calm room with a chair and a large window",
+          "loading": "lazy"
+        },
+        {
+          "complete": true,
+          "width": 475,
+          "alt": "Illustrated mountain landscape under a blue evening sky",
+          "loading": "lazy"
+        },
+        {
+          "complete": true,
+          "width": 960,
+          "alt": "Original botanical illustration with mint leaves and a coral sun",
+          "loading": "lazy"
+        }
+      ]
+    }
+  ],
+  "seo": [
+    {
+      "path": "/",
+      "status": 200,
+      "title": "Free AI Image Generator, No Sign Up — Create in Seconds | Ovanto",
+      "description": "Generate AI images right in your browser — no sign-up, no login, no credit card. Type a prompt and get your image in seconds. Free to try.",
+      "h1": "Free AI Image Generator — No Sign Up, No Login",
+      "canonical": "https://www.ovanto.ai/",
+      "alternates": [
+        {
+          "lang": "en",
+          "href": "https://www.ovanto.ai/"
+        },
+        {
+          "lang": "it",
+          "href": "https://www.ovanto.ai/it/"
+        },
+        {
+          "lang": "fr",
+          "href": "https://www.ovanto.ai/fr/"
+        },
+        {
+          "lang": "nl",
+          "href": "https://www.ovanto.ai/nl/"
+        },
+        {
+          "lang": "x-default",
+          "href": "https://www.ovanto.ai/"
+        }
+      ],
+      "schemas": [
+        {
+          "@context": "https://schema.org",
+          "@type": "WebApplication",
+          "name": "Ovanto",
+          "url": "https://www.ovanto.ai/",
+          "applicationCategory": "MultimediaApplication",
+          "operatingSystem": "Web",
+          "browserRequirements": "Requires a modern web browser",
+          "isAccessibleForFree": true,
+          "description": "Generate AI images right in your browser — no sign-up, no login, no credit card. Type a prompt and get your image in seconds. Free to try."
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "url": "https://www.ovanto.ai/",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "Is this AI image generator really free and without sign up?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. Start without an account, write a prompt, and create up to 3 images per day per IP."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Do I need to create an account to download my image?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "No. Enter a prompt, generate the image, and download the finished file without creating an account."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "What can I generate with it?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Describe an avatar, product scene, landscape, or other image idea in a prompt, then review and download the result. The image allowance is 3 generations per day per IP."
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/it/",
+      "status": 200,
+      "title": "Generatore Video AI Gratis Senza Registrazione — Crea Subito | Ovanto",
+      "description": "Genera video con l'AI gratis e senza registrazione. Scrivi il prompt, premi genera e scarica il tuo video in pochi secondi. Nessun account richiesto.",
+      "h1": "Generatore Video AI Gratis Senza Registrazione",
+      "canonical": "https://www.ovanto.ai/it/",
+      "alternates": [
+        {
+          "lang": "en",
+          "href": "https://www.ovanto.ai/"
+        },
+        {
+          "lang": "it",
+          "href": "https://www.ovanto.ai/it/"
+        },
+        {
+          "lang": "fr",
+          "href": "https://www.ovanto.ai/fr/"
+        },
+        {
+          "lang": "nl",
+          "href": "https://www.ovanto.ai/nl/"
+        },
+        {
+          "lang": "x-default",
+          "href": "https://www.ovanto.ai/"
+        }
+      ],
+      "schemas": [
+        {
+          "@context": "https://schema.org",
+          "@type": "WebApplication",
+          "name": "Ovanto",
+          "url": "https://www.ovanto.ai/it/",
+          "applicationCategory": "MultimediaApplication",
+          "operatingSystem": "Web",
+          "browserRequirements": "Requires a modern web browser",
+          "isAccessibleForFree": true,
+          "description": "Genera video con l'AI gratis e senza registrazione. Scrivi il prompt, premi genera e scarica il tuo video in pochi secondi. Nessun account richiesto."
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "url": "https://www.ovanto.ai/it/",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "Il generatore video AI è davvero gratis e senza registrazione?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Sì. Puoi scrivere un prompt senza registrazione e generare 1 video AI al giorno per IP, con durata di 5 secondi e risoluzione 480p."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Devo creare un account per scaricare il video?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "No. Scrivi il prompt, genera il video e scarica il file completato senza creare un account."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Quanto costa una generazione video aggiuntiva?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Ogni IP può creare gratuitamente 1 video AI di 5 secondi in 480p al giorno. Le generazioni aggiuntive di 5 secondi sono a pagamento e partono da 0,99 USD."
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/fr/",
+      "status": 200,
+      "title": "Générateur de Vidéo IA Gratuit Sans Inscription — Créez Maintenant | Ovanto",
+      "description": "Générez des vidéos avec l'IA gratuitement et sans inscription. Écrivez votre prompt, lancez la génération et téléchargez votre vidéo en quelques secondes.",
+      "h1": "Générateur de Vidéo IA Gratuit Sans Inscription",
+      "canonical": "https://www.ovanto.ai/fr/",
+      "alternates": [
+        {
+          "lang": "en",
+          "href": "https://www.ovanto.ai/"
+        },
+        {
+          "lang": "it",
+          "href": "https://www.ovanto.ai/it/"
+        },
+        {
+          "lang": "fr",
+          "href": "https://www.ovanto.ai/fr/"
+        },
+        {
+          "lang": "nl",
+          "href": "https://www.ovanto.ai/nl/"
+        },
+        {
+          "lang": "x-default",
+          "href": "https://www.ovanto.ai/"
+        }
+      ],
+      "schemas": [
+        {
+          "@context": "https://schema.org",
+          "@type": "WebApplication",
+          "name": "Ovanto",
+          "url": "https://www.ovanto.ai/fr/",
+          "applicationCategory": "MultimediaApplication",
+          "operatingSystem": "Web",
+          "browserRequirements": "Requires a modern web browser",
+          "isAccessibleForFree": true,
+          "description": "Générez des vidéos avec l'IA gratuitement et sans inscription. Écrivez votre prompt, lancez la génération et téléchargez votre vidéo en quelques secondes."
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "url": "https://www.ovanto.ai/fr/",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "Le générateur de vidéo IA est-il vraiment gratuit et sans inscription ?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Oui. Écrivez un prompt sans inscription et générez 1 vidéo IA par jour et par IP, en 5 secondes et 480p."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Faut-il un compte pour télécharger la vidéo ?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Non. Écrivez le prompt, générez la vidéo et téléchargez le fichier terminé sans créer de compte."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Combien coûte une génération vidéo supplémentaire ?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Chaque IP peut créer gratuitement 1 vidéo IA de 5 secondes en 480p par jour. Les générations supplémentaires de 5 secondes sont payantes et commencent à 0,99 $US."
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/fr/photo-ia-gratuit",
+      "status": 200,
+      "title": "Photo IA Gratuit — Générez Vos Images en Ligne | Ovanto",
+      "description": "Photo IA gratuit : décrivez votre idée et générez une image en ligne, sans inscription. Idéal pour avatars, visuels produits et illustrations.",
+      "h1": "Photo IA Gratuit : Générez Vos Images en Ligne",
+      "canonical": "https://www.ovanto.ai/fr/photo-ia-gratuit/",
+      "alternates": [
+        {
+          "lang": "en",
+          "href": "https://www.ovanto.ai/"
+        },
+        {
+          "lang": "it",
+          "href": "https://www.ovanto.ai/it/"
+        },
+        {
+          "lang": "fr",
+          "href": "https://www.ovanto.ai/fr/"
+        },
+        {
+          "lang": "nl",
+          "href": "https://www.ovanto.ai/nl/"
+        },
+        {
+          "lang": "x-default",
+          "href": "https://www.ovanto.ai/"
+        }
+      ],
+      "schemas": [
+        {
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "url": "https://www.ovanto.ai/fr/photo-ia-gratuit/",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "Comment créer une photo IA sans inscription ?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Décrivez l'image dans un prompt et lancez la génération sans inscription. Vous pouvez créer jusqu'à 3 images par jour et par IP, puis télécharger le résultat."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Quels types d'images puis-je créer ?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Vous pouvez décrire un avatar, un visuel produit, un paysage ou toute autre idée d'image dans un prompt, puis télécharger le résultat."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Comment écrire un meilleur prompt ?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Indiquez le sujet, le cadrage, la lumière et le style. Commencez par l'élément principal, ajustez un détail à la fois, puis téléchargez la version qui vous convient."
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/fr/modifier-photo-ia",
+      "status": 200,
+      "title": "Modifier Photo IA — Retouche et Édition en Ligne | Ovanto",
+      "description": "Modifiez vos photos avec l'IA : retirez l'arrière-plan, changez le style, améliorez la lumière et retouchez vos portraits en ligne, sans inscription.",
+      "h1": "Modifier Photo IA en Ligne",
+      "canonical": "https://www.ovanto.ai/fr/modifier-photo-ia/",
+      "alternates": [
+        {
+          "lang": "en",
+          "href": "https://www.ovanto.ai/"
+        },
+        {
+          "lang": "it",
+          "href": "https://www.ovanto.ai/it/"
+        },
+        {
+          "lang": "fr",
+          "href": "https://www.ovanto.ai/fr/"
+        },
+        {
+          "lang": "nl",
+          "href": "https://www.ovanto.ai/nl/"
+        },
+        {
+          "lang": "x-default",
+          "href": "https://www.ovanto.ai/"
+        }
+      ],
+      "schemas": [
+        {
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "url": "https://www.ovanto.ai/fr/modifier-photo-ia/",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "Comment modifier une photo avec l'IA en ligne ?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Téléversez une image JPEG, PNG, GIF ou WEBP de 10 Mo maximum. Indiquez le sujet à préserver et la zone à modifier, comparez l'original et le résultat, puis téléchargez la version finale. Le quota est de 1 modification par jour et par IP."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Puis-je retirer un arrière-plan sans inscription ?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Oui. Téléversez une image de 10 Mo maximum, précisez les éléments à conserver et décrivez le nouveau fond, puis vérifiez l'avant et l'après avant de télécharger."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Comment améliorer la lumière d'un portrait ?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Téléversez le portrait, indiquez la direction et l'intensité de la lumière, puis nommez les traits et les textures à préserver. Comparez l'avant et l'après avant de télécharger le résultat."
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/nl/",
+      "status": 200,
+      "title": "AI Afbeelding Maken Gratis — Zonder Account | Ovanto",
+      "description": "Maak gratis een AI afbeelding zonder account. Typ je prompt, genereer en download je afbeelding binnen enkele seconden. Geen registratie nodig.",
+      "h1": "AI Afbeelding Maken Gratis",
+      "canonical": "https://www.ovanto.ai/nl/",
+      "alternates": [
+        {
+          "lang": "en",
+          "href": "https://www.ovanto.ai/"
+        },
+        {
+          "lang": "it",
+          "href": "https://www.ovanto.ai/it/"
+        },
+        {
+          "lang": "fr",
+          "href": "https://www.ovanto.ai/fr/"
+        },
+        {
+          "lang": "nl",
+          "href": "https://www.ovanto.ai/nl/"
+        },
+        {
+          "lang": "x-default",
+          "href": "https://www.ovanto.ai/"
+        }
+      ],
+      "schemas": [
+        {
+          "@context": "https://schema.org",
+          "@type": "WebApplication",
+          "name": "Ovanto",
+          "url": "https://www.ovanto.ai/nl/",
+          "applicationCategory": "MultimediaApplication",
+          "operatingSystem": "Web",
+          "browserRequirements": "Requires a modern web browser",
+          "isAccessibleForFree": true,
+          "description": "Maak gratis een AI afbeelding zonder account. Typ je prompt, genereer en download je afbeelding binnen enkele seconden. Geen registratie nodig."
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "url": "https://www.ovanto.ai/nl/",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "Kan ik gratis een AI-afbeelding maken zonder account?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Ja. Schrijf een prompt zonder account en maak tot 3 afbeeldingen per dag per IP."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Heb ik een account nodig om mijn afbeelding te downloaden?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Nee. Beschrijf de afbeelding in een prompt, genereer haar en download het voltooide bestand zonder een afbeelding te uploaden of een account te maken."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Welke afbeeldingen kan ik maken?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Beschrijf een avatar, productbeeld, landschap of ander beeldidee in een prompt en download het resultaat. De afbeeldingslimiet is 3 generaties per dag per IP."
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/nl/afbeeldingen-maken-met-ai",
+      "status": 200,
+      "title": "Afbeeldingen Maken Met AI — Online Generator | Ovanto",
+      "description": "Afbeeldingen maken met AI: kies een stijl, beschrijf je idee en genereer online afbeeldingen. Gratis, zonder account.",
+      "h1": "Afbeeldingen Maken Met AI",
+      "canonical": "https://www.ovanto.ai/nl/afbeeldingen-maken-met-ai/",
+      "alternates": [
+        {
+          "lang": "en",
+          "href": "https://www.ovanto.ai/"
+        },
+        {
+          "lang": "it",
+          "href": "https://www.ovanto.ai/it/"
+        },
+        {
+          "lang": "fr",
+          "href": "https://www.ovanto.ai/fr/"
+        },
+        {
+          "lang": "nl",
+          "href": "https://www.ovanto.ai/nl/"
+        },
+        {
+          "lang": "x-default",
+          "href": "https://www.ovanto.ai/"
+        }
+      ],
+      "schemas": [
+        {
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "url": "https://www.ovanto.ai/nl/afbeeldingen-maken-met-ai/",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "Hoe kan ik afbeeldingen maken met AI?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Beschrijf je idee in een prompt en genereer de afbeelding zonder account. Je kunt tot 3 afbeeldingen per dag per IP maken en daarna downloaden."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Welke stijlen en voorbeelden kan ik gebruiken?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Beschrijf zonder account een productbeeld, avatar, landschap of illustratie en voeg de gewenste stijl toe. Bekijk het resultaat en download het wanneer het past."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Hoe krijg ik betere resultaten?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Noem onderwerp, compositie, licht, kleuren en stijl. Begin met het belangrijkste element, wijzig één detail per poging en download de bruikbare versie."
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "functional": [
+    {
+      "scope": "actual unconfigured local app",
+      "prompt": "PASS",
+      "example": "PASS",
+      "unavailable": "PASS",
+      "retry": "PASS",
+      "model": "fixed Flux Schnell",
+      "ratio": "fixed 1:1"
+    },
+    {
+      "scope": "isolated mocked browser",
+      "loading": "PASS",
+      "success": "PASS",
+      "download": "PASS",
+      "error": "PASS",
+      "limit": "PASS",
+      "retry": "PASS",
+      "turnstile": "stub execute callback PASS",
+      "requests": 4
+    }
+  ],
+  "limitations": [
+    "Live provider generation and real Cloudflare challenge not tested: local production credentials are absent. Browser success, loading, error, limit, retry and download use isolated mocks.",
+    "Lint N/A: no configured lint script or lint dependency."
+  ],
+  "passed": true,
+  "checkedAt": "2026-10-02T03:51:15.770Z"
+}
