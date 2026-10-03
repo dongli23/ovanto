@@ -195,11 +195,54 @@ export function isAllowedCdnUrl(value: string, provider: ProviderName): boolean 
     const parsed = new URL(value);
     if (parsed.protocol !== "https:" || parsed.username || parsed.password || parsed.port) return false;
     const host = parsed.hostname.toLowerCase();
-    if (provider === "replicate") return host === "replicate.delivery" || host.endsWith(".replicate.delivery");
+    if (provider === "replicate") {
+      return host === "replicate.delivery"
+        || host.endsWith(".replicate.delivery")
+        || isAllowedReplicateR2Url(parsed, value);
+    }
     return host === "fal.media" || host.endsWith(".fal.media") || host === "fal.ai" || host.endsWith(".fal.ai") || host === "storage.googleapis.com";
   } catch {
     return false;
   }
+}
+
+function isAllowedReplicateR2Url(parsed: URL, originalValue: string): boolean {
+  // This is structural validation for an authenticated provider output; it does not verify the AWS signature.
+  if (hasExplicitPort(originalValue) || parsed.pathname.length <= 1) return false;
+  const labels = parsed.hostname.toLowerCase().split(".");
+  if (labels.length !== 5) return false;
+  const [bucket, account, providerLabel, storageLabel, tld] = labels;
+  if (providerLabel !== "r2" || storageLabel !== "cloudflarestorage" || tld !== "com") return false;
+  if (!/^[a-f0-9]{32}$/.test(account)) return false;
+  if (bucket.length < 3 || bucket.length > 63 || !/^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/.test(bucket)) return false;
+
+  const algorithm = exactlyOneQueryValue(parsed.searchParams, "X-Amz-Algorithm");
+  const signedHeaders = exactlyOneQueryValue(parsed.searchParams, "X-Amz-SignedHeaders");
+  const signature = exactlyOneQueryValue(parsed.searchParams, "X-Amz-Signature");
+  const amzDate = exactlyOneQueryValue(parsed.searchParams, "X-Amz-Date");
+  const expires = exactlyOneQueryValue(parsed.searchParams, "X-Amz-Expires");
+  const credential = exactlyOneQueryValue(parsed.searchParams, "X-Amz-Credential");
+  if (algorithm !== "AWS4-HMAC-SHA256" || signedHeaders !== "host") return false;
+  if (!signature || !/^[a-f0-9]{64}$/i.test(signature)) return false;
+  if (!amzDate || !/^\d{8}T\d{6}Z$/.test(amzDate)) return false;
+  if (!expires || !/^\d+$/.test(expires)) return false;
+  const expiresSeconds = Number(expires);
+  if (!Number.isSafeInteger(expiresSeconds) || expiresSeconds < 1 || expiresSeconds > 604800) return false;
+  const credentialParts = credential?.match(/^([A-Za-z0-9]+)\/(\d{8})\/auto\/s3\/aws4_request$/);
+  if (!credentialParts || credentialParts[2] !== amzDate.slice(0, 8)) return false;
+  return true;
+}
+
+function exactlyOneQueryValue(params: URLSearchParams, name: string): string | undefined {
+  const values = params.getAll(name);
+  return values.length === 1 && values[0] !== "" ? values[0] : undefined;
+}
+
+function hasExplicitPort(value: string): boolean {
+  const authority = value.match(/^https:\/\/([^/?#]*)/i)?.[1];
+  if (!authority) return false;
+  const hostPort = authority.slice(authority.lastIndexOf("@") + 1);
+  return /:\d+$/.test(hostPort);
 }
 
 export function isAllowedFalStorageUrl(value: string): boolean {

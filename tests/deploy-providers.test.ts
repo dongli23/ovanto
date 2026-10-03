@@ -5,6 +5,7 @@ import { FREE_COST_MICRO_USD, PAID_MODELS, providerEnvKey } from "../lib/generat
 import {
   generate,
   isAllowedCdnUrl,
+  poll,
   ProviderProtocolError,
   ProviderRejectedError,
   ProviderUnavailableError,
@@ -14,6 +15,28 @@ import { generateKie } from "../src/lib/providers/kie";
 
 const originalFetch = globalThis.fetch;
 const originalEnv = { ...process.env };
+const R2_BUCKET = "ovanto-output";
+const R2_ACCOUNT = "0123456789abcdef0123456789abcdef";
+const R2_DATE = "20261003T021006Z";
+
+function syntheticR2Url(overrides: Record<string, string | undefined> = {}): string {
+  const params = new URLSearchParams({
+    "X-Amz-Algorithm": "AWS4-HMAC-SHA256",
+    "X-Amz-Credential": `AKIAEXAMPLE/${R2_DATE.slice(0, 8)}/auto/s3/aws4_request`,
+    "X-Amz-Date": R2_DATE,
+    "X-Amz-Expires": "600",
+    "X-Amz-SignedHeaders": "host",
+    "X-Amz-Signature": "a".repeat(64),
+    ...overrides,
+  });
+  return `https://${R2_BUCKET}.${R2_ACCOUNT}.r2.cloudflarestorage.com/generated/image.webp?${params.toString()}`;
+}
+
+function mutateSyntheticR2Url(mutator: (url: URL) => void): string {
+  const url = new URL(syntheticR2Url());
+  mutator(url);
+  return url.toString();
+}
 
 test.afterEach(() => {
   globalThis.fetch = originalFetch;
@@ -235,6 +258,47 @@ test("provider input and output URLs reject unsafe hosts", async () => {
   assert.equal(isAllowedCdnUrl("https://evil.example/output.webp", "replicate"), false);
   globalThis.fetch = async () => new Response(JSON.stringify({ id: "replicate-edit-id" }), { status: 201 });
   await assert.rejects(generate("edit", "free", { prompt: "edit", sourceImageUrl: "https://evil.example/source.png" }), (error: unknown) => error instanceof ProviderProtocolError);
+});
+
+test("Replicate poll accepts a structurally valid presigned R2 output", async () => {
+  process.env.REPLICATE_API_TOKEN = "replicate-test";
+  const outputUrl = syntheticR2Url();
+  assert.equal(isAllowedCdnUrl(outputUrl, "replicate"), true);
+  globalThis.fetch = async () => new Response(JSON.stringify({
+    status: "succeeded",
+    output: [outputUrl],
+  }), { status: 200 });
+
+  const polled = await poll("replicate", "prediction-id", "image", { model: MODELS["image.free"].slug });
+  assert.deepEqual(polled, {
+    state: "succeeded",
+    result: { url: outputUrl, mediaType: "image" },
+  });
+});
+
+test("Replicate R2 output validation rejects lookalike hosts and invalid signatures", () => {
+  const rejectedUrls = [
+    mutateSyntheticR2Url((url) => { url.hostname = `${R2_BUCKET}.${R2_ACCOUNT}.r2.cloudflarestorage.com.evil.example`; }),
+    mutateSyntheticR2Url((url) => { url.hostname = `${R2_BUCKET}.aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaz.r2.cloudflarestorage.com`; }),
+    mutateSyntheticR2Url((url) => { url.username = "user"; url.password = "password"; }),
+    mutateSyntheticR2Url((url) => { url.protocol = "http:"; }),
+    mutateSyntheticR2Url((url) => { url.port = "8443"; }),
+    syntheticR2Url().replace(`.${R2_ACCOUNT}.r2.cloudflarestorage.com/`, `.${R2_ACCOUNT}.r2.cloudflarestorage.com:443/`),
+    syntheticR2Url().replace("/generated/image.webp?", "/?"),
+    syntheticR2Url({ "X-Amz-Date": "20261003-021006Z" }),
+    mutateSyntheticR2Url((url) => { url.search = ""; }),
+    mutateSyntheticR2Url((url) => { url.searchParams.delete("X-Amz-Signature"); }),
+    mutateSyntheticR2Url((url) => { url.searchParams.append("X-Amz-Signature", "b".repeat(64)); }),
+    syntheticR2Url({ "X-Amz-Signature": "g".repeat(64) }),
+    syntheticR2Url({ "X-Amz-Algorithm": "AWS4-HMAC-SHA1" }),
+    syntheticR2Url({ "X-Amz-Expires": "0" }),
+    syntheticR2Url({ "X-Amz-Expires": "604801" }),
+    syntheticR2Url({ "X-Amz-Credential": "AKIAEXAMPLE/20261003/us-east-1/s3/aws4_request" }),
+    syntheticR2Url({ "X-Amz-Credential": "AKIAEXAMPLE/20261002/auto/s3/aws4_request" }),
+    syntheticR2Url({ "X-Amz-SignedHeaders": "host;content-type" }),
+  ];
+  for (const value of rejectedUrls) assert.equal(isAllowedCdnUrl(value, "replicate"), false, value);
+  assert.equal(isAllowedCdnUrl(syntheticR2Url(), "fal"), false);
 });
 
 test("KIE remains an explicit unimplemented provider boundary", () => {
