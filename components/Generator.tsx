@@ -19,6 +19,11 @@ type GenerationResult = {
   mediaType: "image" | "video";
 };
 
+type ResultJob = {
+  id: string;
+  paid: boolean;
+};
+
 type GenerationResponse = {
   id: string;
   status: "pending" | "processing" | "succeeded" | "failed";
@@ -372,6 +377,36 @@ function withApiCode(error: Error, code: string | undefined) {
   return error;
 }
 
+function fallbackDownloadFilename(mediaType: GenerationResult["mediaType"]) {
+  return mediaType === "video" ? "ovanto-video.mp4" : "ovanto-image.webp";
+}
+
+function safeDownloadFilename(response: Response, mediaType: GenerationResult["mediaType"]) {
+  const contentDisposition = response.headers.get("content-disposition");
+  const basicMatch = contentDisposition?.match(/(?:^|;)\s*filename\s*=\s*(?:"([^"]*)"|([^;\s]+))\s*(?:;|$)/i);
+  const candidate = basicMatch?.[1] ?? basicMatch?.[2];
+  const allowedFilename = mediaType === "video"
+    ? /^ovanto-video\.(?:mp4|webm)$/
+    : /^ovanto-image\.(?:webp|png|jpg|jpeg|gif|avif)$/;
+  if (candidate && allowedFilename.test(candidate)) {
+    return candidate;
+  }
+
+  const contentType = response.headers.get("content-type")?.split(";", 1)[0].trim().toLowerCase();
+  const mimeFilenames: Record<string, string> = {
+    "image/webp": "ovanto-image.webp",
+    "image/png": "ovanto-image.png",
+    "image/jpeg": "ovanto-image.jpg",
+    "image/gif": "ovanto-image.gif",
+    "image/avif": "ovanto-image.avif",
+    "video/mp4": "ovanto-video.mp4",
+    "video/webm": "ovanto-video.webm",
+  };
+  return (contentType && mimeFilenames[contentType] && (mediaType === "video" ? contentType.startsWith("video/") : contentType.startsWith("image/")))
+    ? mimeFilenames[contentType]
+    : fallbackDownloadFilename(mediaType);
+}
+
 export function Generator({
   locale,
   title,
@@ -399,6 +434,7 @@ export function Generator({
   const [quotaError, setQuotaError] = useState(!turnstileSiteKey);
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [result, setResult] = useState<GenerationResult | null>(null);
+  const [resultJob, setResultJob] = useState<ResultJob | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [downloadError, setDownloadError] = useState<string | null>(null);
   const [downloadBusy, setDownloadBusy] = useState(false);
@@ -536,6 +572,7 @@ export function Generator({
     setUploadError(null);
     setUploadState("uploading");
     setResult(null);
+    setResultJob(null);
     setError(null);
     setDownloadError(null);
     setStatus("idle");
@@ -679,6 +716,7 @@ export function Generator({
     setStatus("loading");
     setError(null);
     setResult(null);
+    setResultJob(null);
     setDownloadError(null);
     try {
       if (attemptIdentity.current !== attemptSignature) {
@@ -745,6 +783,7 @@ export function Generator({
         return;
       }
       setResult(finished.result);
+      setResultJob({ id: finished.id, paid: paidAttemptMode });
       setStatus("success");
       pendingJobId.current = null;
       attemptIdentity.current = null;
@@ -766,13 +805,17 @@ export function Generator({
     setDownloadBusy(true);
     setDownloadError(null);
     try {
-      const response = await fetch(result.url);
+      if (!resultJob) throw new Error("download");
+      const endpoint = resultJob.paid
+        ? `/api/paid/generations/${encodeURIComponent(resultJob.id)}/download`
+        : `/api/generations/${encodeURIComponent(resultJob.id)}/download`;
+      const response = await fetch(endpoint, { cache: "no-store" });
       if (!response.ok) throw new Error("download");
       const blob = await response.blob();
       const objectUrl = URL.createObjectURL(blob);
       const anchor = document.createElement("a");
       anchor.href = objectUrl;
-      anchor.download = result.mediaType === "video" ? "ovanto-video.mp4" : "ovanto-image.webp";
+      anchor.download = safeDownloadFilename(response, result.mediaType);
       document.body.appendChild(anchor);
       anchor.click();
       anchor.remove();
