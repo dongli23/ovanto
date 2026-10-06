@@ -143,7 +143,7 @@ test("FAL submission fixes Wan duration, resolution, aspect ratio, safety, and n
   };
   const result = await submitGeneration("video", "a calm lake");
   assert.equal(result.requestId, "fal-id");
-  assert.equal(result.statusUrl, "https://queue.fal.run/fal-ai/wan-25-preview/text-to-video/requests/fal-id/status");
+  assert.equal(result.statusUrl, "https://queue.fal.run/fal-ai/wan-25-preview/requests/fal-id/status");
 });
 
 test("Replicate Kontext edit submission only forwards the server-owned source URL", async () => {
@@ -189,7 +189,7 @@ test("FAL completed image result supports Kontext image payload and parent queue
   globalThis.fetch = async (input) => {
     calls += 1;
     if (calls === 1) return new Response(JSON.stringify({ status: "COMPLETED" }), { status: 200 });
-    assert.equal(String(input), "https://queue.fal.run/fal-ai/wan-25-preview/text-to-video/requests/fal-image");
+    assert.equal(String(input), "https://queue.fal.run/fal-ai/wan-25-preview/requests/fal-image");
     return new Response(JSON.stringify({ images: [{ url: "https://v3b.fal.media/files/a/result.png" }] }), { status: 200 });
   };
   const result = await pollGeneration("fal", "fal-image", "edit", { model: "fal-ai/wan-25-preview/text-to-video", statusUrl: "https://queue.fal.run/fal-ai/wan-25-preview/text-to-video/requests/fal-image/status" });

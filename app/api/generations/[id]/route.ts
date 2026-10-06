@@ -2,6 +2,7 @@ import { cookies } from "next/headers";
 import { GenerationError, errorResponse } from "../../../../lib/generation/errors";
 import { assertQuotaConfig, noStoreJson, publicJob } from "../../../../lib/generation/http";
 import { getDailyIdentity } from "../../../../lib/generation/identity";
+import { persistFailedPoll } from "../../../../lib/generation/poll-state";
 import { pollGeneration, ProviderProtocolError, ProviderUnavailableError } from "../../../../lib/generation/provider";
 import { providerEnvKey, providerFor } from "../../../../lib/generation/config";
 import { getRedis } from "../../../../lib/generation/redis";
@@ -52,9 +53,8 @@ export async function GET(request: Request, context: { params: Promise<{ id: str
 
     if (polled.state === "processing") return noStoreJson(publicJob(job, snapshot.remaining));
     if (polled.state === "failed") {
-      const failed = { ...job, status: "failed" as const };
-      await updateJob(redis, failed);
-      return noStoreJson(publicJob(failed, snapshot.remaining));
+      const persisted = await persistFailedPoll(redis, job, snapshot);
+      return noStoreJson(publicJob(persisted.job, persisted.snapshot.remaining));
     }
 
     const succeeded = { ...job, status: "succeeded" as const, result: polled.result };

@@ -11,6 +11,7 @@ import {
   ProviderUnavailableError,
 } from "../src/lib/providers";
 import { logReplicateFailure, type ReplicateDiagnosticEvent } from "../src/lib/providers/replicate-diagnostics";
+import { logFalFailure, type FalDiagnosticEvent } from "../src/lib/providers/fal-diagnostics";
 import { generateKie } from "../src/lib/providers/kie";
 
 const originalFetch = globalThis.fetch;
@@ -51,6 +52,7 @@ test("model table owns provider slugs, units, and configured costs", () => {
   assert.equal(MODELS["edit.free"].unit, "image");
   assert.equal(MODELS["video.free"].fixedSeconds, 5);
   assert.equal(MODELS["video.free"].resolution, "480p");
+  assert.equal(MODELS["video.free"].queueSlug, "fal-ai/wan-25-preview");
   assert.deepEqual(FREE_COST_MICRO_USD, { image: 3_000, edit: 23_000, video: 250_000 });
   assert.equal(PAID_MODELS.video.costMicroUsd, 350_000);
   assert.equal(providerEnvKey("image"), "REPLICATE_API_TOKEN");
@@ -108,6 +110,8 @@ test("video.free sends the fal queue input directly with fixed five-second 480p 
   const submitted = await generate("video", "free", { prompt: "a calm lake" });
   assert.equal(submitted.provider, "fal");
   assert.equal(request?.url, `https://queue.fal.run/${MODELS["video.free"].slug}`);
+  assert.equal(submitted.statusUrl, "https://queue.fal.run/fal-ai/wan-25-preview/requests/fal-video-id/status");
+  assert.equal(submitted.responseUrl, "https://queue.fal.run/fal-ai/wan-25-preview/requests/fal-video-id");
   assert.equal((request?.init.headers as Record<string, string>).Authorization, "Key fal-test");
   assert.deepEqual(JSON.parse(String(request?.init.body)), {
     prompt: "a calm lake",
@@ -117,6 +121,163 @@ test("video.free sends the fal queue input directly with fixed five-second 480p 
     enable_prompt_expansion: false,
     enable_safety_checker: true,
   });
+});
+
+test("FAL submission accepts the queue slug and safely falls back from legacy or unsafe URLs", async () => {
+  process.env.FAL_KEY = "fal-test";
+  const queueSlug = MODELS["video.free"].queueSlug;
+  assert.equal(queueSlug, "fal-ai/wan-25-preview");
+  const originalConsoleError = console.error;
+  console.error = () => undefined;
+  try {
+    globalThis.fetch = async () => new Response(JSON.stringify({
+      request_id: "fal-base-id",
+      status_url: `https://queue.fal.run/${queueSlug}/requests/fal-base-id/status`,
+      response_url: `https://queue.fal.run/${queueSlug}/requests/fal-base-id`,
+    }), { status: 200 });
+    const accepted = await generate("video", "free", { prompt: "base" });
+    assert.equal(accepted.statusUrl, `https://queue.fal.run/${queueSlug}/requests/fal-base-id/status`);
+    assert.equal(accepted.responseUrl, `https://queue.fal.run/${queueSlug}/requests/fal-base-id`);
+
+    globalThis.fetch = async () => new Response(JSON.stringify({
+      request_id: "fal-legacy-id",
+      status_url: `https://queue.fal.run/${MODELS["video.free"].slug}/requests/fal-legacy-id/status`,
+      response_url: `https://queue.fal.run/${MODELS["video.free"].slug}/requests/fal-legacy-id`,
+    }), { status: 200 });
+    const legacy = await generate("video", "free", { prompt: "legacy" });
+    assert.equal(legacy.statusUrl, `https://queue.fal.run/${queueSlug}/requests/fal-legacy-id/status`);
+    assert.equal(legacy.responseUrl, `https://queue.fal.run/${queueSlug}/requests/fal-legacy-id`);
+
+    globalThis.fetch = async () => new Response(JSON.stringify({
+      request_id: "fal-unsafe-id",
+      status_url: "https://evil.example/requests/fal-unsafe-id/status",
+      response_url: "http://queue.fal.run/fal-ai/wan-25-preview/requests/fal-unsafe-id",
+    }), { status: 200 });
+    const unsafeUrls = await generate("video", "free", { prompt: "unsafe urls" });
+    assert.equal(unsafeUrls.statusUrl, `https://queue.fal.run/${queueSlug}/requests/fal-unsafe-id/status`);
+    assert.equal(unsafeUrls.responseUrl, `https://queue.fal.run/${queueSlug}/requests/fal-unsafe-id`);
+
+    globalThis.fetch = async () => new Response(JSON.stringify({ request_id: "fal/id" }), { status: 200 });
+    await assert.rejects(generate("video", "free", { prompt: "unsafe id" }), (error: unknown) => error instanceof ProviderProtocolError);
+  } finally {
+    console.error = originalConsoleError;
+  }
+});
+
+test("FAL polling uses the queue slug for processing, result, and legacy URL fallback", async () => {
+  process.env.FAL_KEY = "fal-test";
+  const queueSlug = MODELS["video.free"].queueSlug;
+  assert.equal(queueSlug, "fal-ai/wan-25-preview");
+  const requestUrls: string[] = [];
+  let call = 0;
+  globalThis.fetch = async (input) => {
+    requestUrls.push(String(input));
+    call += 1;
+    if (call === 1) return new Response(JSON.stringify({ status: "IN_PROGRESS" }), { status: 200 });
+    if (call === 2) return new Response(JSON.stringify({ status: "COMPLETED" }), { status: 200 });
+    return new Response(JSON.stringify({ video: { url: "https://v3.fal.media/files/a/result.mp4" } }), { status: 200 });
+  };
+
+  const processing = await poll("fal", "fal-processing", "video", {
+    model: MODELS["video.free"].slug,
+    statusUrl: `https://queue.fal.run/${MODELS["video.free"].slug}/requests/fal-processing/status`,
+  });
+  assert.deepEqual(processing, { state: "processing" });
+  assert.equal(requestUrls[0], `https://queue.fal.run/${queueSlug}/requests/fal-processing/status`);
+
+  const completed = await poll("fal", "fal-complete", "video", {
+    model: MODELS["video.free"].slug,
+    statusUrl: `https://evil.example/fal-complete/status`,
+    responseUrl: `https://queue.fal.run/${MODELS["video.free"].slug}/requests/fal-complete`,
+  });
+  assert.deepEqual(completed, {
+    state: "succeeded",
+    result: { url: "https://v3.fal.media/files/a/result.mp4", mediaType: "video" },
+  });
+  assert.equal(requestUrls[1], `https://queue.fal.run/${queueSlug}/requests/fal-complete/status`);
+  assert.equal(requestUrls[2], `https://queue.fal.run/${queueSlug}/requests/fal-complete`);
+
+  globalThis.fetch = async () => {
+    throw new Error("should not fetch an invalid request id");
+  };
+  const originalConsoleError = console.error;
+  console.error = () => undefined;
+  try {
+    await assert.rejects(poll("fal", "fal/invalid", "video", { model: MODELS["video.free"].slug }), (error: unknown) => error instanceof ProviderProtocolError);
+  } finally {
+    console.error = originalConsoleError;
+  }
+});
+
+async function captureFalDiagnostic(
+  stage: FalDiagnosticEvent["stage"],
+  httpStatus: number | null,
+  category: FalDiagnosticEvent["category"],
+  model: string = MODELS["video.free"].slug,
+): Promise<FalDiagnosticEvent> {
+  let event: FalDiagnosticEvent | undefined;
+  await logFalFailure(stage, model, httpStatus, category, (nextEvent) => {
+    event = nextEvent;
+  });
+  assert.ok(event);
+  return event;
+}
+
+test("FAL diagnostics are static, bounded, and never include provider response data", async () => {
+  const event = await captureFalDiagnostic("result", 402, "billing");
+  assert.deepEqual(event, {
+    provider: "fal",
+    stage: "result",
+    model: MODELS["video.free"].slug,
+    http_status: 402,
+    category: "billing",
+  });
+  const serialized = JSON.stringify(event);
+  assert.equal(serialized.length <= 500, true);
+  assert.equal(serialized.includes("https://"), false);
+  assert.equal(serialized.includes("prompt"), false);
+  assert.equal(serialized.includes("fal-test"), false);
+
+  const unknown = await captureFalDiagnostic("status", null, "protocol", "https://evil.example/model?token=secret");
+  assert.equal(unknown.model, "unknown");
+  assert.equal(unknown.http_status, null);
+  assert.equal(JSON.stringify(unknown).includes("evil.example"), false);
+});
+
+test("FAL provider failures preserve errors while logging actual HTTP status safely", async () => {
+  process.env.FAL_KEY = "fal-test";
+  const originalConsoleError = console.error;
+  const events: FalDiagnosticEvent[] = [];
+  console.error = (value?: unknown) => {
+    if (typeof value === "string") {
+      try { events.push(JSON.parse(value) as FalDiagnosticEvent); } catch { /* no raw provider output */ }
+    }
+  };
+  try {
+    globalThis.fetch = async () => new Response(JSON.stringify({ detail: "account billing secret" }), { status: 402 });
+    await assert.rejects(generate("video", "free", { prompt: "private prompt" }), (error: unknown) => error instanceof ProviderRejectedError);
+    assert.deepEqual(events[events.length - 1], {
+      provider: "fal",
+      stage: "submit",
+      model: MODELS["video.free"].slug,
+      http_status: 402,
+      category: "billing",
+    });
+    assert.equal(JSON.stringify(events).includes("billing secret"), false);
+    assert.equal(JSON.stringify(events).includes("private prompt"), false);
+
+    globalThis.fetch = async () => new Response("not-json", { status: 200 });
+    await assert.rejects(generate("video", "free", { prompt: "private prompt" }), (error: unknown) => error instanceof ProviderUnavailableError);
+    assert.deepEqual(events[events.length - 1], {
+      provider: "fal",
+      stage: "submit",
+      model: MODELS["video.free"].slug,
+      http_status: 200,
+      category: "protocol",
+    });
+  } finally {
+    console.error = originalConsoleError;
+  }
 });
 
 test("provider errors map HTTP rejection and availability without leaking upstream details", async () => {

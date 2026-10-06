@@ -10,12 +10,20 @@ import {
   ProviderRejectedError,
   ProviderUnavailableError,
 } from "./replicate";
+import { falHttpFailureCategory, logFalFailure, type FalDiagnosticCategory } from "./fal-diagnostics";
 
 export async function submitFal(model: ModelDefinition, options: GenerateOptions): Promise<ProviderSubmission> {
-  if (model.provider !== "fal") throw new ProviderProtocolError();
+  if (model.provider !== "fal") {
+    await logFalFailure("submit", model.slug, null, "protocol");
+    throw new ProviderProtocolError();
+  }
   const token = process.env.FAL_KEY;
-  if (!token) throw new GenerationError("CONFIGURATION_UNAVAILABLE", 503, "Generation is temporarily unavailable.");
+  if (!token) {
+    await logFalFailure("submit", model.slug, null, "authentication");
+    throw new GenerationError("CONFIGURATION_UNAVAILABLE", 503, "Generation is temporarily unavailable.");
+  }
   if (options.task === "edit" && (!options.sourceImageUrl || !isAllowedFalStorageUrl(options.sourceImageUrl))) {
+    await logFalFailure("submit", model.slug, null, "protocol");
     throw new ProviderProtocolError();
   }
 
@@ -46,7 +54,10 @@ export async function submitFal(model: ModelDefinition, options: GenerateOptions
             enable_safety_checker: true,
           }
       : undefined;
-  if (!input) throw new ProviderProtocolError();
+  if (!input) {
+    await logFalFailure("submit", model.slug, null, "protocol");
+    throw new ProviderProtocolError();
+  }
 
   const response = await providerFetch(
     `https://queue.fal.run/${model.slug}`,
@@ -56,23 +67,36 @@ export async function submitFal(model: ModelDefinition, options: GenerateOptions
       body: JSON.stringify(input),
     },
   );
-  if (response.kind === "reject") throw new ProviderRejectedError();
-  if (response.kind === "unavailable") throw new ProviderUnavailableError();
-  if (!isRecord(response.payload)) throw new ProviderProtocolError();
+  if (response.kind === "reject") {
+    await logFalFailure("submit", model.slug, response.httpStatus, falHttpFailureCategory(response.httpStatus));
+    throw new ProviderRejectedError();
+  }
+  if (response.kind === "unavailable") {
+    await logFalFailure("submit", model.slug, response.httpStatus, response.category);
+    throw new ProviderUnavailableError();
+  }
+  if (!isRecord(response.payload)) {
+    await logFalFailure("submit", model.slug, response.httpStatus, "protocol");
+    throw new ProviderProtocolError();
+  }
   const requestId = typeof response.payload.request_id === "string"
     ? response.payload.request_id
     : typeof response.payload.requestId === "string"
       ? response.payload.requestId
       : undefined;
-  if (!requestId || requestId.length > 256) throw new ProviderProtocolError();
+  if (!requestId || !isValidFalRequestId(requestId)) {
+    await logFalFailure("submit", model.slug, response.httpStatus, "protocol");
+    throw new ProviderProtocolError();
+  }
   const statusUrl = typeof response.payload.status_url === "string" ? response.payload.status_url : undefined;
   const responseUrl = typeof response.payload.response_url === "string" ? response.payload.response_url : undefined;
+  const queueSlug = queueSlugForModel(model);
   return {
     provider: "fal",
     model: model.slug,
     requestId,
-    statusUrl: validateFalQueueUrl(statusUrl, requestId, "status", model.slug) ?? falQueueUrl(requestId, "status", model.slug),
-    responseUrl: validateFalQueueUrl(responseUrl, requestId, "response", model.slug) ?? falQueueUrl(requestId, "response", model.slug),
+    statusUrl: validateFalQueueUrl(statusUrl, requestId, "status", queueSlug) ?? falQueueUrl(requestId, "status", queueSlug),
+    responseUrl: validateFalQueueUrl(responseUrl, requestId, "response", queueSlug) ?? falQueueUrl(requestId, "response", queueSlug),
   };
 }
 
@@ -82,17 +106,36 @@ export async function pollFal(
   options?: { statusUrl?: string; responseUrl?: string; model?: string },
 ): Promise<ProviderPoll> {
   const token = process.env.FAL_KEY;
-  if (!token) throw new GenerationError("CONFIGURATION_UNAVAILABLE", 503, "Generation is temporarily unavailable.");
+  if (!token) {
+    await logFalFailure("status", options?.model ?? "unknown", null, "authentication");
+    throw new GenerationError("CONFIGURATION_UNAVAILABLE", 503, "Generation is temporarily unavailable.");
+  }
   const model = resolveModel(task, options?.model);
-  if (model.provider !== "fal") throw new ProviderProtocolError();
-  const queueSlug = model.slug;
+  if (model.provider !== "fal") {
+    await logFalFailure("status", model.slug, null, "protocol");
+    throw new ProviderProtocolError();
+  }
+  if (!isValidFalRequestId(requestId)) {
+    await logFalFailure("status", model.slug, null, "protocol");
+    throw new ProviderProtocolError();
+  }
+  const queueSlug = queueSlugForModel(model);
   const headers = { Authorization: `Key ${token}` };
-  const statusUrl = validateFalQueueUrl(options?.statusUrl, requestId, "status", model.slug) ?? falQueueUrl(requestId, "status", queueSlug);
+  const statusUrl = validateFalQueueUrl(options?.statusUrl, requestId, "status", queueSlug) ?? falQueueUrl(requestId, "status", queueSlug);
   const response = await providerFetch(statusUrl, { method: "GET", headers });
-  if (response.kind === "unavailable") throw new ProviderUnavailableError();
-  if (response.kind === "reject") throw new ProviderProtocolError();
-  if (!isRecord(response.payload)) throw new ProviderProtocolError();
-  return parseFalPoll(response.payload, task, requestId, headers, options?.responseUrl, model.slug, queueSlug);
+  if (response.kind === "unavailable") {
+    await logFalFailure("status", model.slug, response.httpStatus, response.category);
+    throw new ProviderUnavailableError();
+  }
+  if (response.kind === "reject") {
+    await logFalFailure("status", model.slug, response.httpStatus, falHttpFailureCategory(response.httpStatus));
+    throw new ProviderProtocolError();
+  }
+  if (!isRecord(response.payload)) {
+    await logFalFailure("status", model.slug, response.httpStatus, "protocol");
+    throw new ProviderProtocolError();
+  }
+  return parseFalPoll(response.payload, task, requestId, headers, options?.responseUrl, model.slug, queueSlug, response.httpStatus);
 }
 
 function parseFalPoll(
@@ -103,36 +146,63 @@ function parseFalPoll(
   returnedResponseUrl: string | undefined,
   modelSlug: string,
   queueSlug: string,
+  httpStatus: number,
 ): Promise<ProviderPoll> | ProviderPoll {
   const status = payload.status ?? (isRecord(payload.data) ? payload.data.status : undefined);
   if (status === "IN_QUEUE" || status === "IN_PROGRESS" || status === "QUEUED" || status === "PROCESSING") return { state: "processing" };
-  if (status === "FAILED" || status === "CANCELED" || status === "CANCELLED") return { state: "failed" };
+  if (status === "FAILED" || status === "CANCELED" || status === "CANCELLED") {
+    return logFalFailure("status", modelSlug, httpStatus, "upstream").then(() => ({ state: "failed" as const }));
+  }
   if (status === "COMPLETED" || status === "SUCCEEDED" || status === "SUCCESS") {
     const statusData = isRecord(payload.data) ? payload.data : undefined;
-    if (payload.error != null || payload.error_type != null || statusData?.error != null || statusData?.error_type != null) return { state: "failed" };
-    const responseUrl = validateFalQueueUrl(returnedResponseUrl, requestId, "response", modelSlug) ?? falQueueUrl(requestId, "response", queueSlug);
-    return getFalResult(responseUrl, task, headers);
+    if (payload.error != null || payload.error_type != null || statusData?.error != null || statusData?.error_type != null) {
+      return logFalFailure("status", modelSlug, httpStatus, "upstream").then(() => ({ state: "failed" as const }));
+    }
+    const responseUrl = validateFalQueueUrl(returnedResponseUrl, requestId, "response", queueSlug) ?? falQueueUrl(requestId, "response", queueSlug);
+    return getFalResult(responseUrl, task, headers, modelSlug);
   }
   const directUrl = firstUrlFromFalResult(payload);
   if (directUrl && isAllowedCdnUrl(directUrl, "fal")) return { state: "succeeded", result: { url: directUrl, mediaType: task === "video" ? "video" : "image" } };
-  throw new ProviderProtocolError();
+  if (directUrl) return logFalFailure("result", modelSlug, httpStatus, "protocol").then(() => { throw new ProviderProtocolError(); });
+  return logFalFailure("status", modelSlug, httpStatus, "protocol").then(() => { throw new ProviderProtocolError(); });
 }
 
-async function getFalResult(url: string, task: GenerationTask, headers: HeadersInit): Promise<ProviderPoll> {
+async function getFalResult(url: string, task: GenerationTask, headers: HeadersInit, modelSlug: string): Promise<ProviderPoll> {
   const response = await providerFetch(url, { method: "GET", headers });
-  if (response.kind === "unavailable") throw new ProviderUnavailableError();
-  if (response.kind === "reject" || !isRecord(response.payload)) throw new ProviderProtocolError();
+  if (response.kind === "unavailable") {
+    await logFalFailure("result", modelSlug, response.httpStatus, response.category);
+    throw new ProviderUnavailableError();
+  }
+  if (response.kind === "reject") {
+    await logFalFailure("result", modelSlug, response.httpStatus, falHttpFailureCategory(response.httpStatus));
+    throw new ProviderProtocolError();
+  }
+  if (!isRecord(response.payload)) {
+    await logFalFailure("result", modelSlug, response.httpStatus, "protocol");
+    throw new ProviderProtocolError();
+  }
   const resultUrl = firstUrlFromFalResult(response.payload);
-  if (!resultUrl || !isAllowedCdnUrl(resultUrl, "fal")) throw new ProviderProtocolError();
+  if (!resultUrl || !isAllowedCdnUrl(resultUrl, "fal")) {
+    await logFalFailure("result", modelSlug, response.httpStatus, "protocol");
+    throw new ProviderProtocolError();
+  }
   return { state: "succeeded", result: { url: resultUrl, mediaType: task === "video" ? "video" : "image" } };
 }
 
 function resolveModel(task: GenerationTask, modelSlug?: string): ModelDefinition {
   if (modelSlug) {
-    const configured = Object.values(MODELS).find((model) => model.slug === modelSlug);
+    const configured = (Object.values(MODELS) as ModelDefinition[]).find((model) => model.slug === modelSlug || model.queueSlug === modelSlug);
     if (configured) return configured;
   }
   return modelFor(task, "free");
+}
+
+function queueSlugForModel(model: ModelDefinition): string {
+  return model.queueSlug ?? model.slug;
+}
+
+function isValidFalRequestId(value: string): boolean {
+  return value.length > 0 && value.length <= 256 && /^[A-Za-z0-9_-]+$/.test(value);
 }
 
 function firstUrlFromFalResult(payload: Record<string, unknown>): string | undefined {
@@ -200,24 +270,37 @@ function validateFalQueueUrl(value: string | undefined, requestId: string, kind:
 }
 
 
-type FetchResult = { kind: "ok"; payload: unknown } | { kind: "reject" } | { kind: "unavailable" };
+type FetchResult =
+  | { kind: "ok"; payload: unknown; httpStatus: number }
+  | { kind: "reject"; httpStatus: number }
+  | { kind: "unavailable"; httpStatus: number | null; category: FalDiagnosticCategory };
 
 async function providerFetch(url: string, init: RequestInit): Promise<FetchResult> {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), PROVIDER_REQUEST_TIMEOUT_MS);
   try {
     const response = await fetch(url, { ...init, signal: controller.signal, cache: "no-store", redirect: "error" });
-    if (response.status >= 400 && response.status < 500) return { kind: "reject" };
-    if (!response.ok) return { kind: "unavailable" };
+    if (response.status >= 400 && response.status < 500) return { kind: "reject", httpStatus: response.status };
+    if (!response.ok) return { kind: "unavailable", httpStatus: response.status, category: "upstream" };
     const bytes = await readResponseBytes(response, 128 * 1024);
-    if (!bytes) return { kind: "unavailable" };
-    try {
-      return { kind: "ok", payload: JSON.parse(new TextDecoder().decode(bytes)) };
-    } catch {
-      return { kind: "unavailable" };
+    if (!bytes) {
+      return {
+        kind: "unavailable",
+        httpStatus: response.status,
+        category: controller.signal.aborted ? "timeout" : "protocol",
+      };
     }
-  } catch {
-    return { kind: "unavailable" };
+    try {
+      return { kind: "ok", payload: JSON.parse(new TextDecoder().decode(bytes)), httpStatus: response.status };
+    } catch {
+      return { kind: "unavailable", httpStatus: response.status, category: "protocol" };
+    }
+  } catch (error) {
+    return {
+      kind: "unavailable",
+      httpStatus: null,
+      category: error instanceof Error && error.name === "AbortError" ? "timeout" : "network",
+    };
   } finally {
     clearTimeout(timeout);
   }

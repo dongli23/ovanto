@@ -29,6 +29,7 @@ export const MODELS = {
   'video.free': {
     provider: 'fal',
     slug: 'fal-ai/wan-25-preview/text-to-video',
+    queueSlug: 'fal-ai/wan-25-preview',
     unit: 'second',
     cost: 0.05,
     fixedSeconds: 5,
@@ -50,6 +51,7 @@ export type ModelKey = `${GenerationTask}.${GenerationTier}`;
 export type ModelDefinition = {
   readonly provider: 'replicate' | 'fal';
   readonly slug: string;
+  readonly queueSlug?: string;
   readonly unit: 'image' | 'second';
   readonly cost: number;
   readonly fixedSeconds?: number;
