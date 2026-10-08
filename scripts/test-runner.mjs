@@ -11,6 +11,7 @@ const entries = [
   [path.join(root, "tests", "lua-reservation.test.cjs"), "lua-reservation.test.cjs"],
   [path.join(root, "tests", "generation.test.ts"), "generation.test.cjs"],
   [path.join(root, "tests", "generation-poll-route.test.ts"), "generation-poll-route.test.cjs"],
+  [path.join(root, "tests", "generation-stale.test.ts"), "generation-stale.test.cjs"],
   [path.join(root, "tests", "generation-download.test.ts"), "generation-download.test.cjs"],
   [path.join(root, "tests", "payments.test.ts"), "payments.test.cjs"],
   [path.join(root, "tests", "payment-sql.test.ts"), "payment-sql.test.cjs"],

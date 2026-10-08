@@ -99,6 +99,7 @@ export const COOKIE_NAME = "ovanto_anon";
 export const JOB_TTL_SECONDS = 24 * 60 * 60;
 export const DAILY_TTL_SECONDS = 2 * 24 * 60 * 60;
 export const AUDIT_TTL_SECONDS = 30 * 24 * 60 * 60;
+export const FREE_GENERATION_STALE_TIMEOUT_MS = 60 * 60 * 1000;
 export const MAX_GENERATION_BODY_BYTES = 16 * 1024;
 export const MAX_PROMPT_LENGTH = 2_000;
 export const MAX_VIDEO_PROMPT_LENGTH = 1_500;

@@ -39,6 +39,7 @@ export interface JobRecord {
   providerStatusUrl?: string;
   providerResponseUrl?: string;
   providerRequestId?: string;
+  failure_reason?: "stale_provider_job";
   result?: JobResult;
 }
 
@@ -65,9 +66,11 @@ export interface GenerationAuditRecord {
   providerModel: string;
   providerRequestId?: string;
   status: GenerationStatus;
-  disposition: "reserved" | "accepted" | "rejected" | "uncertain";
+  disposition: "reserved" | "accepted" | "rejected" | "uncertain" | "stale";
   recordedAt: string;
   estimated: true;
+  failure_reason?: "stale_provider_job";
+  billing_observed?: boolean;
 }
 
 export function inputHash(kind: GenerationKind, prompt: string, assetId?: string): string {
@@ -188,10 +191,17 @@ export async function releaseReservation(redis: RedisLike, job: JobRecord): Prom
   if (!Array.isArray(result) || !["RELEASED", "ALREADY_RELEASED"].includes(result[0])) throw storageError();
 }
 
-export async function updateJob(redis: RedisLike, job: JobRecord): Promise<void> {
+export async function updateJob(redis: RedisLike, job: JobRecord): Promise<JobRecord> {
   const result = await redis.eval<string[]>(UPDATE_JOB_SCRIPT, [keyForJob(job.id)], [JSON.stringify(job), String(JOB_TTL_SECONDS)]);
   if (!Array.isArray(result) || result[0] === "NOT_FOUND") throw storageError();
+  if (result[0] === "INVALID") throw storageError();
+  if (result[0] === "TERMINAL") {
+    const current = parseJob(result[1]);
+    if (!current) throw storageError();
+    return current;
+  }
   if (result[0] !== "UPDATED") throw storageError();
+  return parseJob(result[1]) ?? job;
 }
 
 /**
@@ -267,7 +277,7 @@ function parseCounter(value: string | null): number {
   return parsed;
 }
 
-function parseJob(value: unknown): JobRecord | null {
+export function parseJob(value: unknown): JobRecord | null {
   if (typeof value !== "string") return null;
   try {
     const parsed = JSON.parse(value) as Partial<JobRecord>;

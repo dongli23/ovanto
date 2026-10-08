@@ -6,11 +6,11 @@ export async function persistFailedPoll(redis: RedisLike, job: JobRecord, snapsh
   const failed = { ...job, status: "failed" as const };
   if (shouldReleaseFailedReservation(job)) {
     await releaseReservation(redis, job);
-    await updateJob(redis, failed);
-    return { job: failed, snapshot: await getQuotaSnapshot(redis, job.ipHash, job.kind) };
+    const persisted = await updateJob(redis, failed);
+    return { job: persisted, snapshot: await getQuotaSnapshot(redis, job.ipHash, job.kind) };
   }
-  await updateJob(redis, failed);
-  return { job: failed, snapshot };
+  const persisted = await updateJob(redis, failed);
+  return { job: persisted, snapshot };
 }
 
 export function shouldReleaseFailedReservation(job: Pick<JobRecord, "provider" | "tier">): boolean {

@@ -72,7 +72,65 @@ return {'RESERVED', tostring(maxCount - count - 1), tostring(maxBytes - bytes - 
 export const UPDATE_JOB_SCRIPT = String.raw`
 local current = redis.call('GET', KEYS[1])
 if not current then return {'NOT_FOUND'} end
+local ok, decoded = pcall(cjson.decode, current)
+if not ok or type(decoded) ~= 'table' then return {'INVALID'} end
+if decoded.status == 'failed' and decoded.failure_reason == 'stale_provider_job' then return {'TERMINAL', current} end
 redis.call('SET', KEYS[1], ARGV[1], 'EX', ARGV[2])
-return {'UPDATED'}
+return {'UPDATED', ARGV[1]}
+`;
+
+/**
+ * Atomically closes an old free job before provider polling. All eligibility
+ * checks happen against the current Redis value so a concurrent completion or
+ * state change cannot be refunded or overwritten by a stale request.
+ */
+export const STALE_JOB_SCRIPT = String.raw`
+local raw = redis.call('GET', KEYS[1])
+if not raw then return {'MISSING'} end
+local ok, current = pcall(cjson.decode, raw)
+if not ok or type(current) ~= 'table' then return {'INVALID'} end
+if current.id ~= ARGV[1] or current.createdAt ~= ARGV[2] then return {'NOT_STALE', raw} end
+if current.createdAt > ARGV[3] then return {'NOT_STALE', raw} end
+if current.status ~= 'pending' and current.status ~= 'processing' then return {'NOT_STALE', raw} end
+if current.tier ~= 'free' then return {'NOT_STALE', raw} end
+if current.result ~= nil and current.result ~= cjson.null then return {'NOT_STALE', raw} end
+if current.kind ~= ARGV[4] or current.ipHash ~= ARGV[5] then return {'NOT_STALE', raw} end
+
+current.status = 'failed'
+current.failure_reason = 'stale_provider_job'
+redis.call('SET', KEYS[1], cjson.encode(current), 'EX', ARGV[6])
+
+local released = '0'
+local marker = redis.call('GET', KEYS[2])
+if marker == 'active' then
+  local used = tonumber(redis.call('GET', KEYS[3]))
+  local spent = tonumber(redis.call('GET', KEYS[4]))
+  local overallSpent = tonumber(redis.call('GET', KEYS[5]))
+  local cost = tonumber(ARGV[8])
+  if used and used > 0 then redis.call('DECR', KEYS[3]) end
+  if spent and spent >= cost then redis.call('DECRBY', KEYS[4], cost) end
+  if overallSpent and overallSpent >= cost then redis.call('DECRBY', KEYS[5], cost) end
+  redis.call('SET', KEYS[2], 'released', 'EX', ARGV[7])
+  released = '1'
+end
+
+local audit = {
+  jobId = current.id,
+  kind = current.kind,
+  tier = current.tier,
+  expectedCostMicroUsd = tonumber(current.expectedCostMicroUsd),
+  provider = current.provider,
+  providerModel = current.providerModel,
+  providerRequestId = current.providerRequestId,
+  status = 'failed',
+  disposition = 'stale',
+  failure_reason = 'stale_provider_job',
+  recordedAt = ARGV[9],
+  estimated = true,
+}
+if ARGV[11] == 'true' then audit.billing_observed = true end
+if ARGV[11] == 'false' then audit.billing_observed = false end
+redis.call('SET', KEYS[6], cjson.encode(audit), 'EX', ARGV[10], 'NX')
+return {'STALED', cjson.encode(current), released}
 `;
 

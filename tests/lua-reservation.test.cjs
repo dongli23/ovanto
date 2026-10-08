@@ -4,7 +4,7 @@ const lua = require("fengari/src/lua.js");
 const lauxlib = require("fengari/src/lauxlib.js");
 const lualib = require("fengari/src/lualib.js");
 const { to_luastring } = require("fengari/src/fengaricore.js");
-const { RESERVE_SCRIPT, RELEASE_SCRIPT, UPLOAD_RESERVE_SCRIPT } = require("../lib/generation/scripts.ts");
+const { RESERVE_SCRIPT, RELEASE_SCRIPT, UPLOAD_RESERVE_SCRIPT, STALE_JOB_SCRIPT, UPDATE_JOB_SCRIPT } = require("../lib/generation/scripts.ts");
 const { FREE_COST_MICRO_USD, FREE_DAILY_BUDGET_MICRO_USD, FREE_LIMITS, FREE_OVERALL_DAILY_BUDGET_MICRO_USD } = require("../lib/generation/config.ts");
 
 class RedisCommandShim {
@@ -14,11 +14,11 @@ class RedisCommandShim {
     if (expiry !== undefined && expiry <= Date.now()) { this.values.delete(key); this.expirations.delete(key); return null; }
     return this.values.has(key) ? this.values.get(key) : null;
   }
-  set(key, value, ttlSeconds) { this.values.set(key, String(value)); if (ttlSeconds) this.expirations.set(key, Date.now() + Number(ttlSeconds) * 1000); return "OK"; }
+  set(key, value, ttlSeconds, nx = false) { if (nx && this.get(key) !== null) return null; this.values.set(key, String(value)); if (ttlSeconds) this.expirations.set(key, Date.now() + Number(ttlSeconds) * 1000); return "OK"; }
   call(command, args) {
     const name = command.toUpperCase();
     if (name === "GET") return this.get(args[0]);
-    if (name === "SET") { const ttlIndex = args.findIndex((arg) => String(arg).toUpperCase() === "EX"); return this.set(args[0], args[1], ttlIndex >= 0 ? args[ttlIndex + 1] : undefined); }
+    if (name === "SET") { const ttlIndex = args.findIndex((arg) => String(arg).toUpperCase() === "EX"); const nx = args.some((arg) => String(arg).toUpperCase() === "NX"); return this.set(args[0], args[1], ttlIndex >= 0 ? args[ttlIndex + 1] : undefined, nx); }
     if (name === "INCR") return this.incr(args[0], 1);
     if (name === "INCRBY") return this.incr(args[0], Number(args[1]));
     if (name === "DECR") return this.incr(args[0], -1);
@@ -27,6 +27,44 @@ class RedisCommandShim {
     throw new Error(`unsupported Redis command ${name}`);
   }
   incr(key, amount) { const next = Number(this.get(key) || "0") + amount; this.values.set(key, String(next)); return next; }
+}
+
+function pushJsonValue(L, value) {
+  if (value === null || value === undefined) { lua.lua_pushnil(L); return; }
+  if (typeof value === "string") { lua.lua_pushstring(L, to_luastring(value)); return; }
+  if (typeof value === "boolean") { lua.lua_pushboolean(L, value); return; }
+  if (typeof value === "number") { lua.lua_pushnumber(L, value); return; }
+  if (Array.isArray(value)) {
+    lua.lua_newtable(L);
+    value.forEach((item, index) => { pushJsonValue(L, item); lua.lua_rawseti(L, -2, index + 1); });
+    return;
+  }
+  if (typeof value === "object") {
+    lua.lua_newtable(L);
+    Object.entries(value).forEach(([key, item]) => { pushJsonValue(L, item); lua.lua_setfield(L, -2, to_luastring(key)); });
+    return;
+  }
+  throw new Error(`unsupported JSON value: ${typeof value}`);
+}
+
+function readLuaValue(L, index) {
+  const type = lua.lua_type(L, index);
+  if (type === lua.LUA_TNIL) return null;
+  if (type === lua.LUA_TBOOLEAN) return lua.lua_toboolean(L, index);
+  if (type === lua.LUA_TNUMBER) return lua.lua_tonumber(L, index);
+  if (type === lua.LUA_TSTRING) return lua.lua_tojsstring(L, index);
+  if (type === lua.LUA_TTABLE) {
+    const absolute = lua.lua_absindex(L, index);
+    const object = {};
+    lua.lua_pushnil(L);
+    while (lua.lua_next(L, absolute) !== 0) {
+      const key = readLuaValue(L, -2);
+      object[String(key)] = readLuaValue(L, -1);
+      lua.lua_pop(L, 1);
+    }
+    return object;
+  }
+  throw new Error(`unsupported Lua value: ${lua.lua_typename(L, type)}`);
 }
 
 function createLuaRunner(redis) {
@@ -45,6 +83,19 @@ function createLuaRunner(redis) {
   });
   lua.lua_setfield(L, -2, to_luastring("call"));
   lua.lua_setglobal(L, to_luastring("redis"));
+  lua.lua_newtable(L);
+  lua.lua_pushjsfunction(L, (state) => {
+    const value = JSON.parse(lua.lua_tojsstring(state, 1));
+    pushJsonValue(state, value);
+    return 1;
+  });
+  lua.lua_setfield(L, -2, to_luastring("decode"));
+  lua.lua_pushjsfunction(L, (state) => {
+    lua.lua_pushstring(state, to_luastring(JSON.stringify(readLuaValue(state, 1))));
+    return 1;
+  });
+  lua.lua_setfield(L, -2, to_luastring("encode"));
+  lua.lua_setglobal(L, to_luastring("cjson"));
   return (script, keys, args) => {
     lua.lua_settop(L, 0); pushArray(L, "KEYS", keys); pushArray(L, "ARGV", args);
     assert.equal(lauxlib.luaL_loadstring(L, to_luastring(script)), lua.LUA_OK);
@@ -131,4 +182,115 @@ test("upload abuse guard is atomic and independent from generation counters", ()
   assert.equal(run(UPLOAD_RESERVE_SCRIPT, keys, ["2", "100", "60", "600"])[0], "RESERVED");
   assert.equal(run(UPLOAD_RESERVE_SCRIPT, keys, ["2", "100", "60", "600"])[0], "LIMIT");
   assert.equal(redis.get("quota:2026-09-30:ip-a:image"), null);
+});
+
+function staleJob(overrides = {}) {
+  return {
+    id: "550e8400-e29b-41d4-a716-446655440000",
+    kind: "image",
+    prompt: "lua stale test",
+    inputHash: "a".repeat(64),
+    ownerId: "owner",
+    ipHash: "ip-hash",
+    createdAt: "2026-10-07T23:00:00.000Z",
+    status: "processing",
+    provider: "replicate",
+    tier: "free",
+    expectedCostMicroUsd: FREE_COST_MICRO_USD.image,
+    providerModel: "black-forest-labs/flux-schnell",
+    providerRequestId: "prediction-id",
+    ...overrides,
+  };
+}
+
+function staleKeys(job) {
+  return [
+    `ovanto:job:${job.id}`,
+    `ovanto:reservation:${job.id}`,
+    `ovanto:quota:2026-10-07:${job.ipHash}:${job.kind}`,
+    `ovanto:budget:2026-10-07:${job.kind}`,
+    "ovanto:budget:2026-10-07:overall",
+    `ovanto:audit:${job.id}:stale`,
+  ];
+}
+
+function staleArgs(job, billingObserved = "") {
+  return [
+    job.id,
+    job.createdAt,
+    "2026-10-08T00:00:00.000Z",
+    job.kind,
+    job.ipHash,
+    "86400",
+    "86400",
+    String(FREE_COST_MICRO_USD[job.kind]),
+    "2026-10-08T00:00:00.000Z",
+    "2592000",
+    billingObserved,
+  ];
+}
+
+test("STALE_JOB_SCRIPT atomically stales at the boundary, refunds active counters, audits, and is idempotent", () => {
+  const redis = new RedisCommandShim(); const run = createLuaRunner(redis); const job = staleJob(); const keys = staleKeys(job);
+  redis.values.set(keys[0], JSON.stringify(job));
+  redis.values.set(keys[1], "active");
+  redis.values.set(keys[2], "1");
+  redis.values.set(keys[3], String(FREE_COST_MICRO_USD.image));
+  redis.values.set(keys[4], String(FREE_COST_MICRO_USD.image));
+
+  const first = run(STALE_JOB_SCRIPT, keys, staleArgs(job, "false"));
+  assert.equal(first[0], "STALED");
+  assert.equal(first[2], "1");
+  const failed = JSON.parse(first[1]);
+  assert.equal(failed.status, "failed");
+  assert.equal(failed.failure_reason, "stale_provider_job");
+  assert.equal(redis.get(keys[1]), "released");
+  assert.equal(redis.get(keys[2]), "0");
+  assert.equal(redis.get(keys[3]), "0");
+  assert.equal(redis.get(keys[4]), "0");
+  const audit = JSON.parse(redis.get(keys[5]));
+  assert.equal(audit.status, "failed");
+  assert.equal(audit.failure_reason, "stale_provider_job");
+  assert.equal(audit.providerRequestId, job.providerRequestId);
+  assert.equal(audit.billing_observed, false);
+
+  const second = run(STALE_JOB_SCRIPT, keys, staleArgs(job, "false"));
+  assert.equal(second[0], "NOT_STALE");
+  assert.equal(redis.get(keys[2]), "0");
+  assert.equal(redis.get(keys[3]), "0");
+  assert.equal(redis.get(keys[4]), "0");
+});
+
+test("STALE_JOB_SCRIPT protects a concurrent succeeded result", () => {
+  const redis = new RedisCommandShim(); const run = createLuaRunner(redis);
+  const job = staleJob({ status: "succeeded", result: { url: "https://replicate.delivery/result.webp", mediaType: "image" } }); const keys = staleKeys(job);
+  const raw = JSON.stringify(job); redis.values.set(keys[0], raw);
+  const result = run(STALE_JOB_SCRIPT, keys, staleArgs(job));
+  assert.equal(result[0], "NOT_STALE");
+  assert.equal(result[1], raw);
+  assert.equal(redis.values.has(keys[1]), false);
+  assert.equal(redis.values.has(keys[5]), false);
+});
+
+test("STALE_JOB_SCRIPT releases an active marker without creating expired counters", () => {
+  const redis = new RedisCommandShim(); const run = createLuaRunner(redis); const job = staleJob(); const keys = staleKeys(job);
+  redis.values.set(keys[0], JSON.stringify(job));
+  redis.values.set(keys[1], "active");
+  const result = run(STALE_JOB_SCRIPT, keys, staleArgs(job));
+  assert.equal(result[0], "STALED");
+  assert.equal(redis.get(keys[1]), "released");
+  assert.equal(redis.values.has(keys[2]), false);
+  assert.equal(redis.values.has(keys[3]), false);
+  assert.equal(redis.values.has(keys[4]), false);
+});
+
+test("UPDATE_JOB_SCRIPT preserves stale terminal state against a late provider result", () => {
+  const redis = new RedisCommandShim(); const run = createLuaRunner(redis);
+  const job = staleJob({ status: "failed", failure_reason: "stale_provider_job" }); const key = `ovanto:job:${job.id}`;
+  const current = JSON.stringify(job); const late = JSON.stringify({ ...job, status: "succeeded", result: { url: "https://replicate.delivery/late.webp", mediaType: "image" } });
+  redis.values.set(key, current);
+  const result = run(UPDATE_JOB_SCRIPT, [key], [late, "86400"]);
+  assert.equal(result[0], "TERMINAL");
+  assert.equal(result[1], current);
+  assert.equal(redis.get(key), current);
 });
