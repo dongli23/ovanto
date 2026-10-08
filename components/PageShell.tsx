@@ -268,6 +268,10 @@ export function PageShell({ page }: { page: PageDefinition }) {
         </div> : null}
         <div className="footer-row">
           <span>© {new Date().getFullYear()} Ovanto.ai</span>
+          <nav className="footer-links" aria-label="Legal pages">
+            <a href="/terms/">Terms</a>
+            <a href="/privacy/">Privacy</a>
+          </nav>
           <nav className="footer-links" aria-label="Ovanto language pages" hidden={page.key === "en"}>
             {languageLinks.map((link) => (
               <a href={link.href} key={link.key}>

@@ -9,6 +9,8 @@ const PUBLIC_ROUTES = [
   ROUTES.frEdit,
   ROUTES.nl,
   ROUTES.nlGenerate,
+  "/terms/",
+  "/privacy/",
 ] as const;
 
 export default function sitemap(): MetadataRoute.Sitemap {

@@ -558,9 +558,16 @@ export function PaidAccess({
               ) : null}
               {balance > 0 ? <p className="paid-status">{localized.signedIn}</p> : null}
               {product && balance <= 0 ? (
-                <button type="button" className="paid-payment-button" onClick={startCheckout} disabled={checkoutState === "loading"}>
-                  {checkoutState === "loading" ? localized.loading : localized.continuePayment}
-                </button>
+                <>
+                  <button type="button" className="paid-payment-button" onClick={startCheckout} disabled={checkoutState === "loading"}>
+                    {checkoutState === "loading" ? localized.loading : localized.continuePayment}
+                  </button>
+                  <nav className="paid-product-copy" aria-label="Payment information">
+                    <a href="/terms/">Terms</a>
+                    <a href="/privacy/">Privacy</a>
+                    <a href="/terms/#refunds">Refund policy</a>
+                  </nav>
+                </>
               ) : null}
               {!authenticated ? (
                 <div className="paid-account-actions">
