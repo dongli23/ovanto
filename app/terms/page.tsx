@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 export default function TermsPage() {
   return (
     <LegalPage title="Terms of Service" date="9 October 2026" dateTime="2026-10-09">
-      <p><strong>Version 1.0 · Effective 9 October 2026</strong></p>
+      <p><strong>Version 1.1 · Updated and effective 9 October 2026</strong></p>
 
       <p>
         These Terms of Service (the “Terms”) govern your access to and use of Ovanto,
@@ -38,8 +38,8 @@ export default function TermsPage() {
       <p>
         Ovanto provides browser-based AI image generation, short video generation, and
         image editing. The available tools, model choices, limits, resolutions, and
-        prices are shown in the product interface or at checkout and may change as the
-        Service develops.
+        prices are shown in the product interface, on our <a href="/pricing/">pricing
+        page</a>, or at checkout and may change as the Service develops.
       </p>
       <p>
         The Service relies on third-party AI providers. For example, the current free
@@ -152,20 +152,66 @@ export default function TermsPage() {
         brands, locations, artwork, or other material shown in it.
       </p>
 
-      <h2>9. Acceptable use</h2>
-      <p>You may use the Service only for lawful purposes. You must not:</p>
-      <ul>
-        <li>create or distribute illegal, fraudulent, defamatory, harassing, hateful, or abusive material;</li>
-        <li>create sexual content involving minors or otherwise violate child-safety laws;</li>
-        <li>create or distribute deceptive deepfakes or impersonation intended to mislead people about identity, source, or authenticity;</li>
-        <li>infringe privacy, publicity, copyright, trademark, or other rights;</li>
-        <li>create malware, phishing material, cyber-attack tooling, or instructions intended to cause harm;</li>
-        <li>bypass quotas, Turnstile, access controls, safety systems, or other security measures;</li>
-        <li>resell, sublicense, share, or automate access in a way that burdens or abuses the Service;</li>
-        <li>systematically scrape or extract outputs for bulk publication or a competing service;</li>
-        <li>use inputs, outputs, model responses, or derived data to train, fine-tune, benchmark, distill, or develop a competing AI or machine-learning model; or</li>
-        <li>present AI output as professional medical, legal, financial, or other regulated advice.</li>
-      </ul>
+      <section id="content-safety">
+        <h2>9. Acceptable use and content safety</h2>
+        <p>You may use the Service only for lawful purposes. You must not create, upload, request, or distribute:</p>
+        <ul>
+          <li><strong>Pornography / NSFW:</strong> pornographic or sexually explicit content, including sexualized depictions of real people.</li>
+          <li><strong>Violence / gore:</strong> gratuitous graphic violence, gore, or content intended to glorify serious physical harm.</li>
+          <li><strong>Hate:</strong> hateful or dehumanizing content targeting a protected group, or content that promotes discrimination or violence against such a group.</li>
+          <li><strong>Child unsafe content / CSAM:</strong> any sexual or exploitative content involving a minor, or any other content that endangers children.</li>
+          <li><strong>Deepfake / impersonation:</strong> deceptive synthetic media or impersonation intended to mislead people about identity, source, or authenticity, especially involving a real person without consent.</li>
+          <li><strong>Copyright / trademark infringement:</strong> content that infringes copyright, trademark, publicity, privacy, or other rights.</li>
+        </ul>
+        <p>You must also not:</p>
+        <ul>
+          <li>create malware, phishing material, cyber-attack tooling, or instructions intended to cause harm;</li>
+          <li>promote or assist terrorism, violent extremism, mass violence, or instructions for constructing weapons of mass destruction;</li>
+          <li>bypass quotas, Turnstile, access controls, safety systems, or other security measures;</li>
+          <li>resell, sublicense, share, or automate access in a way that burdens or abuses the Service;</li>
+          <li>systematically scrape or extract outputs for bulk publication or a competing service;</li>
+          <li>use inputs, outputs, model responses, or derived data to train, fine-tune, benchmark, distill, or develop a competing AI or machine-learning model; or</li>
+          <li>present AI output as professional medical, legal, financial, or other regulated advice.</li>
+        </ul>
+
+        <h3 id="moderation">9.1 Safety checks and review</h3>
+        <p>
+          Provider checks vary by model. The current free Wan video path requests the
+          provider safety checker. These checks are complemented by manual review of
+          reported content and do not guarantee detection of every violation.
+        </p>
+        <p>
+          Li Dong manually reviews content-safety reports sent to the address below.
+          Depending on the available job record or logs, the provider response, and what
+          we can lawfully do, review may include checking the report, escalating to the
+          relevant provider, and taking an available action such as refusing a request,
+          limiting access, or removing an available local job or output reference. We
+          cannot control or promise deletion of copies retained by a provider.
+        </p>
+
+        <h3 id="reports">9.2 Content safety reports</h3>
+        <p>
+          Report a suspected violation by emailing{" "}
+          <a href="mailto:hello@ovanto.ai">hello@ovanto.ai</a> with the subject{" "}
+          <strong>“Content safety report”</strong>. Include the job ID if available, the
+          relevant category, and a brief description. Do not send CSAM attachments,
+          passwords, API keys, payment details, or other secrets, and do not send another
+          person’s sensitive personal information unless it is strictly necessary to
+          explain the report. For immediate danger, contact your local authorities. This
+          mailbox is monitored, but it is not a 24/7 emergency service.
+        </p>
+
+        <h3>9.3 Review and appeals</h3>
+        <p>
+          If you believe a safety action was mistaken, email{" "}
+          <a href="mailto:hello@ovanto.ai">hello@ovanto.ai</a> with the subject{" "}
+          <strong>“Content safety appeal”</strong> and include the job or report ID if
+          available. Li Dong will review the available information and aim to reply
+          within 2 business days; urgent safety reports are prioritized. If a job has
+          expired or provider information is no longer available, the review may be
+          limited to the records we still have.
+        </p>
+      </section>
 
       <h2>10. Privacy and third-party services</h2>
       <p>
@@ -238,7 +284,7 @@ export default function TermsPage() {
         include passwords, card details, API keys, or other secrets in your message.
       </p>
 
-      <p><strong>Li Dong · https://www.ovanto.ai/ · Version 1.0</strong></p>
+      <p><strong>Li Dong · https://www.ovanto.ai/ · Version 1.1</strong></p>
     </LegalPage>
   );
 }

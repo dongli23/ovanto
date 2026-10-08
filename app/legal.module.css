@@ -142,6 +142,114 @@
   color: var(--coral-dark);
 }
 
+.lead {
+  max-width: 620px;
+  color: var(--muted);
+  font-size: 1.1rem;
+  line-height: 1.65;
+}
+
+.pricingStatus {
+  margin: 48px 0 0;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 24px;
+  background: var(--mint);
+}
+
+.pricingStatus h2,
+.sectionHeading h2 {
+  margin: 0;
+  color: var(--ink);
+  font-size: 1.55rem;
+  letter-spacing: -0.04em;
+  line-height: 1.2;
+}
+
+.pricingStatus p:last-child,
+.sectionHeading p:last-child {
+  margin: 10px 0 0;
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.statusLabel {
+  margin: 0 0 8px;
+  color: var(--coral-dark);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.pricingSection {
+  margin-top: 64px;
+}
+
+.sectionHeading {
+  margin-bottom: 22px;
+}
+
+.pricingGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.pricingCard {
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 22px;
+  background: var(--surface, #fff);
+}
+
+.pricingCardFeatured {
+  max-width: 340px;
+  border-color: var(--coral);
+  background: var(--soft);
+}
+
+.pricingCard h3 {
+  margin: 0;
+  color: var(--ink);
+  font-size: 1rem;
+  letter-spacing: -0.02em;
+}
+
+.pricingPrice {
+  margin: 22px 0 4px;
+  color: var(--ink);
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: -0.06em;
+  line-height: 1;
+}
+
+.pricingUnit {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
+.pricingNote {
+  max-width: 650px;
+  margin-top: 18px;
+  color: var(--muted);
+  font-size: 0.86rem;
+  line-height: 1.65;
+}
+
+.pricingLinks {
+  margin: 0;
+  padding-left: 1.2em;
+}
+
+.pricingLinks li + li {
+  margin-top: 10px;
+}
+
 .footer {
   display: flex;
   align-items: center;
@@ -184,6 +292,18 @@
   .prose {
     margin-top: 40px;
     font-size: 0.95rem;
+  }
+
+  .pricingStatus {
+    padding: 20px;
+  }
+
+  .pricingGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .pricingCardFeatured {
+    max-width: none;
   }
 
   .footer {

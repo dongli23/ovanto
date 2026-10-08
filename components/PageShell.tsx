@@ -209,6 +209,7 @@ export function PageShell({ page }: { page: PageDefinition }) {
             <a href={ROUTES.fr}>AI Video <small>FR</small></a>
             <a href={ROUTES.frEdit}>AI Photo Editor <small>FR</small></a>
             <a href="#ai-tools">AI Tools</a>
+            <a href="/pricing/">Pricing</a>
           </nav>
         ) : null}
         <nav className="language-nav" aria-label="Language switcher">
@@ -268,7 +269,10 @@ export function PageShell({ page }: { page: PageDefinition }) {
         </div> : null}
         <div className="footer-row">
           <span>© {new Date().getFullYear()} Ovanto.ai</span>
-          <nav className="footer-links" aria-label="Legal pages">
+          <nav className="footer-links" aria-label="Support and legal pages">
+            <a href="mailto:hello@ovanto.ai">Support: hello@ovanto.ai</a>
+            <a href="/pricing/">Pricing</a>
+            <a href="/terms/#content-safety">Content safety</a>
             <a href="/terms/">Terms</a>
             <a href="/privacy/">Privacy</a>
           </nav>

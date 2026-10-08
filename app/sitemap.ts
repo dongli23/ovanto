@@ -9,6 +9,7 @@ const PUBLIC_ROUTES = [
   ROUTES.frEdit,
   ROUTES.nl,
   ROUTES.nlGenerate,
+  "/pricing/",
   "/terms/",
   "/privacy/",
 ] as const;

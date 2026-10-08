@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 export default function PrivacyPage() {
   return (
     <LegalPage title="Privacy Policy" date="9 October 2026" dateTime="2026-10-09">
-      <p><strong>Version 1.0 · Effective 9 October 2026</strong></p>
+      <p><strong>Version 1.1 · Updated and effective 9 October 2026</strong></p>
 
       <p>
         This Privacy Policy explains how Li Dong, an individual operator of Ovanto
@@ -47,6 +47,7 @@ export default function PrivacyPage() {
         <li>Your email address and account or login information when you use paid account features.</li>
         <li>Order identifiers, product, quantity, price, currency, payment status, and credit ledger information. We do not receive or store full payment card numbers on our servers.</li>
         <li>Messages and other information you include when you contact support.</li>
+        <li>Content safety reports sent by email, such as a job or report ID, category, brief description, and related correspondence. Please do not send CSAM attachments, secrets, or another person’s sensitive personal information.</li>
       </ul>
 
       <h3>2.2 Information generated or collected automatically</h3>
@@ -75,6 +76,7 @@ export default function PrivacyPage() {
         <li>maintain quotas, credits, reservations, job status, downloads, and account access;</li>
         <li>process checkout, reconcile payments, issue credits, investigate refunds, and answer billing questions;</li>
         <li>authenticate users, send login or account emails, and provide support;</li>
+        <li>review content safety reports, coordinate with a provider where possible, and take actions within our capability and the law;</li>
         <li>protect the Service against fraud, abuse, automated attacks, unauthorized access, and unsafe use;</li>
         <li>diagnose errors, maintain reliability, and improve the Service without using your inputs to train a general AI model without separate permission; and</li>
         <li>comply with legal obligations, enforce our Terms, and respond to valid legal requests.</li>
@@ -168,7 +170,7 @@ export default function PrivacyPage() {
         <li>Anonymous owner and checkout claim cookies: up to 2 days; account session cookies: up to 30 days. Login codes are valid for 10 minutes and activation links for 7 days; those validity periods control use of the credential, while related records may be retained longer where needed for security or legal purposes.</li>
         <li>Provider output URLs: according to the relevant provider’s availability and expiration behavior. We do not promise that a provider URL will remain available indefinitely.</li>
         <li>Paid account, credit, order, and transaction records: no scheduled automatic expiry is currently applied. We keep them while needed to provide the account or credits, complete refunds and disputes, and meet applicable legal obligations. We will consider deletion requests subject to those requirements.</li>
-        <li>Support correspondence: ordinarily up to 12 months, or longer where needed for a dispute, security investigation, or legal obligation.</li>
+        <li>Support and content-safety correspondence: ordinarily up to 12 months, or longer where needed for a dispute, security investigation, or legal obligation.</li>
       </ul>
       <p>
         Third-party providers may keep prompts, uploads, outputs, or logs under their own
@@ -229,12 +231,13 @@ export default function PrivacyPage() {
 
       <h2>13. Contact</h2>
       <p>
-        For privacy requests, support, billing questions, or security reports, contact{" "}
+        For privacy requests, support, billing questions, security reports, or
+        content-safety reports, contact{" "}
         <a href="mailto:hello@ovanto.ai">hello@ovanto.ai</a>. The operator is Li Dong.
         Please do not include payment card details or other secrets in email.
       </p>
 
-      <p><strong>Li Dong · https://www.ovanto.ai/ · Version 1.0</strong></p>
+      <p><strong>Li Dong · https://www.ovanto.ai/ · Version 1.1</strong></p>
     </LegalPage>
   );
 }

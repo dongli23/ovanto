@@ -46,7 +46,10 @@ export function LegalPage({
 
       <footer className={styles.footer}>
         <span>Ovanto</span>
-        <nav aria-label="Legal pages">
+        <nav aria-label="Support and legal pages">
+          <a href="mailto:hello@ovanto.ai">Support: hello@ovanto.ai</a>
+          <a href="/pricing/">Pricing</a>
+          <a href="/terms/#content-safety">Content safety</a>
           <a href="/terms/">Terms</a>
           <a href="/privacy/">Privacy</a>
         </nav>
