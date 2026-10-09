@@ -24,7 +24,7 @@ Run `npm run verify` with `BASE_URL=http://localhost:3001`. It reads v4 and writ
 | Free video | FAL `fal-ai/wan-25-preview/text-to-video` | 1/IP/UTC day; 5s / 480p; $0.25 |
 | Paid image | Replicate `black-forest-labs/flux-dev` | $0.025 |
 | Paid edit | FAL `fal-ai/flux-pro/kontext` | $0.04 |
-| Paid video | FAL `fal-ai/kling-video/v2.5-turbo/pro/text-to-video` | Fixed 5s; $0.35 upstream; retail $0.99–1.49 |
+| Paid video | FAL `fal-ai/kling-video/v2.5-turbo/pro/text-to-video` | Fixed 5s; $0.35 upstream; planned public pack US$4.99 for 3 Pro video generations |
 
 Free requests require Turnstile and trusted deployment IP/country. IN/RU receive no free quota. Atomic inflight reservations cover independent $3 image, $2 edit and $5 video pools plus a separate $10 total cap. At $0.023, 86 edits fit the $2 pool; the 87th is rejected. Paid credits bypass free pools and free region exclusions. Model, duration, resolution and prices are server-owned. Watermark defaults off.
 
@@ -37,6 +37,8 @@ Stripe Hosted Checkout collects email and card. A verified webhook credits the o
 The encrypted email outbox supports retries with Resend idempotency keys. Paid generation reserves one credit before supplier submission. Confirmed rejection releases it once; uncertain submission preserves the reservation and idempotency key for reconciliation. Recorded costs are expected costs, not verified supplier charges.
 
 Configure `.env.example` locally and apply `scripts/sql/001_payments_accounts.sql` to the selected database before enabling checkout. Checkout stays disabled when configuration/prices are absent. Image/edit retail prices await confirmation. No database, mail service or deployment has been provisioned; no real generation, payment or email has been sent.
+
+The public paid-video copy describes the planned US$4.99 pack only; legacy backend price, checkout and entitlement fields remain unchanged pending a separate payment migration.
 
 ## External acceptance
 
