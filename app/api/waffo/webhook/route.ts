@@ -1,9 +1,9 @@
 import { after, NextResponse } from "next/server";
-import type { PaymentNotification } from "@waffo/waffo-node";
-import { MAX_WEBHOOK_BODY_BYTES } from "../../../../lib/payments/config";
+import { WebhookEventType, type WebhookEvent, type WebhookEventData } from "@waffo/pancake-ts";
+import { MAX_WEBHOOK_BODY_BYTES, WAFFO_PACK_NAME, WAFFO_PACK_PRICE_CENTS } from "../../../../lib/payments/config";
 import { assertWebhookConfiguration, PaymentError, paymentResponse } from "../../../../lib/payments/errors";
 import { readBoundedText } from "../../../../lib/payments/http";
-import { verifyWaffoWebhook, waffoWebhookAck } from "../../../../lib/payments/waffo";
+import { parseWaffoWebhook } from "../../../../lib/payments/waffo";
 import { fulfillWaffoEvent, type VerifiedWaffoPayment } from "../../../../lib/payments/store";
 import { flushEmailOutbox } from "../../../../lib/accounts/outbox";
 
@@ -14,23 +14,20 @@ export async function POST(request: Request) {
   try {
     assertWebhookConfiguration();
     const rawBody = await readBoundedText(request, MAX_WEBHOOK_BODY_BYTES);
-    const signature = request.headers.get("x-signature");
-    if (!verifyWaffoWebhook(rawBody, signature).verified) {
+    const signature = request.headers.get("x-waffo-signature");
+    const event = parseWaffoWebhook(rawBody, signature);
+    if (!event) {
       throw new PaymentError("WEBHOOK_SIGNATURE_INVALID", 400);
     }
 
-    let notification: PaymentNotification;
-    try {
-      notification = JSON.parse(rawBody) as PaymentNotification;
-    } catch {
-      throw new PaymentError("WEBHOOK_SIGNATURE_INVALID", 400);
-    }
-    if (notification?.eventType !== "PAYMENT_NOTIFICATION") {
+    // Only the one-time order completion event can ever grant credits. Every
+    // other verified event acknowledges without side effects.
+    if (event.eventType !== WebhookEventType.OrderCompleted) {
       return waffoAck();
     }
-    const verified = verifiedWaffoPayment(notification);
+    const verified = verifiedWaffoPayment(event);
     if (!verified) {
-      // A verified notification that is not a paid success grants nothing.
+      // A verified completion that fails server reconciliation grants nothing.
       return waffoAck();
     }
     await fulfillWaffoEvent(verified);
@@ -47,49 +44,55 @@ function scheduleOutboxFlush(): void {
   });
 }
 
-/** Echo the SDK-signed success acknowledgement so Waffo stops retrying. */
+/**
+ * Pancake webhooks need only a fast 2xx acknowledgement; the SDK signs
+ * inbound deliveries, so no signed response is required.
+ */
 function waffoAck(): NextResponse {
-  const ack = waffoWebhookAck();
-  return new NextResponse(ack.body, {
+  return new NextResponse(JSON.stringify({ received: true }), {
     status: 200,
     headers: {
       "Content-Type": "application/json",
-      "X-SIGNATURE": ack.signature,
       "Cache-Control": "no-store",
     },
   });
 }
 
 /**
- * Decode a verified PAYMENT_NOTIFICATION into the server-reconciled shape.
- * Only PAY_SUCCESS is ever considered; every other status is ignored. Email,
- * amount and currency are validated again inside the fulfillment transaction.
+ * Decode a verified `order.completed` event into the server-reconciled shape.
+ * Amount, currency, store, environment, product and the merchant external id
+ * are validated again inside the fulfillment transaction.
  */
-function verifiedWaffoPayment(notification: PaymentNotification): VerifiedWaffoPayment | null {
-  const result = notification?.result;
-  if (!result || result.orderStatus !== "PAY_SUCCESS") return null;
-  const paymentRequestId = result.paymentRequestId;
-  const acquiringOrderId = result.acquiringOrderId;
-  const orderAmount = result.orderAmount;
-  const currency = result.orderCurrency;
-  if (typeof paymentRequestId !== "string" || !paymentRequestId) return null;
-  if (typeof acquiringOrderId !== "string" || !acquiringOrderId) return null;
-  if (typeof orderAmount !== "string" || typeof currency !== "string") return null;
-  const amountCents = parseAmountCents(orderAmount);
-  if (amountCents === null) return null;
-  const userInfo = result.userInfo as { userEmail?: unknown } | undefined;
-  const merchantInfo = result.merchantInfo as { merchantId?: unknown } | undefined;
-  const goodsInfo = result.goodsInfo as { goodsId?: unknown } | undefined;
+function verifiedWaffoPayment(event: WebhookEvent<WebhookEventData>): VerifiedWaffoPayment | null {
+  const data = event.data;
+  if (!data) return null;
+  if (data.orderStatus !== "completed" || data.paymentStatus !== "succeeded") return null;
+  const orderId = data.orderId;
+  const externalOrderId = data.orderMerchantExternalId;
+  const storeId = event.storeId;
+  if (typeof orderId !== "string" || !orderId) return null;
+  if (typeof externalOrderId !== "string" || !externalOrderId) return null;
+  if (typeof storeId !== "string" || !storeId) return null;
+  // Prefer the amount actually charged; fall back to the list price snapshot.
+  const amountDisplay = data.chargedAmount ?? data.listPrice?.total ?? data.amount;
+  const currency = data.currency;
+  if (typeof amountDisplay !== "string" || typeof currency !== "string") return null;
+  const amountCents = parseAmountCents(amountDisplay);
+  if (amountCents === null || amountCents !== WAFFO_PACK_PRICE_CENTS) return null;
+  if (typeof data.buyerEmail !== "string" || !data.buyerEmail) return null;
+  if (typeof data.productName !== "string" || data.productName !== WAFFO_PACK_NAME) return null;
   return {
-    eventType: "PAYMENT_NOTIFICATION",
-    paymentRequestId,
-    acquiringOrderId,
-    orderStatus: "PAY_SUCCESS",
+    eventId: event.id,
+    orderId,
+    externalOrderId,
+    storeId,
+    mode: event.mode,
+    orderStatus: data.orderStatus,
+    paymentStatus: data.paymentStatus,
+    productName: data.productName,
     amountCents,
     currency,
-    email: typeof userInfo?.userEmail === "string" ? userInfo.userEmail : "",
-    merchantId: typeof merchantInfo?.merchantId === "string" ? merchantInfo.merchantId : undefined,
-    goodsId: typeof goodsInfo?.goodsId === "string" ? goodsInfo.goodsId : undefined,
+    email: data.buyerEmail,
   };
 }
 

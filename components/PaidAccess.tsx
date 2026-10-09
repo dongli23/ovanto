@@ -187,9 +187,9 @@ const emptyState: PaidAccessState = {
   product: null,
 };
 
-// Waffo's official hosted checkout host. This mirrors the server-side
+// Waffo Pancake's official hosted checkout host. This mirrors the server-side
 // allowlist and never uses a suffix/wildcard rule.
-const WAFFO_CHECKOUT_HOSTS = ["checkout.waffo.com", "cashier.waffo.com"];
+const WAFFO_CHECKOUT_HOSTS = ["pancake.waffo.ai"];
 
 function validBalance(value: unknown): number {
   return typeof value === "number" && Number.isSafeInteger(value) && value >= 0 ? value : 0;

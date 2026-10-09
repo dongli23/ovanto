@@ -74,6 +74,8 @@ let pool: PGlitePool | undefined;
 
 test.beforeEach(async () => {
   process.env.ACCOUNT_TOKEN_SECRET = "sql-test-account-token-secret-32-bytes!!";
+  process.env.WAFFO_STORE_ID = "STO_sqlteststore000000001";
+  process.env.WAFFO_ENVIRONMENT = "prod";
   database = new PGlite();
   for (const path of migrationPaths) {
     await database.exec(await readFile(path, "utf8"));
@@ -96,15 +98,17 @@ function db(): PGlitePool {
 
 function orderInput(overrides: Partial<PendingOrderInput> = {}): PendingOrderInput {
   const unitAmountCents = overrides.unitAmountCents ?? 499;
+  const id = randomUUID();
   return {
-    id: randomUUID(),
+    id,
     idempotencyKey: `sql-order-${randomUUID()}`,
     product: "video",
     quantity: 1,
     unitAmountCents,
     amountCents: unitAmountCents,
     currency: "usd",
-    waffoPaymentRequestId: randomUUID().replace(/-/g, ""),
+    // Mirrors production: the merchant external id is the local order id.
+    waffoPaymentRequestId: id,
     claimSecretHash: hashSecret("s".repeat(48)),
     returnPath: "/it/",
     ...overrides,
@@ -128,13 +132,17 @@ function checkoutFor(
   order: Awaited<ReturnType<typeof insertPendingOrder>>,
   acquiringOrderId: string,
   email = "buyer@example.com",
-  overrides: Partial<Pick<VerifiedWaffoPayment, "amountCents" | "currency" | "paymentRequestId">> = {},
+  overrides: Partial<Pick<VerifiedWaffoPayment, "amountCents" | "currency" | "externalOrderId" | "storeId" | "mode" | "productName">> = {},
 ): VerifiedWaffoPayment {
   return {
-    eventType: "PAYMENT_NOTIFICATION",
-    paymentRequestId: overrides.paymentRequestId ?? order.waffoPaymentRequestId ?? "",
-    acquiringOrderId,
-    orderStatus: "PAY_SUCCESS",
+    eventId: randomUUID(),
+    orderId: acquiringOrderId,
+    externalOrderId: overrides.externalOrderId ?? order.waffoPaymentRequestId ?? "",
+    storeId: overrides.storeId ?? "STO_sqlteststore000000001",
+    mode: overrides.mode ?? "prod",
+    orderStatus: "completed",
+    paymentStatus: "succeeded",
+    productName: overrides.productName ?? "Ovanto Pro Video Pack",
     amountCents: overrides.amountCents ?? order.amountCents,
     currency: overrides.currency ?? "usd",
     email,
@@ -178,6 +186,49 @@ test("mismatched paid amount rolls back event receipt and all fulfillment state"
   assert.equal((await db().query("SELECT count(*)::int AS count FROM ovanto_waffo_events")).rows[0].count, 0);
   assert.equal((await db().query("SELECT count(*)::int AS count FROM ovanto_accounts")).rows[0].count, 0);
   assert.equal((await db().query("SELECT count(*)::int AS count FROM ovanto_credit_ledger")).rows[0].count, 0);
+});
+
+test("mismatched currency, product name, store id, or external order id grants nothing", async () => {
+  for (const overrides of [
+    { currency: "eur" },
+    { productName: "Fake Pack" },
+    { storeId: "STO_foreignstore000000001" },
+    { externalOrderId: randomUUID() },
+  ]) {
+    const input = orderInput();
+    const order = await insertPendingOrder(db(), { ...input, claimSecretHash: hashSecret("s".repeat(48)) });
+    await attachWaffoOrder(db(), order.id, `wao_${randomUUID()}`);
+
+    if ("externalOrderId" in overrides) {
+      // An unknown external id matches no pending order at all.
+      await assert.rejects(
+        fulfillWaffoEvent(checkoutFor(order, `wao_${randomUUID()}`, "tamper@example.com", overrides), db()),
+        (error: unknown) => error instanceof PaymentError && error.code === "ORDER_UNAVAILABLE",
+      );
+    } else {
+      await assert.rejects(
+        fulfillWaffoEvent(checkoutFor(order, `wao_${randomUUID()}`, "tamper@example.com", overrides), db()),
+        (error: unknown) => error instanceof PaymentError && error.code === "CHECKOUT_VALIDATION_FAILED",
+      );
+    }
+    assert.equal((await db().query("SELECT status FROM ovanto_orders WHERE id = $1", [order.id])).rows[0].status, "pending");
+    assert.equal((await db().query("SELECT count(*)::int AS count FROM ovanto_credit_ledger WHERE order_id = $1", [order.id])).rows[0].count, 0);
+  }
+});
+
+test("a success redirect without a verified webhook grants no credits", async () => {
+  const input = orderInput();
+  const secret = "s".repeat(48);
+  const order = await insertPendingOrder(db(), { ...input, claimSecretHash: hashSecret(secret) });
+
+  // The browser returns with ?payment=success, but the order is not paid and
+  // the claim cookie cannot authorize anything.
+  await assert.rejects(
+    claimPaidOrder(order.id, secret, db()),
+    (error: unknown) => error instanceof PaymentError && error.code === "CHECKOUT_CLAIM_REQUIRED",
+  );
+  assert.equal((await db().query("SELECT count(*)::int AS count FROM ovanto_credit_balances WHERE order_id = $1", [order.id])).rows[0].count, 0);
+  assert.equal((await db().query("SELECT count(*)::int AS count FROM ovanto_credit_ledger WHERE order_id = $1", [order.id])).rows[0].count, 0);
 });
 
 test("a checkout failed before Waffo order creation cannot receive a later grant", async () => {

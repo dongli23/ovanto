@@ -1,6 +1,6 @@
 import { cookies } from "next/headers";
 import { randomUUID } from "node:crypto";
-import { WaffoUnknownStatusError } from "@waffo/waffo-node";
+import { WaffoPancakeError } from "@waffo/pancake-ts";
 import { getAccountDb, isUniqueViolation } from "../../../../lib/accounts/db";
 import {
   CHECKOUT_CLAIM_COOKIE,
@@ -12,12 +12,12 @@ import {
   hashSecret,
   newClaimSecret,
   productFor,
+  type CheckoutReturnPath,
 } from "../../../../lib/payments/config";
 import { assertPaymentConfiguration, noStore, PaymentError, paymentResponse } from "../../../../lib/payments/errors";
 import { assertPaymentOrigin, readJson } from "../../../../lib/payments/http";
-import { buildWaffoOrderParams, getWaffo } from "../../../../lib/payments/waffo";
+import { buildWaffoCheckoutParams, getWaffo, isWaffoCheckoutUrl } from "../../../../lib/payments/waffo";
 import {
-  attachWaffoOrder,
   findOrderByIdempotency,
   insertPendingOrder,
   markCheckoutFailed,
@@ -45,24 +45,21 @@ export async function POST(request: Request) {
     const cookieStore = await cookies();
 
     const prior = await findOrderByIdempotency(db, idempotencyKey);
-    if (prior) {
+    if (prior && prior.status !== "checkout_failed") {
       if (prior.product !== product.key || prior.amountCents !== WAFFO_PACK_PRICE_CENTS || prior.returnPath !== returnPath) {
         throw new PaymentError("CHECKOUT_IDEMPOTENCY_CONFLICT", 409);
       }
       const claim = cookieStore.get(CHECKOUT_CLAIM_COOKIE)?.value;
       if (!claimMatchesOrder(claim, prior)) throw new PaymentError("CHECKOUT_IN_PROGRESS", 409);
       if (prior.status === "paid") return noStore({ orderId: prior.id, status: prior.status }, 200);
-      if (!prior.waffoPaymentRequestId) throw new PaymentError("CHECKOUT_IN_PROGRESS", 409);
-      const existing = await getWaffo().order().inquiry({ paymentRequestId: prior.waffoPaymentRequestId });
-      if (!existing.isSuccess()) throw new PaymentError("CHECKOUT_UNAVAILABLE", 503);
-      const existingUrl = existing.getData()?.orderAction;
-      if (!existingUrl) throw new PaymentError("CHECKOUT_UNAVAILABLE", 503);
-      return noStore({ orderId: prior.id, url: existingUrl }, 200);
+      // The same local order is reused; the create-session idempotency key
+      // (the order id) replays the platform's cached session for 24 hours.
+      return noStore({ orderId: prior.id, url: await createCheckoutSession(prior.id, returnPath, prior.id.replace(/-/g, "")) }, 200);
     }
 
     const orderId = randomUUID();
-    // Waffo idempotency keys are at most 32 chars; the local order id without
-    // dashes is a stable, unique 32-char paymentRequestId.
+    // The create-session idempotency key is at most 256 chars; the local order
+    // id without dashes is a stable, unique 32-char key.
     const paymentRequestId = orderId.replace(/-/g, "");
     const claimSecret = newClaimSecret();
     let order: OrderRecord;
@@ -75,7 +72,8 @@ export async function POST(request: Request) {
         unitAmountCents: WAFFO_PACK_PRICE_CENTS,
         amountCents: WAFFO_PACK_PRICE_CENTS,
         currency: ORDER_CURRENCY,
-        waffoPaymentRequestId: paymentRequestId,
+        // The merchant external id reconciles webhook deliveries to this order.
+        waffoPaymentRequestId: orderId,
         claimSecretHash: hashSecret(claimSecret),
         returnPath,
       });
@@ -91,39 +89,38 @@ export async function POST(request: Request) {
       maxAge: 2 * 24 * 60 * 60,
     });
 
-    let response;
     try {
-      response = await getWaffo().order().create(
-        buildWaffoOrderParams({ paymentRequestId, merchantOrderId: order.id, returnPath }),
-      );
+      const url = await createCheckoutSession(order.id, returnPath, paymentRequestId);
+      return noStore({ orderId: order.id, url }, 201);
     } catch (error) {
-      if (error instanceof WaffoUnknownStatusError) {
-        // The order may still have been created upstream; keep the pending
-        // local order so a later verified webhook can fulfil it.
-        throw new PaymentError("CHECKOUT_UNAVAILABLE", 503);
-      }
       await markCheckoutFailed(db, order.id);
       throw error;
     }
-    if (!response.isSuccess()) {
-      await markCheckoutFailed(db, order.id);
-      throw new PaymentError("CHECKOUT_UNAVAILABLE", 503);
-    }
-    const data = response.getData();
-    if (!data) {
-      await markCheckoutFailed(db, order.id);
-      throw new PaymentError("CHECKOUT_UNAVAILABLE", 503);
-    }
-    const checkoutUrl = data.orderAction;
-    if (!checkoutUrl) {
-      await markCheckoutFailed(db, order.id);
-      throw new PaymentError("CHECKOUT_UNAVAILABLE", 503);
-    }
-    if (data.acquiringOrderId) await attachWaffoOrder(db, order.id, data.acquiringOrderId);
-    return noStore({ orderId: order.id, url: checkoutUrl }, 201);
   } catch (error) {
     return paymentResponse(error);
   }
+}
+
+/**
+ * Create a Pancake hosted checkout session for the Pro Video Pack. Price,
+ * product, currency, model and credits are locked to the Waffo product
+ * version plus server-owned constants; the browser controls none of them.
+ */
+async function createCheckoutSession(orderId: string, returnPath: CheckoutReturnPath, paymentRequestId?: string): Promise<string> {
+  let session;
+  try {
+    session = await getWaffo().checkout.createSession(
+      buildWaffoCheckoutParams({ orderId, returnPath }),
+      paymentRequestId ? { idempotencyKey: paymentRequestId } : undefined,
+    );
+  } catch (error) {
+    if (error instanceof WaffoPancakeError) throw new PaymentError("CHECKOUT_UNAVAILABLE", 503);
+    throw error;
+  }
+  if (!session?.checkoutUrl || !isWaffoCheckoutUrl(session.checkoutUrl)) {
+    throw new PaymentError("CHECKOUT_UNAVAILABLE", 503);
+  }
+  return session.checkoutUrl;
 }
 
 function idempotencyKeyFromRequest(request: Request): string {

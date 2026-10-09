@@ -54,11 +54,14 @@ export const WAFFO_PACK_NAME = "Ovanto Pro Video Pack";
 export const WAFFO_PACK_PRICE_CENTS = 499; // US$4.99
 export const WAFFO_PACK_CREDITS = 3; // exactly 3 video credits
 export const WAFFO_PACK_CURRENCY = "USD";
-export const WAFFO_PACK_AMOUNT = "4.99"; // Waffo orderAmount (decimal string)
-export const WAFFO_PACK_PRODUCT_NAME = "ONE_TIME_PAYMENT";
 
-/** Environment names the Waffo SDK client and webhook both require. */
-export const WAFFO_ENV_KEYS = ["WAFFO_API_KEY", "WAFFO_PRIVATE_KEY", "WAFFO_PUBLIC_KEY", "WAFFO_MERCHANT_ID", "WAFFO_ENVIRONMENT"] as const;
+/**
+ * Environment names the Waffo Pancake SDK client and webhook verification
+ * both require. The current Pancake credential model is merchant id +
+ * merchant private key only; WAFFO_API_KEY / WAFFO_PUBLIC_KEY are not part
+ * of it and must never be hard requirements.
+ */
+export const WAFFO_ENV_KEYS = ["WAFFO_MERCHANT_ID", "WAFFO_PRIVATE_KEY", "WAFFO_STORE_ID", "WAFFO_PRODUCT_ID"] as const;
 
 export const ORDER_CURRENCY = "usd" as const;
 export const CHECKOUT_CLAIM_COOKIE = "ovanto_checkout_claim";
@@ -103,13 +106,13 @@ export function assertCheckoutReturnPath(value: unknown): CheckoutReturnPath {
 }
 
 /**
- * The Waffo SDK requires an explicit environment (SANDBOX or PRODUCTION).
- * The owner's production value is `WAFFO_ENVIRONMENT=prod`; normalize the
- * accepted spellings here without guessing the SDK contract.
+ * The Waffo Pancake SDK operates in `test` or `prod`. The owner's production
+ * value is `WAFFO_ENVIRONMENT=prod`; normalize the accepted spellings here
+ * without guessing beyond the SDK contract.
  */
 export function isWaffoEnvironmentConfigured(): boolean {
   const value = process.env.WAFFO_ENVIRONMENT;
-  return value === "prod" || value === "production" || value === "sandbox";
+  return value === "prod" || value === "production" || value === "test" || value === "sandbox";
 }
 
 export interface PaidCatalogEntry {
@@ -154,10 +157,6 @@ export function checkoutReturnUrls(pathname: CheckoutReturnPath): { successUrl: 
     successUrl: new URL(`${path}${path.includes("?") ? "&" : "?"}payment=success`, base).toString(),
     cancelUrl: new URL(path, base).toString(),
   };
-}
-
-export function waffoNotifyUrl(): string {
-  return new URL("/api/waffo/webhook", appBaseUrl()).toString();
 }
 
 export function newClaimSecret(): string {

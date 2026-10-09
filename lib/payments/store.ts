@@ -7,6 +7,7 @@ import {
   CHECKOUT_CLAIM_COOKIE,
   PAID_PRODUCTS,
   WAFFO_PACK_CREDITS,
+  WAFFO_PACK_NAME,
   type PaidProductKey,
   hashSecret,
   normalizeEmail,
@@ -23,7 +24,7 @@ export interface PendingOrderInput {
   unitAmountCents: number;
   amountCents: number;
   currency: string;
-  /** Waffo paymentRequestId (idempotency key), persisted at insert for webhook lookup. */
+  /** Merchant external id persisted at insert for webhook lookup; equals the local order id. */
   waffoPaymentRequestId: string;
   claimSecretHash: string;
   returnPath: string;
@@ -50,20 +51,31 @@ export interface OrderRecord {
 }
 
 /**
- * A Waffo payment notification after signature verification and server-side
- * reconciliation. The acquiringOrderId is the natural idempotency key: one
- * paid Waffo order grants credits exactly once.
+ * A verified Waffo Pancake `order.completed` event after server-side
+ * reconciliation. The Waffo order id is the natural idempotency key: one paid
+ * Waffo order grants credits exactly once. The merchant external id maps the
+ * delivery back to the local pending order created at checkout.
  */
 export interface VerifiedWaffoPayment {
-  eventType: "PAYMENT_NOTIFICATION";
-  paymentRequestId: string;
-  acquiringOrderId: string;
-  orderStatus: "PAY_SUCCESS";
+  /** Webhook delivery record id (UUID), stable across delivery retries. */
+  eventId: string;
+  /** Waffo one-time order id; unique key of ovanto_waffo_events. */
+  orderId: string;
+  /** orderMerchantExternalId from checkout; equals the local order id. */
+  externalOrderId: string;
+  /** Waffo store id; must match WAFFO_STORE_ID. */
+  storeId: string;
+  /** Event environment; must match the configured WAFFO_ENVIRONMENT. */
+  mode: string;
+  /** Order status reported on the event (e.g. "completed"). */
+  orderStatus: string;
+  /** Payment status reported on the event (e.g. "succeeded"). */
+  paymentStatus?: string;
+  /** Product name snapshot; must match the server-owned pack name. */
+  productName: string;
   amountCents: number;
   currency: string;
   email: string;
-  merchantId?: string;
-  goodsId?: string;
 }
 
 export interface FulfillmentResult {
@@ -162,11 +174,11 @@ export async function fulfillWaffoEvent(payment: VerifiedWaffoPayment, db: DbPoo
     const dedupe = await tx.query<{ acquiring_order_id: string }>(
       `INSERT INTO ovanto_waffo_events (acquiring_order_id, event_type, payment_request_id, order_status)
        VALUES ($1,$2,$3,$4) ON CONFLICT (acquiring_order_id) DO NOTHING RETURNING acquiring_order_id`,
-      [payment.acquiringOrderId, payment.eventType, payment.paymentRequestId, payment.orderStatus],
+      [payment.orderId, "order.completed", payment.externalOrderId, payment.orderStatus],
     );
     if (dedupe.rows.length === 0) return { duplicate: true };
 
-    const orderResult = await tx.query<OrderRow>("SELECT * FROM ovanto_orders WHERE waffo_payment_request_id = $1 FOR UPDATE", [payment.paymentRequestId]);
+    const orderResult = await tx.query<OrderRow>("SELECT * FROM ovanto_orders WHERE waffo_payment_request_id = $1 FOR UPDATE", [payment.externalOrderId]);
     const order = orderResult.rows[0];
     if (!order) throw new PaymentError("ORDER_UNAVAILABLE", 503);
     validateWaffoAgainstOrder(payment, orderFromRow(order));
@@ -197,7 +209,7 @@ export async function fulfillWaffoEvent(payment: VerifiedWaffoPayment, db: DbPoo
       `INSERT INTO ovanto_credit_ledger
         (id, account_id, order_id, product, entry_type, units, provider, model, expected_cost_micro_usd, metadata)
        VALUES ($1,$2,$3,$4,'grant',$5,$6,$7,$8,$9::jsonb)`,
-      [randomUUID(), account.id, order.id, order.product, WAFFO_PACK_CREDITS, order.provider, order.model, PAID_PRODUCTS[order.product].expectedCostMicroUsd, JSON.stringify({ source: "waffo", acquiring_order_id: payment.acquiringOrderId })],
+      [randomUUID(), account.id, order.id, order.product, WAFFO_PACK_CREDITS, order.provider, order.model, PAID_PRODUCTS[order.product].expectedCostMicroUsd, JSON.stringify({ source: "waffo", acquiring_order_id: payment.orderId })],
     );
 
     const rawActivationToken = randomOpaqueToken();
@@ -459,10 +471,21 @@ export const ACCOUNT_SESSION_COOKIE_NAME = "ovanto_account_session";
 export const ACCOUNT_SESSION_MAX_AGE = ACCOUNT_SESSION_TTL_SECONDS;
 
 function validateWaffoAgainstOrder(payment: VerifiedWaffoPayment, order: OrderRecord): void {
-  if (payment.paymentRequestId !== order.waffoPaymentRequestId || payment.amountCents !== order.amountCents || payment.currency.toLowerCase() !== order.currency.toLowerCase()) throw new PaymentError("CHECKOUT_VALIDATION_FAILED", 400);
+  // Amount, currency, product and order identity are reconciled against the
+  // server-created pending order; a tampered delivery grants nothing.
+  if (payment.externalOrderId !== order.waffoPaymentRequestId || payment.amountCents !== order.amountCents || payment.currency.toLowerCase() !== order.currency.toLowerCase()) throw new PaymentError("CHECKOUT_VALIDATION_FAILED", 400);
   if (order.product !== "video") throw new PaymentError("CHECKOUT_VALIDATION_FAILED", 400);
-  if (payment.merchantId && process.env.WAFFO_MERCHANT_ID && payment.merchantId !== process.env.WAFFO_MERCHANT_ID) throw new PaymentError("CHECKOUT_VALIDATION_FAILED", 400);
+  if (payment.productName !== WAFFO_PACK_NAME) throw new PaymentError("CHECKOUT_VALIDATION_FAILED", 400);
+  if (process.env.WAFFO_STORE_ID && payment.storeId !== process.env.WAFFO_STORE_ID) throw new PaymentError("CHECKOUT_VALIDATION_FAILED", 400);
+  if (process.env.WAFFO_ENVIRONMENT && payment.mode !== waffoEventMode()) throw new PaymentError("CHECKOUT_VALIDATION_FAILED", 400);
   if (!payment.email || payment.email.length > 320 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(payment.email)) throw new PaymentError("CHECKOUT_EMAIL_MISSING", 400);
+}
+
+/** The event environment that matches the configured WAFFO_ENVIRONMENT. */
+function waffoEventMode(): string {
+  const value = process.env.WAFFO_ENVIRONMENT;
+  if (value === "prod" || value === "production") return "prod";
+  return "test";
 }
 
 interface OrderRow extends Record<string, unknown> {

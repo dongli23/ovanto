@@ -1,29 +1,32 @@
-import { Environment, Waffo, type CreateOrderParams } from "@waffo/waffo-node";
 import {
-  WAFFO_PACK_AMOUNT,
+  Environment,
+  WaffoPancake,
+  verifyWebhook,
+  type CreateCheckoutSessionParams,
+  type WebhookEvent,
+  type WebhookEventData,
+} from "@waffo/pancake-ts";
+import {
   WAFFO_PACK_CURRENCY,
   WAFFO_PACK_KEY,
   WAFFO_PACK_NAME,
   WAFFO_ENV_KEYS,
-  WAFFO_PACK_PRODUCT_NAME,
   checkoutReturnUrls,
   isWaffoEnvironmentConfigured,
-  waffoNotifyUrl,
   type CheckoutReturnPath,
 } from "./config";
 import { PaymentError } from "./errors";
 
-let client: Waffo | undefined;
+let client: WaffoPancake | undefined;
 
 /**
- * The Waffo SDK requires an explicit SANDBOX or PRODUCTION environment. The
- * owner's production value is `WAFFO_ENVIRONMENT=prod`, so the accepted
- * spellings are normalized here.
+ * The Waffo Pancake SDK operates in `test` or `prod`. The owner's production
+ * value is `WAFFO_ENVIRONMENT=prod`; accepted spellings are normalized here.
  */
-function waffoEnvironment(): Environment {
+export function waffoEnvironment(): Environment {
   const raw = process.env.WAFFO_ENVIRONMENT;
-  if (raw === "prod" || raw === "production") return Environment.PRODUCTION;
-  if (raw === "sandbox") return Environment.SANDBOX;
+  if (raw === "prod" || raw === "production") return Environment.Prod;
+  if (raw === "test" || raw === "sandbox") return Environment.Test;
   throw new PaymentError("PAYMENT_CONFIGURATION_UNAVAILABLE", 503);
 }
 
@@ -34,85 +37,72 @@ export function assertWaffoConfiguration(): void {
   }
 }
 
-/** Lazily construct and reuse the official Waffo SDK singleton. */
-export function getWaffo(): Waffo {
+/**
+ * Lazily construct and reuse the official Waffo Pancake SDK singleton.
+ *
+ * The Pancake credential model is merchant id + RSA merchant private key only
+ * (the Dashboard "copy key" value, Base64 PKCS#8, is accepted by the SDK as-is).
+ * Webhook verification uses the SDK built-in Test/Production public keys; an
+ * optional `WAFFO_WEBHOOK_PUBLIC_KEY` override is read by the SDK itself and
+ * never blocks production.
+ */
+export function getWaffo(): WaffoPancake {
   assertWaffoConfiguration();
   if (!client) {
-    client = new Waffo({
-      apiKey: process.env.WAFFO_API_KEY as string,
-      privateKey: process.env.WAFFO_PRIVATE_KEY as string,
-      waffoPublicKey: process.env.WAFFO_PUBLIC_KEY as string,
-      environment: waffoEnvironment(),
+    client = new WaffoPancake({
       merchantId: process.env.WAFFO_MERCHANT_ID as string,
+      privateKey: process.env.WAFFO_PRIVATE_KEY as string,
+      environment: waffoEnvironment(),
     });
   }
   return client;
 }
 
-export interface WaffoOrderInput {
-  /** Idempotency key sent to Waffo; equals the local order id without dashes (max 32 chars). */
-  paymentRequestId: string;
-  /** Stable, unique merchant-side order reference. */
-  merchantOrderId: string;
+export interface WaffoCheckoutInput {
+  /** Local order id; becomes orderMerchantExternalId for webhook reconciliation. */
+  orderId: string;
   returnPath: CheckoutReturnPath;
 }
 
 /**
- * Build the server-owned Waffo order request. Amount, currency, product,
- * provider/model and credits are all fixed server-side; the browser never
- * supplies them.
+ * Build the server-owned Pancake hosted checkout session request. Product,
+ * currency, credits, provider/model and price all come from the locked
+ * Waffo product version plus server-owned constants; the browser never
+ * supplies them and no amount field exists on the request.
  */
-export function buildWaffoOrderParams(input: WaffoOrderInput): CreateOrderParams {
-  const { successUrl, cancelUrl } = checkoutReturnUrls(input.returnPath);
-  const goodsInfo = process.env.WAFFO_PRODUCT_ID
-    ? { goodsId: process.env.WAFFO_PRODUCT_ID, goodsName: WAFFO_PACK_NAME }
-    : { goodsId: WAFFO_PACK_KEY, goodsName: WAFFO_PACK_NAME };
+export function buildWaffoCheckoutParams(input: WaffoCheckoutInput): CreateCheckoutSessionParams {
+  const { successUrl } = checkoutReturnUrls(input.returnPath);
   return {
-    paymentRequestId: input.paymentRequestId,
-    merchantOrderId: input.merchantOrderId,
-    orderCurrency: WAFFO_PACK_CURRENCY,
-    orderAmount: WAFFO_PACK_AMOUNT,
-    orderDescription: WAFFO_PACK_NAME,
-    notifyUrl: waffoNotifyUrl(),
-    // The buyer email is captured by Waffo's hosted cashier and returned in the
-    // verified webhook; the browser is never trusted to prove ownership.
-    userInfo: { userId: input.paymentRequestId, userEmail: "", userTerminal: "WEB" },
-    paymentInfo: { productName: WAFFO_PACK_PRODUCT_NAME },
-    goodsInfo,
-    successRedirectUrl: successUrl,
-    cancelRedirectUrl: cancelUrl,
+    productId: process.env.WAFFO_PRODUCT_ID as string,
+    currency: WAFFO_PACK_CURRENCY,
+    successUrl,
+    // Stable merchant-side reference inherited by the order, its payment and
+    // the webhook payload — the sole key used to reconcile deliveries.
+    orderMerchantExternalId: input.orderId,
+    metadata: { pack: WAFFO_PACK_KEY, packName: WAFFO_PACK_NAME },
   };
 }
 
-export interface VerifiedWaffoWebhook {
-  /** true when the SDK verified the X-SIGNATURE against the Waffo public key. */
-  verified: boolean;
-}
-
 /**
- * Verify a Waffo webhook using the official SDK (RSA signature against the
- * Waffo public key). This authenticates the payload only; the route decodes
- * the JSON and decides whether to grant credits.
+ * Verify a Waffo Pancake webhook using the official SDK: RSA-SHA256 over
+ * `t.rawBody` against the environment public key, with replay protection.
+ * Returns the parsed event, or null when the signature cannot be verified.
+ * This authenticates the payload only; the route decodes and reconciles it.
  */
-export function verifyWaffoWebhook(rawBody: string, signature: string | null): VerifiedWaffoWebhook {
-  return { verified: getWaffo().webhook().verifySignature(rawBody, signature ?? "") };
+export function parseWaffoWebhook(rawBody: string, signature: string | null): WebhookEvent<WebhookEventData> | null {
+  try {
+    return verifyWebhook<WebhookEventData>(rawBody, signature ?? undefined, { environment: waffoEnvironment() });
+  } catch {
+    return null;
+  }
 }
 
 /**
- * Signed success acknowledgement echoed back to Waffo so it stops retrying.
- * The response body is signed with the merchant private key via the SDK.
- */
-export function waffoWebhookAck(): { body: string; signature: string } {
-  const ack = getWaffo().webhook().buildSuccessResponse();
-  return { body: ack.body, signature: ack.signature };
-}
-
-/**
- * Only Waffo's official hosted checkout host is allowed for redirects.
+ * Only Waffo's official Pancake hosted checkout host is allowed for redirects.
  * This is a strict allowlist (HTTPS, exact host, no credentials, no port),
  * never a suffix or wildcard rule.
  */
-export const WAFFO_CHECKOUT_HOSTS = ["checkout.waffo.com", "cashier.waffo.com"] as const;
+export const WAFFO_CHECKOUT_HOSTS = ["pancake.waffo.ai"] as const;
 
 export function isWaffoCheckoutUrl(value: unknown): value is string {
   if (typeof value !== "string") return false;
