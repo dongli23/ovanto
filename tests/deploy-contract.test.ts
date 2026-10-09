@@ -174,7 +174,7 @@ if (!existsSync(file)) {
     assert.equal(models["video.free"].fixedSeconds, 5, "video.free.fixedSeconds");
     assert.equal(models["video.free"].resolution, "480p", "video.free.resolution");
     assert.equal(models["video.paid"].fixedSeconds, 5, "video.paid.fixedSeconds");
-    assert.equal(models["video.paid"].price, 0.99, "video.paid.price");
+    assert.equal(models["video.paid"].price, null, "video.paid.price");
     for (const key of REQUIRED_KEYS) {
       if (Object.prototype.hasOwnProperty.call(models[key], "price")) {
         assert.ok(models[key].price === null || typeof models[key].price === "number", `${key}.price must be a number or null`);

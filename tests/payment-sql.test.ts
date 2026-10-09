@@ -13,11 +13,11 @@ import {
 import { consumeActivationToken, verifyLoginCode } from "../lib/accounts/store";
 import { hashAccountToken } from "../lib/accounts/crypto";
 import {
-  attachCheckoutSession,
+  attachWaffoOrder,
   balancesFor,
   claimPaidOrder,
   finalizePaidCredit,
-  fulfillCheckoutEvent,
+  fulfillWaffoEvent,
   getPaidJob,
   getPaidSessionByToken,
   insertPendingOrder,
@@ -25,9 +25,9 @@ import {
   releasePaidCredit,
   reservePaidCredit,
   type PendingOrderInput,
-  type VerifiedCheckout,
+  type VerifiedWaffoPayment,
 } from "../lib/payments/store";
-import { PAID_PRODUCTS, hashSecret } from "../lib/payments/config";
+import { hashSecret, WAFFO_PACK_CREDITS } from "../lib/payments/config";
 import { PaymentError } from "../lib/payments/errors";
 
 /**
@@ -65,14 +65,19 @@ class PGlitePool implements DbPool {
   }
 }
 
-const migrationPath = resolve(process.cwd(), "scripts/sql/001_payments_accounts.sql");
+const migrationPaths = [
+  resolve(process.cwd(), "scripts/sql/001_payments_accounts.sql"),
+  resolve(process.cwd(), "scripts/sql/002_waffo_payment_cutover.sql"),
+];
 let database: PGlite | undefined;
 let pool: PGlitePool | undefined;
 
 test.beforeEach(async () => {
   process.env.ACCOUNT_TOKEN_SECRET = "sql-test-account-token-secret-32-bytes!!";
   database = new PGlite();
-  await database.exec(await readFile(migrationPath, "utf8"));
+  for (const path of migrationPaths) {
+    await database.exec(await readFile(path, "utf8"));
+  }
   pool = new PGlitePool(database);
   setAccountDbForTests(pool);
 });
@@ -90,16 +95,16 @@ function db(): PGlitePool {
 }
 
 function orderInput(overrides: Partial<PendingOrderInput> = {}): PendingOrderInput {
-  const quantity = overrides.quantity ?? 3;
-  const unitAmountCents = overrides.unitAmountCents ?? 100;
+  const unitAmountCents = overrides.unitAmountCents ?? 499;
   return {
     id: randomUUID(),
     idempotencyKey: `sql-order-${randomUUID()}`,
-    product: "image",
-    quantity,
+    product: "video",
+    quantity: 1,
     unitAmountCents,
-    amountCents: unitAmountCents * quantity,
+    amountCents: unitAmountCents,
     currency: "usd",
+    waffoPaymentRequestId: randomUUID().replace(/-/g, ""),
     claimSecretHash: hashSecret("s".repeat(48)),
     returnPath: "/it/",
     ...overrides,
@@ -109,90 +114,82 @@ function orderInput(overrides: Partial<PendingOrderInput> = {}): PendingOrderInp
 async function createOrder(
   overrides: Partial<PendingOrderInput> = {},
   email = "buyer@example.com",
-): Promise<{ order: Awaited<ReturnType<typeof insertPendingOrder>>; secret: string; sessionId: string; fulfillment: Awaited<ReturnType<typeof fulfillCheckoutEvent>> }> {
+): Promise<{ order: Awaited<ReturnType<typeof insertPendingOrder>>; secret: string; acquiringOrderId: string; fulfillment: Awaited<ReturnType<typeof fulfillWaffoEvent>> }> {
   const secret = "s".repeat(48);
   const input = { ...orderInput(overrides), claimSecretHash: hashSecret(secret) };
   const order = await insertPendingOrder(db(), input);
-  const sessionId = `cs_sql_${randomUUID()}`;
-  await attachCheckoutSession(db(), order.id, sessionId);
-  const fulfillment = await fulfillCheckoutEvent(checkoutFor(order, sessionId, email), db());
-  return { order, secret, sessionId, fulfillment };
+  const acquiringOrderId = `wao_${randomUUID()}`;
+  await attachWaffoOrder(db(), order.id, acquiringOrderId);
+  const fulfillment = await fulfillWaffoEvent(checkoutFor(order, acquiringOrderId, email), db());
+  return { order, secret, acquiringOrderId, fulfillment };
 }
 
 function checkoutFor(
   order: Awaited<ReturnType<typeof insertPendingOrder>>,
-  sessionId: string,
+  acquiringOrderId: string,
   email = "buyer@example.com",
-  overrides: Partial<Pick<VerifiedCheckout, "eventId" | "eventType" | "amountTotal" | "currency">> = {},
-): VerifiedCheckout {
+  overrides: Partial<Pick<VerifiedWaffoPayment, "amountCents" | "currency" | "paymentRequestId">> = {},
+): VerifiedWaffoPayment {
   return {
-    eventId: overrides.eventId ?? `evt_sql_${randomUUID()}`,
-    eventType: overrides.eventType ?? "checkout.session.completed",
-    sessionId,
-    paymentStatus: "paid",
-    amountTotal: overrides.amountTotal ?? order.amountCents,
+    eventType: "PAYMENT_NOTIFICATION",
+    paymentRequestId: overrides.paymentRequestId ?? order.waffoPaymentRequestId ?? "",
+    acquiringOrderId,
+    orderStatus: "PAY_SUCCESS",
+    amountCents: overrides.amountCents ?? order.amountCents,
     currency: overrides.currency ?? "usd",
-    clientReferenceId: order.id,
-    metadata: {
-      orderId: order.id,
-      product: order.product,
-      model: PAID_PRODUCTS[order.product].model,
-      quantity: String(order.quantity),
-      amountCents: String(order.amountCents),
-    },
     email,
   };
 }
 
-test("webhook fulfillment is idempotent for duplicate events and different events on one session", async () => {
-  const input = orderInput({ quantity: 3 });
+test("Waffo webhook fulfillment is idempotent for duplicate and repeated paid events", async () => {
+  const input = orderInput();
   const secret = "s".repeat(48);
   const order = await insertPendingOrder(db(), { ...input, claimSecretHash: hashSecret(secret) });
-  const sessionId = `cs_sql_${randomUUID()}`;
-  await attachCheckoutSession(db(), order.id, sessionId);
+  const acquiringOrderId = `wao_${randomUUID()}`;
+  await attachWaffoOrder(db(), order.id, acquiringOrderId);
 
-  const first = await fulfillCheckoutEvent(checkoutFor(order, sessionId, "same@example.com", { eventId: "evt_same" }), db());
-  const duplicate = await fulfillCheckoutEvent(checkoutFor(order, sessionId, "same@example.com", { eventId: "evt_same" }), db());
-  const differentEvent = await fulfillCheckoutEvent(checkoutFor(order, sessionId, "same@example.com", { eventId: "evt_different" }), db());
+  const first = await fulfillWaffoEvent(checkoutFor(order, acquiringOrderId, "same@example.com"), db());
+  const duplicate = await fulfillWaffoEvent(checkoutFor(order, acquiringOrderId, "same@example.com"), db());
+  const differentEvent = await fulfillWaffoEvent(checkoutFor(order, `wao_${randomUUID()}`, "same@example.com"), db());
 
   assert.equal(first.duplicate, false);
   assert.equal(duplicate.duplicate, true);
   assert.equal(differentEvent.duplicate, true);
-  assert.equal((await db().query("SELECT count(*)::int AS count FROM ovanto_stripe_events")).rows[0].count, 2);
+  assert.equal((await db().query("SELECT count(*)::int AS count FROM ovanto_waffo_events")).rows[0].count, 2);
   assert.equal((await db().query("SELECT count(*)::int AS count FROM ovanto_credit_ledger WHERE entry_type = 'grant'")).rows[0].count, 1);
-  assert.equal((await db().query("SELECT available_credits FROM ovanto_credit_balances WHERE order_id = $1", [order.id])).rows[0].available_credits, 3);
+  assert.equal((await db().query("SELECT available_credits FROM ovanto_credit_balances WHERE order_id = $1", [order.id])).rows[0].available_credits, WAFFO_PACK_CREDITS);
 });
 
 test("mismatched paid amount rolls back event receipt and all fulfillment state", async () => {
-  const { order, sessionId } = await (async () => {
-    const input = orderInput({ quantity: 2 });
+  const { order, acquiringOrderId } = await (async () => {
+    const input = orderInput();
     const secret = "s".repeat(48);
     const created = await insertPendingOrder(db(), { ...input, claimSecretHash: hashSecret(secret) });
-    const session = `cs_sql_${randomUUID()}`;
-    await attachCheckoutSession(db(), created.id, session);
-    return { order: created, sessionId: session };
+    const acquiring = `wao_${randomUUID()}`;
+    await attachWaffoOrder(db(), created.id, acquiring);
+    return { order: created, acquiringOrderId: acquiring };
   })();
 
   await assert.rejects(
-    fulfillCheckoutEvent(checkoutFor(order, sessionId, "rollback@example.com", { amountTotal: order.amountCents + 1 }), db()),
+    fulfillWaffoEvent(checkoutFor(order, acquiringOrderId, "rollback@example.com", { amountCents: order.amountCents + 1 }), db()),
     (error: unknown) => error instanceof PaymentError && error.code === "CHECKOUT_VALIDATION_FAILED",
   );
   assert.equal((await db().query("SELECT status FROM ovanto_orders WHERE id = $1", [order.id])).rows[0].status, "pending");
-  assert.equal((await db().query("SELECT count(*)::int AS count FROM ovanto_stripe_events")).rows[0].count, 0);
+  assert.equal((await db().query("SELECT count(*)::int AS count FROM ovanto_waffo_events")).rows[0].count, 0);
   assert.equal((await db().query("SELECT count(*)::int AS count FROM ovanto_accounts")).rows[0].count, 0);
   assert.equal((await db().query("SELECT count(*)::int AS count FROM ovanto_credit_ledger")).rows[0].count, 0);
 });
 
-test("a checkout failed before Stripe session creation cannot receive a later grant", async () => {
-  const input = orderInput({ quantity: 2 });
+test("a checkout failed before Waffo order creation cannot receive a later grant", async () => {
+  const input = orderInput();
   const secret = "s".repeat(48);
   const order = await insertPendingOrder(db(), { ...input, claimSecretHash: hashSecret(secret) });
-  const sessionId = `cs_failed_${randomUUID()}`;
-  await attachCheckoutSession(db(), order.id, sessionId);
+  const acquiringOrderId = `wao_failed_${randomUUID()}`;
+  await attachWaffoOrder(db(), order.id, acquiringOrderId);
   await markCheckoutFailed(db(), order.id);
 
   await assert.rejects(
-    fulfillCheckoutEvent(checkoutFor(order, sessionId, "failed@example.com"), db()),
+    fulfillWaffoEvent(checkoutFor(order, acquiringOrderId, "failed@example.com"), db()),
     (error: unknown) => error instanceof PaymentError && error.code === "ORDER_UNAVAILABLE",
   );
   assert.equal((await db().query("SELECT status FROM ovanto_orders WHERE id = $1", [order.id])).rows[0].status, "checkout_failed");
@@ -200,24 +197,24 @@ test("a checkout failed before Stripe session creation cannot receive a later gr
   assert.equal((await db().query("SELECT count(*)::int AS count FROM ovanto_credit_ledger")).rows[0].count, 0);
 });
 
-test("checkout sessions for the same email stay scoped to their own order credits", async () => {
-  const first = await createOrder({ quantity: 2 }, "same@example.com");
+test("checkout orders for the same email stay scoped to their own video credits", async () => {
+  const first = await createOrder({}, "same@example.com");
   const firstSession = await claimPaidOrder(first.order.id, first.secret, db());
   const firstPaidSession = await getPaidSessionByToken(firstSession.rawSession, db());
   assert.equal(firstPaidSession?.scopeOrderId, first.order.id);
-  assert.deepEqual(firstPaidSession?.balances, { image: 2, edit: 0, video: 0 });
+  assert.deepEqual(firstPaidSession?.balances, { image: 0, edit: 0, video: WAFFO_PACK_CREDITS });
 
-  const second = await createOrder({ quantity: 3 }, "same@example.com");
+  const second = await createOrder({}, "same@example.com");
   const secondSession = await claimPaidOrder(second.order.id, second.secret, db(), firstSession.rawSession);
   const secondPaidSession = await getPaidSessionByToken(secondSession.rawSession, db());
   assert.equal(secondPaidSession?.scopeOrderId, second.order.id);
-  assert.deepEqual(secondPaidSession?.balances, { image: 3, edit: 0, video: 0 });
-  assert.deepEqual(await balancesFor(db(), second.fulfillment.accountId!, second.order.id), { image: 3, edit: 0, video: 0 });
-  assert.deepEqual(await balancesFor(db(), second.fulfillment.accountId!, first.order.id), { image: 2, edit: 0, video: 0 });
+  assert.deepEqual(secondPaidSession?.balances, { image: 0, edit: 0, video: WAFFO_PACK_CREDITS });
+  assert.deepEqual(await balancesFor(db(), second.fulfillment.accountId!, second.order.id), { image: 0, edit: 0, video: WAFFO_PACK_CREDITS });
+  assert.deepEqual(await balancesFor(db(), second.fulfillment.accountId!, first.order.id), { image: 0, edit: 0, video: WAFFO_PACK_CREDITS });
 
   const reserved = await reservePaidCredit(
     second.fulfillment.accountId!,
-    "image",
+    "video",
     "scope-order-2-job",
     "b".repeat(64),
     randomUUID(),
@@ -229,7 +226,7 @@ test("checkout sessions for the same email stay scoped to their own order credit
 });
 
 test("paid credit reservation is idempotent and release/finalize transitions happen once", async () => {
-  const created = await createOrder({ quantity: 3 });
+  const created = await createOrder();
   const accountId = created.fulfillment.accountId!;
   const session = await claimPaidOrder(created.order.id, created.secret, db());
   const scoped = await getPaidSessionByToken(session.rawSession, db());
@@ -239,46 +236,46 @@ test("paid credit reservation is idempotent and release/finalize transitions hap
   // A full account session may aggregate all of the account's orders. This
   // exercises the unscoped SELECT ... FOR UPDATE path used after activation
   // or OTP login.
-  const fullSessionReservation = await reservePaidCredit(accountId, "image", "full-account-job", "e".repeat(64), randomUUID(), db());
+  const fullSessionReservation = await reservePaidCredit(accountId, "video", "full-account-job", "e".repeat(64), randomUUID(), db());
   assert.equal(fullSessionReservation.state, "new");
   await releasePaidCredit(fullSessionReservation.jobId, db());
 
   const idempotencyKey = "same-paid-job";
   const inputHash = "c".repeat(64);
-  const first = await reservePaidCredit(accountId, "image", idempotencyKey, inputHash, randomUUID(), scopeOrderId, db());
-  const retry = await reservePaidCredit(accountId, "image", idempotencyKey, inputHash, randomUUID(), scopeOrderId, db());
+  const first = await reservePaidCredit(accountId, "video", idempotencyKey, inputHash, randomUUID(), scopeOrderId, db());
+  const retry = await reservePaidCredit(accountId, "video", idempotencyKey, inputHash, randomUUID(), scopeOrderId, db());
   assert.equal(first.state, "new");
   assert.equal(retry.state, "existing");
   assert.equal(retry.jobId, first.jobId);
   let balance = (await db().query("SELECT available_credits, reserved_credits FROM ovanto_credit_balances WHERE order_id = $1", [created.order.id])).rows[0];
-  assert.deepEqual(balance, { available_credits: 2, reserved_credits: 1 });
+  assert.deepEqual(balance, { available_credits: WAFFO_PACK_CREDITS - 1, reserved_credits: 1 });
 
   await releasePaidCredit(first.jobId, db());
   await releasePaidCredit(first.jobId, db());
   balance = (await db().query("SELECT available_credits, reserved_credits FROM ovanto_credit_balances WHERE order_id = $1", [created.order.id])).rows[0];
-  assert.deepEqual(balance, { available_credits: 3, reserved_credits: 0 });
+  assert.deepEqual(balance, { available_credits: WAFFO_PACK_CREDITS, reserved_credits: 0 });
   // The full-account reservation above was intentionally released first;
   // this order contributes the second release entry.
   assert.equal((await db().query("SELECT count(*)::int AS count FROM ovanto_credit_ledger WHERE entry_type = 'release'")).rows[0].count, 2);
 
-  const final = await reservePaidCredit(accountId, "image", "final-paid-job", inputHash, randomUUID(), scopeOrderId, db());
+  const final = await reservePaidCredit(accountId, "video", "final-paid-job", inputHash, randomUUID(), scopeOrderId, db());
   await finalizePaidCredit(final.jobId, db());
   await finalizePaidCredit(final.jobId, db());
   balance = (await db().query("SELECT available_credits, reserved_credits FROM ovanto_credit_balances WHERE order_id = $1", [created.order.id])).rows[0];
-  assert.deepEqual(balance, { available_credits: 2, reserved_credits: 0 });
+  assert.deepEqual(balance, { available_credits: WAFFO_PACK_CREDITS - 1, reserved_credits: 0 });
   assert.equal((await db().query("SELECT count(*)::int AS count FROM ovanto_credit_ledger WHERE entry_type = 'consume'")).rows[0].count, 1);
 });
 
 test("same idempotency key remains one job when requests are serialized by the embedded engine", async () => {
-  const created = await createOrder({ quantity: 2 });
+  const created = await createOrder();
   const accountId = created.fulfillment.accountId!;
   const session = await claimPaidOrder(created.order.id, created.secret, db());
   const scoped = await getPaidSessionByToken(session.rawSession, db());
   const scopeOrderId = scoped?.scopeOrderId;
   const inputHash = "d".repeat(64);
   const [left, right] = await Promise.all([
-    reservePaidCredit(accountId, "image", "serialized-concurrent-key", inputHash, randomUUID(), scopeOrderId, db()),
-    reservePaidCredit(accountId, "image", "serialized-concurrent-key", inputHash, randomUUID(), scopeOrderId, db()),
+    reservePaidCredit(accountId, "video", "serialized-concurrent-key", inputHash, randomUUID(), scopeOrderId, db()),
+    reservePaidCredit(accountId, "video", "serialized-concurrent-key", inputHash, randomUUID(), scopeOrderId, db()),
   ]);
   assert.deepEqual([left.state, right.state].sort(), ["existing", "new"]);
   assert.equal(left.jobId, right.jobId);
@@ -287,7 +284,7 @@ test("same idempotency key remains one job when requests are serialized by the e
 
 test("login challenges expire, stop after five attempts, and activation tokens are single use", async () => {
   const accountId = randomUUID();
-  const order = await insertPendingOrder(db(), orderInput({ quantity: 1 }));
+  const order = await insertPendingOrder(db(), orderInput());
   await db().query("INSERT INTO ovanto_accounts (id, email) VALUES ($1,$2)", [accountId, "otp@example.com"]);
   await db().query(
     "INSERT INTO ovanto_activation_tokens (token_hash, account_id, order_id, expires_at) VALUES ($1,$2,$3,now() + interval '1 hour')",

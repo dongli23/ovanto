@@ -8,24 +8,20 @@ export interface PaidProductDefinition {
   readonly key: PaidProductKey;
   readonly provider: PaidProvider;
   readonly model: string;
-  readonly label: string;
-  readonly priceEnv: string;
   readonly expectedCostMicroUsd: number;
   readonly costMicroUsd: number;
 }
 
 /**
- * The model names are deliberately server-owned.  A browser may select a
- * product key, but it can never select a provider/model or a quantity of
- * provider-side work.
+ * Provider and model names are deliberately server-owned. A browser may select
+ * a product key, but it can never select a provider/model, a quantity, a
+ * price, or the number of credits granted.
  */
 export const PAID_PRODUCTS: Record<PaidProductKey, PaidProductDefinition> = {
   image: {
     key: "image",
     provider: MODELS["image.paid"].provider,
     model: MODELS["image.paid"].slug,
-    label: "AI image generation",
-    priceEnv: "PAID_IMAGE_PRICE_CENTS",
     expectedCostMicroUsd: Math.round(MODELS["image.paid"].cost * 1_000_000),
     costMicroUsd: Math.round(MODELS["image.paid"].cost * 1_000_000),
   },
@@ -33,8 +29,6 @@ export const PAID_PRODUCTS: Record<PaidProductKey, PaidProductDefinition> = {
     key: "edit",
     provider: MODELS["edit.paid"].provider,
     model: MODELS["edit.paid"].slug,
-    label: "AI photo editing",
-    priceEnv: "PAID_EDIT_PRICE_CENTS",
     expectedCostMicroUsd: Math.round(MODELS["edit.paid"].cost * 1_000_000),
     costMicroUsd: Math.round(MODELS["edit.paid"].cost * 1_000_000),
   },
@@ -42,18 +36,30 @@ export const PAID_PRODUCTS: Record<PaidProductKey, PaidProductDefinition> = {
     key: "video",
     provider: MODELS["video.paid"].provider,
     model: MODELS["video.paid"].slug,
-    label: "AI video generation (5 seconds)",
-    priceEnv: "PAID_VIDEO_PRICE_CENTS",
     expectedCostMicroUsd: Math.round(MODELS["video.paid"].cost * MODELS["video.paid"].fixedSeconds * 1_000_000),
     costMicroUsd: Math.round(MODELS["video.paid"].cost * MODELS["video.paid"].fixedSeconds * 1_000_000),
   },
 };
 
-export const MAX_PAID_QUANTITY = 20;
-export const MIN_PAID_QUANTITY = 1;
-export const MIN_STRIPE_AMOUNT_CENTS = 50;
-export const MAX_STRIPE_AMOUNT_CENTS = 99_999_999;
-export const MAX_STRIPE_UNIT_AMOUNT_CENTS = Math.floor(MAX_STRIPE_AMOUNT_CENTS / MAX_PAID_QUANTITY);
+/**
+ * Waffo V1 sells exactly one SKU: the Ovanto Pro Video Pack.
+ *
+ *   1 successful pack => exactly 3 video credits
+ *
+ * Price, credits, currency, provider, model and duration are all server-owned
+ * and locked. The browser may only choose the product key and return path.
+ */
+export const WAFFO_PACK_KEY: PaidProductKey = "video";
+export const WAFFO_PACK_NAME = "Ovanto Pro Video Pack";
+export const WAFFO_PACK_PRICE_CENTS = 499; // US$4.99
+export const WAFFO_PACK_CREDITS = 3; // exactly 3 video credits
+export const WAFFO_PACK_CURRENCY = "USD";
+export const WAFFO_PACK_AMOUNT = "4.99"; // Waffo orderAmount (decimal string)
+export const WAFFO_PACK_PRODUCT_NAME = "ONE_TIME_PAYMENT";
+
+/** Environment names the Waffo SDK client and webhook both require. */
+export const WAFFO_ENV_KEYS = ["WAFFO_API_KEY", "WAFFO_PRIVATE_KEY", "WAFFO_PUBLIC_KEY", "WAFFO_MERCHANT_ID", "WAFFO_ENVIRONMENT"] as const;
+
 export const ORDER_CURRENCY = "usd" as const;
 export const CHECKOUT_CLAIM_COOKIE = "ovanto_checkout_claim";
 export const ACCOUNT_SESSION_COOKIE = "ovanto_account_session";
@@ -96,59 +102,27 @@ export function assertCheckoutReturnPath(value: unknown): CheckoutReturnPath {
   return value as CheckoutReturnPath;
 }
 
-export function parseQuantity(value: unknown): number {
-  const quantity = typeof value === "number" ? value : typeof value === "string" && /^\d+$/.test(value) ? Number(value) : NaN;
-  if (!Number.isSafeInteger(quantity) || quantity < MIN_PAID_QUANTITY || quantity > MAX_PAID_QUANTITY) {
-    throw new PaymentConfigError("QUANTITY_INVALID", 400);
-  }
-  return quantity;
-}
-
-export function retailPriceCents(product: PaidProductKey): number {
-  const definition = PAID_PRODUCTS[product];
-  const raw = process.env[definition.priceEnv];
-  if (!raw || !/^\d+$/.test(raw)) throw new PaymentConfigError("PAYMENT_CONFIGURATION_UNAVAILABLE", 503);
-  const cents = Number(raw);
-  if (!Number.isSafeInteger(cents) || cents <= 0 || cents > MAX_STRIPE_UNIT_AMOUNT_CENTS) throw new PaymentConfigError("PAYMENT_CONFIGURATION_UNAVAILABLE", 503);
-  if (product === "video" && (cents < 99 || cents > 149)) {
-    throw new PaymentConfigError("PAYMENT_CONFIGURATION_UNAVAILABLE", 503);
-  }
-  return cents;
-}
-
-export function orderAmountCents(product: PaidProductKey, quantity: number): number {
-  const unit = retailPriceCents(product);
-  const amount = unit * quantity;
-  if (!Number.isSafeInteger(amount) || amount < MIN_STRIPE_AMOUNT_CENTS || amount > MAX_STRIPE_AMOUNT_CENTS) throw new PaymentConfigError("PAYMENT_AMOUNT_INVALID", 400);
-  return amount;
-}
-
-export function minimumQuantity(product: PaidProductKey): number {
-  const unit = retailPriceCents(product);
-  return Math.max(MIN_PAID_QUANTITY, Math.ceil(MIN_STRIPE_AMOUNT_CENTS / unit));
+/**
+ * The Waffo SDK requires an explicit environment (SANDBOX or PRODUCTION).
+ * The owner's production value is `WAFFO_ENVIRONMENT=prod`; normalize the
+ * accepted spellings here without guessing the SDK contract.
+ */
+export function isWaffoEnvironmentConfigured(): boolean {
+  const value = process.env.WAFFO_ENVIRONMENT;
+  return value === "prod" || value === "production" || value === "sandbox";
 }
 
 export interface PaidCatalogEntry {
   key: PaidProductKey;
-  provider: PaidProvider;
   model: string;
-  unitAmountCents: number | null;
-  minQuantity: number | null;
-  maxQuantity: number;
-  enabled: boolean;
+  packPriceCents: number;
+  credits: number;
 }
 
-export function paidCatalog(): PaidCatalogEntry[] {
-  return (Object.keys(PAID_PRODUCTS) as PaidProductKey[]).map((key) => {
-    const product = PAID_PRODUCTS[key];
-    try {
-      const unitAmountCents = retailPriceCents(key);
-      const minQuantity = minimumQuantity(key);
-      return { key, provider: product.provider, model: product.model, unitAmountCents, minQuantity, maxQuantity: MAX_PAID_QUANTITY, enabled: minQuantity <= MAX_PAID_QUANTITY };
-    } catch {
-      return { key, provider: product.provider, model: product.model, unitAmountCents: null, minQuantity: null, maxQuantity: MAX_PAID_QUANTITY, enabled: false };
-    }
-  });
+/** The Waffo catalog exposes exactly one purchasable product. */
+export function waffoCatalog(): PaidCatalogEntry[] {
+  const product = PAID_PRODUCTS[WAFFO_PACK_KEY];
+  return [{ key: WAFFO_PACK_KEY, model: product.model, packPriceCents: WAFFO_PACK_PRICE_CENTS, credits: WAFFO_PACK_CREDITS }];
 }
 
 export function appBaseUrl(): URL {
@@ -168,13 +142,22 @@ export function appBaseUrl(): URL {
   return url;
 }
 
-export function checkoutUrls(pathname: CheckoutReturnPath): { successUrl: string; cancelUrl: string } {
+/**
+ * Waffo success redirect carries no session id and never grants credits. The
+ * browser later calls /api/account/claim against its checkout claim cookie,
+ * and the webhook is the sole authority that marks the order paid.
+ */
+export function checkoutReturnUrls(pathname: CheckoutReturnPath): { successUrl: string; cancelUrl: string } {
   const base = appBaseUrl();
   const path = pathname === "/" ? "/" : pathname;
   return {
-    successUrl: new URL(`${path}${path.includes("?") ? "&" : "?"}session_id={CHECKOUT_SESSION_ID}`, base).toString(),
+    successUrl: new URL(`${path}${path.includes("?") ? "&" : "?"}payment=success`, base).toString(),
     cancelUrl: new URL(path, base).toString(),
   };
+}
+
+export function waffoNotifyUrl(): string {
+  return new URL("/api/waffo/webhook", appBaseUrl()).toString();
 }
 
 export function newClaimSecret(): string {
@@ -200,4 +183,3 @@ export class PaymentConfigError extends Error {
     this.status = status;
   }
 }
-

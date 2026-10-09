@@ -62,10 +62,10 @@ export default function PrivacyPage() {
 
       <h3>2.3 Information from payment and email providers</h3>
       <p>
-        Stripe, Waffo Pancake, and other checkout partners may provide payment status,
-        transaction identifiers, email, and related fraud or reconciliation information.
-        Resend may provide delivery and failure information for activation, login, and
-        other transactional email. We do not ask you to send card details by email.
+        Waffo Pancake may provide payment status, transaction identifiers, email, and
+        related fraud or reconciliation information. Resend may provide delivery and
+        failure information for activation, login, and other transactional email. We do
+        not ask you to send card details by email.
       </p>
 
       <h2>3. How we use information</h2>
@@ -116,7 +116,7 @@ export default function PrivacyPage() {
         <li><strong>Hosting and storage:</strong> Vercel hosts the application and Upstash stores operational records such as jobs, quotas, reservations, and security hashes.</li>
         <li><strong>Safety and verification:</strong> Cloudflare Turnstile verifies that a request is not automated abuse.</li>
         <li><strong>AI providers:</strong> Replicate and fal receive prompts, settings, and an uploaded image where needed to provide the requested generation or edit. Their processing is also subject to their own terms and privacy policies.</li>
-        <li><strong>Payment:</strong> Stripe processes the current checkout where Stripe checkout is used. Waffo Pancake may act as the merchant of record or reseller for a checkout presented through Waffo.</li>
+        <li><strong>Payment:</strong> Waffo Pancake acts as the merchant of record or reseller for a checkout presented through Waffo.</li>
         <li><strong>Email:</strong> Resend sends login, activation, and other transactional email.</li>
         <li><strong>Legal and safety recipients:</strong> We may disclose information when required by law, court order, valid governmental request, or to protect users, the Service, or our rights.</li>
       </ul>
@@ -139,7 +139,6 @@ export default function PrivacyPage() {
         <li><a href="https://www.cloudflare.com/policies/privacy/" rel="noreferrer">Cloudflare Privacy Policy</a></li>
         <li><a href="https://replicate.com/privacy" rel="noreferrer">Replicate Privacy Policy</a></li>
         <li><a href="https://fal.ai/legal/privacy-policy" rel="noreferrer">fal Privacy Policy</a></li>
-        <li><a href="https://stripe.com/privacy" rel="noreferrer">Stripe Privacy Center</a></li>
         <li><a href="https://www.waffo.ai/privacy" rel="noreferrer">Waffo Pancake Privacy Policy</a></li>
         <li><a href="https://resend.com/legal/privacy-policy" rel="noreferrer">Resend Privacy Policy</a></li>
       </ul>

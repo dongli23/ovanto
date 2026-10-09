@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { PaymentConfigError } from "./config";
+import { WAFFO_ENV_KEYS, isWaffoEnvironmentConfigured, PaymentConfigError } from "./config";
 
 export type PaymentErrorStatus = 400 | 401 | 402 | 403 | 404 | 409 | 413 | 429 | 500 | 502 | 503;
 
@@ -55,31 +55,41 @@ export function noStore(body: unknown, status = 200): NextResponse {
   return NextResponse.json(body, { status, headers: { "Cache-Control": "no-store" } });
 }
 
+export function assertWaffoConfiguration(): void {
+  const missing = WAFFO_ENV_KEYS.filter((key) => !process.env[key]);
+  if (missing.length > 0 || !isWaffoEnvironmentConfigured()) {
+    throw new PaymentError("PAYMENT_CONFIGURATION_UNAVAILABLE", 503);
+  }
+}
+
 export function assertPaymentConfiguration(): void {
-  const required = ["DATABASE_URL", "STRIPE_SECRET_KEY", "STRIPE_WEBHOOK_SECRET", "ACCOUNT_TOKEN_SECRET", "RESEND_API_KEY", "RESEND_FROM_EMAIL"];
-  const missing = required.filter((key) => !process.env[key]);
-  if (missing.length > 0 || process.env.PAID_CHECKOUT_ENABLED !== "true" || (process.env.ACCOUNT_TOKEN_SECRET?.length ?? 0) < 32) {
+  assertDatabaseAndSecret();
+  assertWaffoConfiguration();
+  if (process.env.PAID_CHECKOUT_ENABLED !== "true") {
+    throw new PaymentError("PAYMENT_CONFIGURATION_UNAVAILABLE", 503);
+  }
+  if (!process.env.FAL_KEY) {
     throw new PaymentError("PAYMENT_CONFIGURATION_UNAVAILABLE", 503);
   }
 }
 
 export function assertWebhookConfiguration(): void {
-  const required = ["DATABASE_URL", "STRIPE_SECRET_KEY", "STRIPE_WEBHOOK_SECRET", "ACCOUNT_TOKEN_SECRET", "RESEND_API_KEY", "RESEND_FROM_EMAIL"];
-  const missing = required.filter((key) => !process.env[key]);
-  if (missing.length > 0 || (process.env.ACCOUNT_TOKEN_SECRET?.length ?? 0) < 32) {
-    throw new PaymentError("PAYMENT_CONFIGURATION_UNAVAILABLE", 503);
-  }
+  assertDatabaseAndSecret();
+  assertWaffoConfiguration();
 }
 
 export function assertAccountConfiguration(): void {
-  const required = ["DATABASE_URL", "ACCOUNT_TOKEN_SECRET", "RESEND_API_KEY", "RESEND_FROM_EMAIL", "IP_HASH_SECRET"];
-  const missing = required.filter((key) => !process.env[key]);
-  if (missing.length > 0 || (process.env.ACCOUNT_TOKEN_SECRET?.length ?? 0) < 32) {
+  assertDatabaseAndSecret();
+  if (!process.env.IP_HASH_SECRET) {
     throw new PaymentError("ACCOUNT_CONFIGURATION_UNAVAILABLE", 503);
   }
 }
 
 export function assertSessionConfiguration(): void {
+  assertDatabaseAndSecret();
+}
+
+function assertDatabaseAndSecret(): void {
   if (!process.env.DATABASE_URL || (process.env.ACCOUNT_TOKEN_SECRET?.length ?? 0) < 32) {
     throw new PaymentError("ACCOUNT_CONFIGURATION_UNAVAILABLE", 503);
   }

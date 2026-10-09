@@ -6,6 +6,7 @@ import {
   ACTIVATION_TOKEN_TTL_SECONDS,
   CHECKOUT_CLAIM_COOKIE,
   PAID_PRODUCTS,
+  WAFFO_PACK_CREDITS,
   type PaidProductKey,
   hashSecret,
   normalizeEmail,
@@ -22,6 +23,8 @@ export interface PendingOrderInput {
   unitAmountCents: number;
   amountCents: number;
   currency: string;
+  /** Waffo paymentRequestId (idempotency key), persisted at insert for webhook lookup. */
+  waffoPaymentRequestId: string;
   claimSecretHash: string;
   returnPath: string;
 }
@@ -37,7 +40,8 @@ export interface OrderRecord {
   amountCents: number;
   currency: string;
   status: OrderStatus;
-  stripeCheckoutSessionId?: string;
+  waffoPaymentRequestId?: string;
+  waffoOrderId?: string;
   email?: string;
   claimSecretHash: string;
   returnPath: string;
@@ -45,16 +49,21 @@ export interface OrderRecord {
   paidAt?: string;
 }
 
-export interface VerifiedCheckout {
-  eventId: string;
-  eventType: "checkout.session.completed" | "checkout.session.async_payment_succeeded";
-  sessionId: string;
-  paymentStatus: "paid";
-  amountTotal: number;
+/**
+ * A Waffo payment notification after signature verification and server-side
+ * reconciliation. The acquiringOrderId is the natural idempotency key: one
+ * paid Waffo order grants credits exactly once.
+ */
+export interface VerifiedWaffoPayment {
+  eventType: "PAYMENT_NOTIFICATION";
+  paymentRequestId: string;
+  acquiringOrderId: string;
+  orderStatus: "PAY_SUCCESS";
+  amountCents: number;
   currency: string;
-  clientReferenceId: string | null;
-  metadata: { orderId: string; product: string; model: string; quantity: string; amountCents: string };
   email: string;
+  merchantId?: string;
+  goodsId?: string;
 }
 
 export interface FulfillmentResult {
@@ -109,10 +118,10 @@ export async function insertPendingOrder(db: DbPool | DbExecutor, input: Pending
   const result = await db.query<OrderRow>(
     `INSERT INTO ovanto_orders
       (id, idempotency_key, product, provider, model, quantity, unit_amount_cents,
-       amount_cents, currency, claim_secret_hash, return_path, status)
-     VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,'pending')
+       amount_cents, currency, claim_secret_hash, return_path, waffo_payment_request_id, status)
+     VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,'pending')
      RETURNING *`,
-    [input.id, input.idempotencyKey, input.product, definition.provider, definition.model, input.quantity, input.unitAmountCents, input.amountCents, input.currency, input.claimSecretHash, input.returnPath],
+    [input.id, input.idempotencyKey, input.product, definition.provider, definition.model, input.quantity, input.unitAmountCents, input.amountCents, input.currency, input.claimSecretHash, input.returnPath, input.waffoPaymentRequestId],
   );
   return orderFromRow(result.rows[0]);
 }
@@ -127,18 +136,18 @@ export async function findOrderById(db: DbPool | DbExecutor, id: string): Promis
   return result.rows[0] ? orderFromRow(result.rows[0]) : null;
 }
 
-export async function findOrderByCheckoutSession(db: DbPool | DbExecutor, sessionId: string): Promise<OrderRecord | null> {
-  const result = await db.query<OrderRow>("SELECT * FROM ovanto_orders WHERE stripe_checkout_session_id = $1", [sessionId]);
+export async function findOrderByWaffoPaymentRequest(db: DbPool | DbExecutor, paymentRequestId: string): Promise<OrderRecord | null> {
+  const result = await db.query<OrderRow>("SELECT * FROM ovanto_orders WHERE waffo_payment_request_id = $1", [paymentRequestId]);
   return result.rows[0] ? orderFromRow(result.rows[0]) : null;
 }
 
-export async function attachCheckoutSession(db: DbPool | DbExecutor, orderId: string, sessionId: string): Promise<OrderRecord> {
+export async function attachWaffoOrder(db: DbPool | DbExecutor, orderId: string, acquiringOrderId: string): Promise<OrderRecord> {
   const result = await db.query<OrderRow>(
     `UPDATE ovanto_orders
-        SET stripe_checkout_session_id = $2
-      WHERE id = $1 AND (stripe_checkout_session_id IS NULL OR stripe_checkout_session_id = $2)
+        SET waffo_order_id = $2
+      WHERE id = $1 AND (waffo_order_id IS NULL OR waffo_order_id = $2)
       RETURNING *`,
-    [orderId, sessionId],
+    [orderId, acquiringOrderId],
   );
   if (!result.rows[0]) throw new PaymentError("ORDER_UNAVAILABLE", 503);
   return orderFromRow(result.rows[0]);
@@ -148,23 +157,23 @@ export async function markCheckoutFailed(db: DbPool | DbExecutor, orderId: strin
   await db.query("UPDATE ovanto_orders SET status = 'checkout_failed' WHERE id = $1 AND status = 'pending'", [orderId]);
 }
 
-export async function fulfillCheckoutEvent(checkout: VerifiedCheckout, db: DbPool = getAccountDb()): Promise<FulfillmentResult> {
+export async function fulfillWaffoEvent(payment: VerifiedWaffoPayment, db: DbPool = getAccountDb()): Promise<FulfillmentResult> {
   return withTransaction(db, async (tx) => {
-    const dedupe = await tx.query<{ event_id: string }>(
-      `INSERT INTO ovanto_stripe_events (event_id, event_type, session_id)
-       VALUES ($1,$2,$3) ON CONFLICT (event_id) DO NOTHING RETURNING event_id`,
-      [checkout.eventId, checkout.eventType, checkout.sessionId],
+    const dedupe = await tx.query<{ acquiring_order_id: string }>(
+      `INSERT INTO ovanto_waffo_events (acquiring_order_id, event_type, payment_request_id, order_status)
+       VALUES ($1,$2,$3,$4) ON CONFLICT (acquiring_order_id) DO NOTHING RETURNING acquiring_order_id`,
+      [payment.acquiringOrderId, payment.eventType, payment.paymentRequestId, payment.orderStatus],
     );
     if (dedupe.rows.length === 0) return { duplicate: true };
 
-    const orderResult = await tx.query<OrderRow>("SELECT * FROM ovanto_orders WHERE stripe_checkout_session_id = $1 FOR UPDATE", [checkout.sessionId]);
+    const orderResult = await tx.query<OrderRow>("SELECT * FROM ovanto_orders WHERE waffo_payment_request_id = $1 FOR UPDATE", [payment.paymentRequestId]);
     const order = orderResult.rows[0];
     if (!order) throw new PaymentError("ORDER_UNAVAILABLE", 503);
-    validateCheckoutAgainstOrder(checkout, orderFromRow(order));
+    validateWaffoAgainstOrder(payment, orderFromRow(order));
     if (order.status === "paid") return { duplicate: true, orderId: order.id };
     if (order.status !== "pending") throw new PaymentError("ORDER_UNAVAILABLE", 409);
 
-    const email = normalizeEmail(checkout.email);
+    const email = normalizeEmail(payment.email);
     const accountResult = await tx.query<AccountRow>(
       `INSERT INTO ovanto_accounts (id, email)
        VALUES ($1,$2) ON CONFLICT (email) DO UPDATE SET updated_at = now()
@@ -174,19 +183,21 @@ export async function fulfillCheckoutEvent(checkout: VerifiedCheckout, db: DbPoo
     const account = accountResult.rows[0];
     if (!account) throw new PaymentError("ACCOUNT_UNAVAILABLE", 503);
 
+    // Exactly 3 video credits per successful pack. Any browser-supplied
+    // quantity/credits/price are ignored: the grant is server-owned.
     await tx.query(
       `INSERT INTO ovanto_credit_balances (account_id, product, order_id, available_credits, reserved_credits)
        VALUES ($1,$2,$3,$4,0)
        ON CONFLICT (account_id, product, order_id) DO UPDATE
           SET available_credits = ovanto_credit_balances.available_credits + EXCLUDED.available_credits,
               updated_at = now()`,
-      [account.id, order.product, order.id, order.quantity],
+      [account.id, order.product, order.id, WAFFO_PACK_CREDITS],
     );
     await tx.query(
       `INSERT INTO ovanto_credit_ledger
         (id, account_id, order_id, product, entry_type, units, provider, model, expected_cost_micro_usd, metadata)
        VALUES ($1,$2,$3,$4,'grant',$5,$6,$7,$8,$9::jsonb)`,
-      [randomUUID(), account.id, order.id, order.product, order.quantity, order.provider, order.model, PAID_PRODUCTS[order.product].expectedCostMicroUsd, JSON.stringify({ source: "stripe", event_id: checkout.eventId })],
+      [randomUUID(), account.id, order.id, order.product, WAFFO_PACK_CREDITS, order.provider, order.model, PAID_PRODUCTS[order.product].expectedCostMicroUsd, JSON.stringify({ source: "waffo", acquiring_order_id: payment.acquiringOrderId })],
     );
 
     const rawActivationToken = randomOpaqueToken();
@@ -447,15 +458,15 @@ export const CHECKOUT_CLAIM_COOKIE_NAME = CHECKOUT_CLAIM_COOKIE;
 export const ACCOUNT_SESSION_COOKIE_NAME = "ovanto_account_session";
 export const ACCOUNT_SESSION_MAX_AGE = ACCOUNT_SESSION_TTL_SECONDS;
 
-function validateCheckoutAgainstOrder(checkout: VerifiedCheckout, order: OrderRecord): void {
-  if (checkout.sessionId !== order.stripeCheckoutSessionId || checkout.clientReferenceId !== order.id || checkout.amountTotal !== order.amountCents || checkout.currency.toLowerCase() !== order.currency.toLowerCase()) throw new PaymentError("CHECKOUT_VALIDATION_FAILED", 400);
-  const metadata = checkout.metadata;
-  if (metadata.orderId !== order.id || metadata.product !== order.product || metadata.model !== order.model || Number(metadata.quantity) !== order.quantity || Number(metadata.amountCents) !== order.amountCents) throw new PaymentError("CHECKOUT_VALIDATION_FAILED", 400);
-  if (!checkout.email || checkout.email.length > 320 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(checkout.email)) throw new PaymentError("CHECKOUT_EMAIL_MISSING", 400);
+function validateWaffoAgainstOrder(payment: VerifiedWaffoPayment, order: OrderRecord): void {
+  if (payment.paymentRequestId !== order.waffoPaymentRequestId || payment.amountCents !== order.amountCents || payment.currency.toLowerCase() !== order.currency.toLowerCase()) throw new PaymentError("CHECKOUT_VALIDATION_FAILED", 400);
+  if (order.product !== "video") throw new PaymentError("CHECKOUT_VALIDATION_FAILED", 400);
+  if (payment.merchantId && process.env.WAFFO_MERCHANT_ID && payment.merchantId !== process.env.WAFFO_MERCHANT_ID) throw new PaymentError("CHECKOUT_VALIDATION_FAILED", 400);
+  if (!payment.email || payment.email.length > 320 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(payment.email)) throw new PaymentError("CHECKOUT_EMAIL_MISSING", 400);
 }
 
 interface OrderRow extends Record<string, unknown> {
-  id: string; idempotency_key: string; product: PaidProductKey; provider: "replicate" | "fal"; model: string; quantity: number; unit_amount_cents: number; amount_cents: number; currency: string; status: OrderStatus; stripe_checkout_session_id: string | null; email: string | null; claim_secret_hash: string; return_path: string; created_at: string; paid_at: string | null;
+  id: string; idempotency_key: string; product: PaidProductKey; provider: "replicate" | "fal"; model: string; quantity: number; unit_amount_cents: number; amount_cents: number; currency: string; status: OrderStatus; waffo_payment_request_id: string | null; waffo_order_id: string | null; email: string | null; claim_secret_hash: string; return_path: string; created_at: string; paid_at: string | null;
 }
 interface AccountRow extends Record<string, unknown> { id: string; email: string }
 interface ExistingSessionRow extends Record<string, unknown> { account_id: string; scope_order_id: string | null; email: string }
@@ -468,7 +479,7 @@ function orderFromRow(row: OrderRow | undefined): OrderRecord {
   return {
     id: row.id, idempotencyKey: row.idempotency_key, product: row.product, provider: row.provider, model: row.model,
     quantity: Number(row.quantity), unitAmountCents: Number(row.unit_amount_cents), amountCents: Number(row.amount_cents), currency: row.currency,
-    status: row.status, stripeCheckoutSessionId: row.stripe_checkout_session_id ?? undefined, email: row.email ?? undefined,
+    status: row.status, waffoPaymentRequestId: row.waffo_payment_request_id ?? undefined, waffoOrderId: row.waffo_order_id ?? undefined, email: row.email ?? undefined,
     claimSecretHash: row.claim_secret_hash, returnPath: row.return_path, createdAt: new Date(row.created_at).toISOString(), paidAt: row.paid_at ? new Date(row.paid_at).toISOString() : undefined,
   };
 }

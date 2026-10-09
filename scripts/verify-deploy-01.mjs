@@ -41,10 +41,10 @@ const modeLabels = {
 };
 
 const videoPriceTrustPoints = {
-  en: "Video 5s from $0.99",
-  it: "Video 5s da $0.99",
-  fr: "Vidéo 5s à partir de 0,99 $",
-  nl: "Video 5s vanaf $0.99",
+  en: "3 Pro videos for US$4.99",
+  it: "3 video Pro per 4,99 USD",
+  fr: "3 vidéos Pro pour 4,99 $US",
+  nl: "3 Pro-video's voor $4.99",
 };
 
 const failures = [];
@@ -259,7 +259,7 @@ function expectedModeHrefs(site, locale) {
 }
 
 function checkPaymentControls(parsed, label) {
-  const paymentText = /(?:pricing|checkout|purchase|buy(?:\s+now)?|stripe|payment|credits|premium|tariff|prix|prezzo|acquista|acheter|aankoop|betaling)/i;
+  const paymentText = /(?:pricing|checkout|purchase|buy(?:\s+now)?|payment|credits|premium|tariff|prix|prezzo|acquista|acheter|aankoop|betaling)/i;
   check(!parsed.buttons.some((button) => paymentText.test(button.text)), `${label}: paid/checkout button exposed`);
   check(!parsed.anchors.some((anchor) => paymentText.test(anchor.href)), `${label}: paid/checkout link exposed`);
 }
@@ -348,7 +348,7 @@ function checkPage(parsed, page, pathname, expectedCanonical, site) {
     const answers = page.faq.map((item) => item.answer);
     check(new Set(answers).size === answers.length, `${label}: FAQ answers are unique`);
     const freeQuota = /(?:\b[13]\b\s*(?:video|vidéo)|(?:free|gratis|gratuit).*(?:day|giorno|jour|dag)|(?:quota|limite|limit|allowance))/i;
-    const paidPrice = /(?:\$0\.99|0,99|paid|payant|pagamento|betaald|à partir)/i;
+    const paidPrice = /(?:4,99|4\.99|\$4\.99|paid|payant|pagamento|betaald)/i;
     check(freeQuota.test(page.faq[2]?.answer || "") && paidPrice.test(page.faq[2]?.answer || ""), `${label}: third FAQ includes free quota and paid price`);
   }
 }

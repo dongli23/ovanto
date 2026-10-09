@@ -41,7 +41,8 @@ export const MODELS = {
     unit: 'second',
     cost: 0.07,
     fixedSeconds: 5,
-    price: 0.99, // Customer price for the full fixed 5-second generation.
+    // Sold only as the Ovanto Pro Video Pack (US$4.99 for 3); no per-video price.
+    price: null,
   },
 } as const;
 

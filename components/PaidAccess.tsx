@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { Locale } from "../lib/site";
 
 export type PaidProductKey = "image" | "edit" | "video";
@@ -9,10 +9,8 @@ export type PaidTier = "free" | "paid";
 export type PaidCatalogProduct = {
   key: PaidProductKey;
   model: string;
-  unitAmountCents: number;
-  minQuantity: number;
-  maxQuantity: number;
-  enabled?: boolean;
+  packPriceCents: number;
+  credits: number;
 };
 
 export type PaidAccessState = {
@@ -33,11 +31,11 @@ type Copy = {
   title: string;
   free: string;
   paid: string;
-  model: string;
-  price: string;
   credits: string;
-  quantity: string;
-  continuePayment: string;
+  packCredits: string;
+  packPrice: string;
+  billing: string;
+  cta: string;
   paidAccess: string;
   haveCredits: string;
   email: string;
@@ -59,16 +57,18 @@ type Copy = {
   signedIn: string;
 };
 
+const PACK_NAME = "Ovanto Pro Video Pack";
+
 const copy: Record<Locale, Copy> = {
   en: {
     title: "Paid access",
     free: "Free",
     paid: "Paid",
-    model: "Model",
-    price: "Price",
     credits: "credits",
-    quantity: "Quantity",
-    continuePayment: "Continue to payment",
+    packCredits: "3 Pro videos",
+    packPrice: "US$4.99",
+    billing: "One-time purchase · No subscription",
+    cta: "Get 3 Pro Videos — $4.99",
     paidAccess: "I have paid access",
     haveCredits: "I have credits",
     email: "Email",
@@ -93,11 +93,11 @@ const copy: Record<Locale, Copy> = {
     title: "Accesso a pagamento",
     free: "Gratis",
     paid: "A pagamento",
-    model: "Modello",
-    price: "Prezzo",
     credits: "crediti",
-    quantity: "Quantità",
-    continuePayment: "Vai al pagamento",
+    packCredits: "3 video Pro",
+    packPrice: "US$4,99",
+    billing: "Acquisto una tantum · Nessun abbonamento",
+    cta: "Ottieni 3 video Pro — $4.99",
     paidAccess: "Ho un accesso a pagamento",
     haveCredits: "Ho dei crediti",
     email: "Email",
@@ -122,11 +122,11 @@ const copy: Record<Locale, Copy> = {
     title: "Accès payant",
     free: "Gratuit",
     paid: "Payant",
-    model: "Modèle",
-    price: "Prix",
     credits: "crédits",
-    quantity: "Quantité",
-    continuePayment: "Continuer vers le paiement",
+    packCredits: "3 vidéos Pro",
+    packPrice: "US$4.99",
+    billing: "Achat unique · Sans abonnement",
+    cta: "Obtenez 3 vidéos Pro — $4.99",
     paidAccess: "J'ai un accès payant",
     haveCredits: "J'ai des crédits",
     email: "E-mail",
@@ -151,11 +151,11 @@ const copy: Record<Locale, Copy> = {
     title: "Betaalde toegang",
     free: "Gratis",
     paid: "Betaald",
-    model: "Model",
-    price: "Prijs",
     credits: "credits",
-    quantity: "Aantal",
-    continuePayment: "Doorgaan naar betaling",
+    packCredits: "3 Pro-video's",
+    packPrice: "US$4.99",
+    billing: "Eenmalige aankoop · Geen abonnement",
+    cta: "Krijg 3 Pro-video's — $4.99",
     paidAccess: "Ik heb betaalde toegang",
     haveCredits: "Ik heb credits",
     email: "E-mail",
@@ -166,7 +166,7 @@ const copy: Record<Locale, Copy> = {
     codePlaceholder: "12345678",
     codeHint: "Voer de code van 8 cijfers uit je e-mail in.",
     activation: "Betaalde toegang activeren",
-    activate: "Activeren",
+    activate: "Activeer",
     loading: "Laden…",
     unavailable: "Betaalde toegang is tijdelijk niet beschikbaar. Probeer het zo opnieuw.",
     invalidEmail: "Voer een geldig e-mailadres in.",
@@ -187,6 +187,10 @@ const emptyState: PaidAccessState = {
   product: null,
 };
 
+// Waffo's official hosted checkout host. This mirrors the server-side
+// allowlist and never uses a suffix/wildcard rule.
+const WAFFO_CHECKOUT_HOSTS = ["checkout.waffo.com", "cashier.waffo.com"];
+
 function validBalance(value: unknown): number {
   return typeof value === "number" && Number.isSafeInteger(value) && value >= 0 ? value : 0;
 }
@@ -205,20 +209,18 @@ function parseProduct(value: unknown, kind: PaidProductKey): PaidCatalogProduct 
   if (!value || typeof value !== "object") return null;
   const product = value as Record<string, unknown>;
   if (product.key !== kind || typeof product.model !== "string" || !product.model.trim() || product.enabled === false) return null;
-  const unitAmountCents = product.unitAmountCents;
-  const minQuantity = product.minQuantity;
-  const maxQuantity = product.maxQuantity;
-  if (typeof unitAmountCents !== "number" || !Number.isSafeInteger(unitAmountCents) || unitAmountCents <= 0) return null;
-  if (typeof minQuantity !== "number" || !Number.isSafeInteger(minQuantity) || minQuantity < 1 || minQuantity > 20) return null;
-  if (typeof maxQuantity !== "number" || !Number.isSafeInteger(maxQuantity) || maxQuantity < minQuantity || maxQuantity > 20) return null;
-  return { key: kind, model: product.model.trim(), unitAmountCents, minQuantity, maxQuantity, enabled: true };
+  const packPriceCents = product.packPriceCents;
+  const credits = product.credits;
+  if (typeof packPriceCents !== "number" || !Number.isSafeInteger(packPriceCents) || packPriceCents <= 0) return null;
+  if (typeof credits !== "number" || !Number.isSafeInteger(credits) || credits <= 0 || credits > 20) return null;
+  return { key: kind, model: product.model.trim(), packPriceCents, credits };
 }
 
 function checkoutUrl(value: unknown): value is string {
   if (typeof value !== "string") return false;
   try {
     const parsed = new URL(value);
-    return parsed.protocol === "https:" && parsed.hostname.toLowerCase() === "checkout.stripe.com" && !parsed.username && !parsed.password && !parsed.port;
+    return parsed.protocol === "https:" && WAFFO_CHECKOUT_HOSTS.includes(parsed.hostname.toLowerCase()) && !parsed.username && !parsed.password && !parsed.port;
   } catch {
     return false;
   }
@@ -251,10 +253,6 @@ function apiCode(payload: unknown): string | undefined {
   return typeof body.error?.code === "string" ? body.error.code : typeof body.code === "string" ? body.code : undefined;
 }
 
-function formatPrice(locale: Locale, cents: number): string {
-  return new Intl.NumberFormat(locale, { style: "currency", currency: "USD", minimumFractionDigits: 2 }).format(cents / 100);
-}
-
 export function PaidAccess({
   locale,
   kind,
@@ -277,7 +275,6 @@ export function PaidAccess({
   const [tier, setTier] = useState<PaidTier>("free");
   const [balance, setBalance] = useState(0);
   const [authenticated, setAuthenticated] = useState(false);
-  const [quantity, setQuantity] = useState(1);
   const [checkoutState, setCheckoutState] = useState<"idle" | "loading" | "pending" | "error">("idle");
   const [message, setMessage] = useState<string | null>(null);
   const [accountMode, setAccountMode] = useState<"hidden" | "access" | "credits">("hidden");
@@ -327,14 +324,13 @@ export function PaidAccess({
 
   const loadCatalog = useCallback(async () => {
     try {
-      const response = await fetch("/api/stripe/catalog", { cache: "no-store" });
+      const response = await fetch("/api/waffo/catalog", { cache: "no-store" });
       const payload = await json<{ enabled?: unknown; products?: unknown }>(response);
       const entries = payload && Array.isArray(payload.products) ? payload.products : [];
       const nextProduct = payload?.enabled === true ? entries.map((entry) => parseProduct(entry, kind)).find(Boolean) ?? null : null;
       setProduct(nextProduct);
       setCatalogEnabled(Boolean(nextProduct));
       setCatalogChecked(true);
-      if (nextProduct) setQuantity((previous) => Math.min(nextProduct.maxQuantity, Math.max(nextProduct.minQuantity, previous || nextProduct.minQuantity)));
     } catch {
       setProduct(null);
       setCatalogEnabled(false);
@@ -367,12 +363,12 @@ export function PaidAccess({
 
   const removeCheckoutQuery = useCallback(() => {
     const url = new URL(window.location.href);
-    url.searchParams.delete("session_id");
+    url.searchParams.delete("payment");
     window.history.replaceState(null, "", `${url.pathname}${url.search}${url.hash}`);
   }, []);
 
   const claimCheckout = useCallback(async () => {
-    if (claimedSession.current || !new URLSearchParams(window.location.search).has("session_id")) return;
+    if (claimedSession.current || new URLSearchParams(window.location.search).get("payment") !== "success") return;
     claimedSession.current = true;
     setCheckoutState("loading");
     setMessage(null);
@@ -482,19 +478,17 @@ export function PaidAccess({
 
   const startCheckout = async () => {
     if (!product || checkoutState === "loading") return;
-    const maxQuantity = Math.min(20, product.maxQuantity);
-    const safeQuantity = Math.min(maxQuantity, Math.max(product.minQuantity, quantity));
-    const fingerprint = `${kind}:${safeQuantity}`;
+    const fingerprint = kind;
     if (!checkoutIdentity.current || checkoutIdentity.current.fingerprint !== fingerprint) {
       checkoutIdentity.current = { fingerprint, key: newIdempotencyKey() };
     }
     setCheckoutState("loading");
     setMessage(null);
     try {
-      const response = await fetch("/api/stripe/checkout", {
+      const response = await fetch("/api/waffo/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json", "idempotency-key": checkoutIdentity.current.key },
-        body: JSON.stringify({ product: kind, quantity: safeQuantity, returnPath: window.location.pathname }),
+        body: JSON.stringify({ returnPath: window.location.pathname }),
       });
       const payload = await json<{ url?: unknown } & Record<string, unknown>>(response);
       if (!response.ok || !payload || !checkoutUrl(payload.url)) throw new Error(apiCode(payload) || "checkout");
@@ -505,8 +499,6 @@ export function PaidAccess({
     }
   };
 
-  const productPrice = useMemo(() => product ? formatPrice(locale, product.unitAmountCents) : "", [locale, product]);
-  const maxQuantity = product ? Math.min(20, product.maxQuantity) : 1;
   const visible = catalogChecked && ((catalogEnabled && product !== null) || authenticated);
   if (!visible && !activationToken) return null;
 
@@ -536,31 +528,18 @@ export function PaidAccess({
               {product ? (
                 <>
                   <div className="paid-product-copy">
-                    <span><strong>{localized.model}:</strong> {product.model}</span>
-                    <span><strong>{localized.price}:</strong> {productPrice}</span>
+                    <span><strong>{PACK_NAME}</strong></span>
+                    <span>{localized.packCredits}</span>
+                    <span>{localized.packPrice}</span>
+                    <span>{localized.billing}</span>
                   </div>
-                  <label className="paid-quantity">
-                    <span>{localized.quantity}</span>
-                    <input
-                      type="number"
-                      min={product.minQuantity}
-                      max={maxQuantity}
-                      step={1}
-                      value={quantity}
-                      onChange={(event) => {
-                        const value = Number(event.target.value);
-                        if (Number.isFinite(value)) setQuantity(Math.min(maxQuantity, Math.max(product.minQuantity, Math.trunc(value))));
-                      }}
-                      disabled={busy || checkoutState === "loading"}
-                    />
-                  </label>
                 </>
               ) : null}
               {balance > 0 ? <p className="paid-status">{localized.signedIn}</p> : null}
               {product && balance <= 0 ? (
                 <>
                   <button type="button" className="paid-payment-button" onClick={startCheckout} disabled={checkoutState === "loading"}>
-                    {checkoutState === "loading" ? localized.loading : localized.continuePayment}
+                    {checkoutState === "loading" ? localized.loading : localized.cta}
                   </button>
                   <nav className="paid-product-copy" aria-label="Payment information">
                     <a href="/terms/">Terms</a>

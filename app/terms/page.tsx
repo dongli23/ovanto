@@ -93,9 +93,8 @@ export default function TermsPage() {
       <p>
         Where checkout is provided through Waffo Pancake, Waffo Pancake may act as the
         merchant of record or reseller for that transaction, as identified at checkout.
-        Where the current Stripe checkout is used, Stripe processes the payment. We do
-        not store full payment card numbers on our servers. Payment providers may apply
-        their own terms and privacy notices in addition to these Terms.
+        We do not store full payment card numbers on our servers. Payment providers may
+        apply their own terms and privacy notices in addition to these Terms.
       </p>
 
       <section id="refunds">
@@ -218,7 +217,7 @@ export default function TermsPage() {
         Our <a href="/privacy/">Privacy Policy</a> explains how we handle personal
         information. The Service may use Vercel for hosting, Upstash for data storage,
         Cloudflare Turnstile for abuse prevention, Replicate and fal for AI processing,
-        Stripe and/or Waffo Pancake for checkout and payment handling, and Resend for
+        Waffo Pancake for checkout and payment handling, and Resend for
         transactional email. Their services may have separate terms and policies.
       </p>
       <p>

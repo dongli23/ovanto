@@ -10,7 +10,9 @@ export function assertPaymentOrigin(request: Request): void {
     throw new PaymentError("ORIGIN_MISMATCH", 403);
   }
   if (parsed.origin === "null") throw new PaymentError("ORIGIN_MISMATCH", 403);
-  const allowed = new Set(["https://ovanto.ai"]);
+  // The canonical host is www.ovanto.ai; accept the bare apex too so checkout
+  // and account routes work whichever host a request is served from.
+  const allowed = new Set(["https://www.ovanto.ai", "https://ovanto.ai"]);
   if (process.env.NODE_ENV !== "production" && process.env.DEV_ALLOW_LOCAL_REQUESTS === "true") {
     try { allowed.add(new URL(request.url).origin); } catch { /* request URL is a Fetch URL in production */ }
   }
