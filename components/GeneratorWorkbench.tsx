@@ -183,7 +183,7 @@ export function GeneratorWorkbench({
         turnstileSiteKey={turnstileSiteKey}
         actionLabel={actionLabels[mode]}
         examples={examples[locale][mode]}
-        showPaidAccess={false}
+        showPaidAccess={mode === "video"}
       />
     </div>
   );
