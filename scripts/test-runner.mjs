@@ -10,6 +10,7 @@ mkdirSync(outDir, { recursive: true });
 const entries = [
   [path.join(root, "tests", "lua-reservation.test.cjs"), "lua-reservation.test.cjs"],
   [path.join(root, "tests", "generation.test.ts"), "generation.test.cjs"],
+  [path.join(root, "tests", "generation-payload.test.ts"), "generation-payload.test.cjs"],
   [path.join(root, "tests", "generation-poll-route.test.ts"), "generation-poll-route.test.cjs"],
   [path.join(root, "tests", "generation-stale.test.ts"), "generation-stale.test.cjs"],
   [path.join(root, "tests", "generation-download.test.ts"), "generation-download.test.cjs"],

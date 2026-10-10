@@ -4,6 +4,7 @@ import Script from "next/script";
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { PaidAccess, defaultPaidAccessState, type PaidAccessState } from "./PaidAccess";
+import { buildFreeGenerationBody, buildPaidGenerationBody } from "../lib/generation/request-body";
 import type { ToolKind } from "../lib/content";
 import type { Locale } from "../lib/site";
 
@@ -731,14 +732,16 @@ export function Generator({
       if (pendingJobId.current) {
         payload = await pollGeneration(pendingJobId.current, pendingPaid.current);
       } else {
-        const requestBody: Record<string, string> = {
-          task: kind,
-          tier: "free",
+        const payloadInput = {
+          kind,
           prompt: trimmedPrompt,
           idempotencyKey: idempotencyKey.current ?? newIdempotencyKey(),
+          ...(isEdit && uploadedAsset ? { assetId: uploadedAsset.assetId } : {}),
         };
-        if (isEdit && uploadedAsset) requestBody.assetId = uploadedAsset.assetId;
-        if (!paidAttemptMode) requestBody.turnstileToken = await getTurnstileToken();
+        // Paid and free endpoints accept different body shapes; keep them separate.
+        const requestBody = paidAttemptMode
+          ? buildPaidGenerationBody(payloadInput)
+          : buildFreeGenerationBody(payloadInput, await getTurnstileToken());
         const response = await fetch(paidAttemptMode ? "/api/paid/generate" : "/api/generate", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
