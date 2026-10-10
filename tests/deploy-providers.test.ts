@@ -53,6 +53,7 @@ test("model table owns provider slugs, units, and configured costs", () => {
   assert.equal(MODELS["video.free"].fixedSeconds, 5);
   assert.equal(MODELS["video.free"].resolution, "480p");
   assert.equal(MODELS["video.free"].queueSlug, "fal-ai/wan-25-preview");
+  assert.equal(MODELS["video.paid"].queueSlug, "fal-ai/kling-video");
   assert.deepEqual(FREE_COST_MICRO_USD, { image: 3_000, edit: 23_000, video: 250_000 });
   assert.equal(PAID_MODELS.video.costMicroUsd, 350_000);
   assert.equal(providerEnvKey("image"), "REPLICATE_API_TOKEN");
@@ -162,6 +163,60 @@ test("FAL submission accepts the queue slug and safely falls back from legacy or
   } finally {
     console.error = originalConsoleError;
   }
+});
+
+test("paid Kling submits to the full model endpoint while accepting base queue URLs", async () => {
+  process.env.FAL_KEY = "fal-test";
+  const model = MODELS["video.paid"];
+  assert.equal(model.queueSlug, "fal-ai/kling-video");
+  let request: { url: string; init: RequestInit } | undefined;
+  globalThis.fetch = async (input, init) => {
+    request = { url: String(input), init: init ?? {} };
+    return new Response(JSON.stringify({
+      request_id: "paid-kling-id",
+      status_url: `https://queue.fal.run/${model.queueSlug}/requests/paid-kling-id/status`,
+      response_url: `https://queue.fal.run/${model.queueSlug}/requests/paid-kling-id`,
+    }), { status: 200 });
+  };
+
+  const submitted = await generate("video", "paid", { prompt: "paid video" });
+  assert.equal(request?.url, `https://queue.fal.run/${model.slug}`);
+  assert.equal(request?.init.method, "POST");
+  assert.deepEqual(JSON.parse(String(request?.init.body)), {
+    prompt: "paid video",
+    duration: "5",
+    aspect_ratio: "16:9",
+    negative_prompt: "",
+    cfg_scale: 7,
+  });
+  assert.equal(submitted.statusUrl, `https://queue.fal.run/${model.queueSlug}/requests/paid-kling-id/status`);
+  assert.equal(submitted.responseUrl, `https://queue.fal.run/${model.queueSlug}/requests/paid-kling-id`);
+});
+
+test("paid Kling polling falls back from legacy full-slug URLs without submitting", async () => {
+  process.env.FAL_KEY = "fal-test";
+  const model = MODELS["video.paid"];
+  const requestUrls: string[] = [];
+  globalThis.fetch = async (input, init) => {
+    assert.equal(init?.method, "GET");
+    requestUrls.push(String(input));
+    if (requestUrls.length === 1) return new Response(JSON.stringify({ status: "COMPLETED" }), { status: 200 });
+    return new Response(JSON.stringify({ video: { url: "https://v3.fal.media/files/paid/result.mp4" } }), { status: 200 });
+  };
+
+  const result = await poll("fal", "paid-kling-id", "video", {
+    model: model.slug,
+    statusUrl: `https://queue.fal.run/${model.slug}/requests/paid-kling-id/status`,
+    responseUrl: `https://queue.fal.run/${model.slug}/requests/paid-kling-id`,
+  });
+  assert.deepEqual(result, {
+    state: "succeeded",
+    result: { url: "https://v3.fal.media/files/paid/result.mp4", mediaType: "video" },
+  });
+  assert.deepEqual(requestUrls, [
+    `https://queue.fal.run/${model.queueSlug}/requests/paid-kling-id/status`,
+    `https://queue.fal.run/${model.queueSlug}/requests/paid-kling-id`,
+  ]);
 });
 
 test("FAL polling uses the queue slug for processing, result, and legacy URL fallback", async () => {

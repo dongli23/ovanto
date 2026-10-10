@@ -38,6 +38,7 @@ export const MODELS = {
   'video.paid': {
     provider: 'fal',
     slug: 'fal-ai/kling-video/v2.5-turbo/pro/text-to-video',
+    queueSlug: 'fal-ai/kling-video',
     unit: 'second',
     cost: 0.07,
     fixedSeconds: 5,
