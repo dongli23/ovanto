@@ -27,23 +27,77 @@ export interface DbPool extends DbExecutor {
 
 let pool: DbPool | undefined;
 
+export interface NormalizedDbConfig {
+  /** Connection string with any sslmode parameter removed (in-memory copy). */
+  connectionString: string;
+  /** Explicit TLS config so a connection-string sslmode can never override it. */
+  ssl?: { rejectUnauthorized: boolean };
+}
+
+const NEON_HOST_SUFFIX = ".neon.tech";
+/** TLS modes that perform real certificate verification (CA + hostname). */
+const VERifyingSslModes = new Set(["verify-full", "verify-ca"]);
+/** TLS modes accepted for Neon hosts; normalized to full verification below. */
+const NEON_ACCEPTED_SSL_MODES = new Set(["require", ...VERifyingSslModes]);
+
+function isProductionRuntime(): boolean {
+  return process.env.NODE_ENV === "production" || process.env.VERCEL === "1";
+}
+
+/**
+ * Normalize DATABASE_URL for node-postgres without weakening production TLS.
+ *
+ * node-postgres gives a connection-string `sslmode` precedence over an
+ * explicit `ssl` config object, so an accepted URL is rewritten in memory:
+ * the sslmode parameter is stripped and certificate verification is forced
+ * explicitly. Nothing is logged and the source environment variable is never
+ * mutated.
+ *
+ * Production policy (fail closed):
+ * - Neon (*.neon.tech) + sslmode=require|verify-full|verify-ca → accepted,
+ *   normalized to explicit `rejectUnauthorized: true`.
+ * - Any host + sslmode=verify-full|verify-ca → accepted, same normalization.
+ * - Non-Neon host + only sslmode=require → rejected (no silent relaxation).
+ * - Missing/empty/insecure sslmode (disable, allow, prefer, ...) → rejected.
+ */
+export function normalizeDatabaseUrl(raw: string, production = isProductionRuntime()): NormalizedDbConfig {
+  let url: URL;
+  try {
+    url = new URL(raw);
+  } catch {
+    throw new PaymentError("PAYMENT_CONFIGURATION_UNAVAILABLE", 503);
+  }
+  if (url.protocol !== "postgres:" && url.protocol !== "postgresql:") {
+    throw new PaymentError("PAYMENT_CONFIGURATION_UNAVAILABLE", 503);
+  }
+  if (production) {
+    const sslmode = (url.searchParams.get("sslmode") ?? "").toLowerCase();
+    const isNeon = url.hostname.toLowerCase().endsWith(NEON_HOST_SUFFIX);
+    const accepted = (isNeon && NEON_ACCEPTED_SSL_MODES.has(sslmode)) || VERifyingSslModes.has(sslmode);
+    if (!accepted) {
+      throw new PaymentError("PAYMENT_CONFIGURATION_UNAVAILABLE", 503);
+    }
+    url.searchParams.delete("sslmode");
+    return { connectionString: url.toString(), ssl: { rejectUnauthorized: true } };
+  }
+  return { connectionString: raw };
+}
+
 export function getAccountDb(): DbPool {
   if (pool) return pool;
   const connectionString = process.env.DATABASE_URL;
   if (!connectionString) throw new PaymentError("PAYMENT_CONFIGURATION_UNAVAILABLE", 503);
-  if (process.env.NODE_ENV === "production" || process.env.VERCEL === "1") {
-    const secureMode = /(?:[?&])sslmode=verify-full(?:&|$)/i.test(connectionString);
-    if (!secureMode) throw new PaymentError("PAYMENT_CONFIGURATION_UNAVAILABLE", 503);
-  }
+  const normalized = normalizeDatabaseUrl(connectionString);
 
   pool = new Pool({
-    connectionString,
+    connectionString: normalized.connectionString,
     max: 5,
     idleTimeoutMillis: 30_000,
     connectionTimeoutMillis: 8_000,
-    // Keep certificate verification enabled; production also requires the
-    // explicit sslmode=verify-full marker in DATABASE_URL above.
-    ssl: process.env.NODE_ENV === "production" || process.env.VERCEL === "1" ? { rejectUnauthorized: true } : undefined,
+    // Certificate verification is always explicit here; the sslmode marker
+    // was validated (and removed) by normalizeDatabaseUrl above so it can
+    // never override this object.
+    ssl: normalized.ssl,
   }) as unknown as DbPool;
   return pool;
 }

@@ -15,6 +15,7 @@ const entries = [
   [path.join(root, "tests", "generation-download.test.ts"), "generation-download.test.cjs"],
   [path.join(root, "tests", "payments.test.ts"), "payments.test.cjs"],
   [path.join(root, "tests", "payment-sql.test.ts"), "payment-sql.test.cjs"],
+  [path.join(root, "tests", "database-tls.test.ts"), "database-tls.test.cjs"],
   [path.join(root, "tests", "paid-generation.test.ts"), "paid-generation.test.cjs"],
   [path.join(root, "tests", "deploy-contract.test.ts"), "deploy-contract.test.cjs"],
   [path.join(root, "tests", "deploy-providers.test.ts"), "deploy-providers.test.cjs"],
