@@ -367,26 +367,47 @@ export async function reservePaidCredit(
   });
 }
 
-export async function releasePaidCredit(jobUUID: string, db: DbPool = getAccountDb()): Promise<void> {
-  await withTransaction(db, async (tx) => {
+export async function releasePaidCredit(jobUUID: string, db: DbPool = getAccountDb()): Promise<PaidJobRecord> {
+  return withTransaction(db, async (tx) => {
     const result = await tx.query<PaidJobRow>("SELECT * FROM ovanto_paid_jobs WHERE id = $1 FOR UPDATE", [jobUUID]);
     const job = result.rows[0];
     if (!job) throw new PaymentError("PAID_JOB_NOT_FOUND", 404);
-    if (job.credit_state !== "reserved") return;
-    await tx.query(
-      `UPDATE ovanto_credit_balances
-          SET available_credits = available_credits + 1,
-              reserved_credits = GREATEST(0, reserved_credits - 1), updated_at = now()
-        WHERE account_id = $1 AND product = $2 AND order_id = $3`,
+    if (job.status === "succeeded") throw new PaymentError("PAID_JOB_STATE_INVALID", 409);
+    if (job.credit_state === "released") return paidJobFromRow(job);
+    if (job.credit_state !== "reserved" && job.credit_state !== "consumed") {
+      throw new PaymentError("PAID_JOB_STATE_INVALID", 409);
+    }
+
+    const balance = await tx.query<{ account_id: string }>(
+      job.credit_state === "reserved"
+        ? `UPDATE ovanto_credit_balances
+              SET available_credits = available_credits + 1,
+                  reserved_credits = GREATEST(0, reserved_credits - 1), updated_at = now()
+            WHERE account_id = $1 AND product = $2 AND order_id = $3
+            RETURNING account_id`
+        : `UPDATE ovanto_credit_balances
+              SET available_credits = available_credits + 1, updated_at = now()
+            WHERE account_id = $1 AND product = $2 AND order_id = $3
+            RETURNING account_id`,
       [job.account_id, job.product, job.order_id],
     );
+    if (balance.rows.length !== 1) throw new PaymentError("PAID_CREDIT_BALANCE_UNAVAILABLE", 503);
+
     await tx.query(
       `INSERT INTO ovanto_credit_ledger
         (id, account_id, order_id, product, entry_type, units, provider, model, expected_cost_micro_usd, metadata)
        VALUES ($1,$2,$3,$4,'release',1,$5,$6,$7,$8::jsonb)`,
       [randomUUID(), job.account_id, job.order_id, job.product, job.provider, job.model, job.expected_cost_micro_usd, JSON.stringify({ job_id: job.id })],
     );
-    await tx.query("UPDATE ovanto_paid_jobs SET credit_state = 'released', status = 'failed', updated_at = now() WHERE id = $1", [job.id]);
+    const updated = await tx.query<PaidJobRow>(
+      `UPDATE ovanto_paid_jobs
+          SET credit_state = 'released', status = 'failed', updated_at = now()
+        WHERE id = $1
+        RETURNING *`,
+      [job.id],
+    );
+    if (updated.rows.length !== 1) throw new PaymentError("PAID_JOB_UNAVAILABLE", 503);
+    return paidJobFromRow(updated.rows[0]);
   });
 }
 
@@ -516,4 +537,3 @@ function paidJobFromRow(row: PaidJobRow | undefined): PaidJobRecord {
     createdAt: new Date(row.created_at).toISOString(), updatedAt: new Date(row.updated_at).toISOString(),
   };
 }
-

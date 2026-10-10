@@ -186,8 +186,8 @@ test("paid Kling submits to the full model endpoint while accepting base queue U
     prompt: "paid video",
     duration: "5",
     aspect_ratio: "16:9",
-    negative_prompt: "",
-    cfg_scale: 7,
+    negative_prompt: "blur, distort, and low quality",
+    cfg_scale: 0.5,
   });
   assert.equal(submitted.statusUrl, `https://queue.fal.run/${model.queueSlug}/requests/paid-kling-id/status`);
   assert.equal(submitted.responseUrl, `https://queue.fal.run/${model.queueSlug}/requests/paid-kling-id`);
@@ -217,6 +217,136 @@ test("paid Kling polling falls back from legacy full-slug URLs without submittin
     `https://queue.fal.run/${model.queueSlug}/requests/paid-kling-id/status`,
     `https://queue.fal.run/${model.queueSlug}/requests/paid-kling-id`,
   ]);
+});
+
+test("FAL result HTTP 422 becomes terminal failure without submitting again", async () => {
+  process.env.FAL_KEY = "fal-test";
+  const model = MODELS["video.paid"];
+  const requestUrls: string[] = [];
+  const originalConsoleError = console.error;
+  const diagnostics: string[] = [];
+  console.error = (value?: unknown) => {
+    if (typeof value === "string") diagnostics.push(value);
+  };
+  try {
+    globalThis.fetch = async (input, init) => {
+      assert.equal(init?.method, "GET");
+      requestUrls.push(String(input));
+      if (requestUrls.length === 1) return new Response(JSON.stringify({ status: "COMPLETED" }), { status: 200 });
+      return new Response(JSON.stringify({ detail: "provider payload rejected" }), { status: 422 });
+    };
+
+    const result = await poll("fal", "paid-kling-422", "video", {
+      model: model.slug,
+      statusUrl: `https://queue.fal.run/${model.queueSlug}/requests/paid-kling-422/status`,
+      responseUrl: `https://queue.fal.run/${model.queueSlug}/requests/paid-kling-422`,
+    });
+
+    assert.deepEqual(result, { state: "failed" });
+    assert.deepEqual(requestUrls, [
+      `https://queue.fal.run/${model.queueSlug}/requests/paid-kling-422/status`,
+      `https://queue.fal.run/${model.queueSlug}/requests/paid-kling-422`,
+    ]);
+    assert.equal(diagnostics.length, 1);
+    assert.deepEqual(JSON.parse(diagnostics[0]), {
+      provider: "fal",
+      stage: "result",
+      model: model.slug,
+      http_status: 422,
+      category: "invalid_request",
+    });
+  } finally {
+    console.error = originalConsoleError;
+  }
+});
+
+test("FAL result authentication and transient failures keep their existing error semantics", async () => {
+  process.env.FAL_KEY = "fal-test";
+  const model = MODELS["video.paid"];
+  for (const [status, errorType] of [
+    [401, ProviderProtocolError],
+    [403, ProviderProtocolError],
+    [429, ProviderUnavailableError],
+    [503, ProviderUnavailableError],
+  ] as const) {
+    let calls = 0;
+    globalThis.fetch = async (_input, init) => {
+      assert.equal(init?.method, "GET");
+      calls += 1;
+      if (calls === 1) return new Response(JSON.stringify({ status: "COMPLETED" }), { status: 200 });
+      return new Response("provider error", { status });
+    };
+    await assert.rejects(
+      poll("fal", `paid-kling-${status}`, "video", {
+        model: model.slug,
+        statusUrl: `https://queue.fal.run/${model.queueSlug}/requests/paid-kling-${status}/status`,
+        responseUrl: `https://queue.fal.run/${model.queueSlug}/requests/paid-kling-${status}`,
+      }),
+      (error: unknown) => error instanceof errorType,
+    );
+  }
+
+  globalThis.fetch = async (_input, init) => {
+    assert.equal(init?.method, "GET");
+    throw new Error("network unavailable");
+  };
+  await assert.rejects(
+    poll("fal", "paid-kling-network", "video", { model: model.slug }),
+    (error: unknown) => error instanceof ProviderUnavailableError,
+  );
+
+  globalThis.fetch = async (_input, init) => {
+    assert.equal(init?.method, "GET");
+    const error = new Error("request timed out");
+    error.name = "AbortError";
+    throw error;
+  };
+  await assert.rejects(
+    poll("fal", "paid-kling-timeout", "video", { model: model.slug }),
+    (error: unknown) => error instanceof ProviderUnavailableError,
+  );
+
+  globalThis.fetch = async (_input, init) => {
+    assert.equal(init?.method, "GET");
+    return new Response("rate limited", { status: 429 });
+  };
+  await assert.rejects(
+    poll("fal", "paid-kling-rate-limit", "video", { model: model.slug }),
+    (error: unknown) => error instanceof ProviderUnavailableError,
+  );
+});
+
+test("FAL explicit terminal statuses and completed error payloads remain failed", async () => {
+  process.env.FAL_KEY = "fal-test";
+  const model = MODELS["video.paid"];
+  for (const status of ["FAILED", "CANCELED", "CANCELLED"]) {
+    let calls = 0;
+    globalThis.fetch = async (_input, init) => {
+      assert.equal(init?.method, "GET");
+      calls += 1;
+      return new Response(JSON.stringify({ status }), { status: 200 });
+    };
+    const result = await poll("fal", `paid-kling-${status}`, "video", { model: model.slug });
+    assert.deepEqual(result, { state: "failed" });
+    assert.equal(calls, 1);
+  }
+
+  for (const payload of [
+    { status: "COMPLETED", error: "provider rejected output" },
+    { status: "SUCCEEDED", error_type: "provider_error" },
+    { status: "COMPLETED", data: { error: "provider rejected output" } },
+    { status: "COMPLETED", data: { error_type: "provider_error" } },
+  ]) {
+    let calls = 0;
+    globalThis.fetch = async (_input, init) => {
+      assert.equal(init?.method, "GET");
+      calls += 1;
+      return new Response(JSON.stringify(payload), { status: 200 });
+    };
+    const result = await poll("fal", "paid-kling-completed-error", "video", { model: model.slug });
+    assert.deepEqual(result, { state: "failed" });
+    assert.equal(calls, 1);
+  }
 });
 
 test("FAL polling uses the queue slug for processing, result, and legacy URL fallback", async () => {

@@ -24,11 +24,13 @@ import {
   markCheckoutFailed,
   releasePaidCredit,
   reservePaidCredit,
+  updatePaidJobProvider,
   type PendingOrderInput,
   type VerifiedWaffoPayment,
 } from "../lib/payments/store";
 import { hashSecret, WAFFO_PACK_CREDITS } from "../lib/payments/config";
 import { PaymentError } from "../lib/payments/errors";
+import { pollPaidGeneration } from "../lib/paid-generation/service";
 
 /**
  * PGlite is an embedded PostgreSQL engine used here to exercise the actual
@@ -301,8 +303,11 @@ test("paid credit reservation is idempotent and release/finalize transitions hap
   let balance = (await db().query("SELECT available_credits, reserved_credits FROM ovanto_credit_balances WHERE order_id = $1", [created.order.id])).rows[0];
   assert.deepEqual(balance, { available_credits: WAFFO_PACK_CREDITS - 1, reserved_credits: 1 });
 
-  await releasePaidCredit(first.jobId, db());
-  await releasePaidCredit(first.jobId, db());
+  const repeatedRelease = await Promise.all([
+    releasePaidCredit(first.jobId, db()),
+    releasePaidCredit(first.jobId, db()),
+  ]);
+  assert.deepEqual(repeatedRelease.map((job) => job.creditState), ["released", "released"]);
   balance = (await db().query("SELECT available_credits, reserved_credits FROM ovanto_credit_balances WHERE order_id = $1", [created.order.id])).rows[0];
   assert.deepEqual(balance, { available_credits: WAFFO_PACK_CREDITS, reserved_credits: 0 });
   // The full-account reservation above was intentionally released first;
@@ -315,6 +320,184 @@ test("paid credit reservation is idempotent and release/finalize transitions hap
   balance = (await db().query("SELECT available_credits, reserved_credits FROM ovanto_credit_balances WHERE order_id = $1", [created.order.id])).rows[0];
   assert.deepEqual(balance, { available_credits: WAFFO_PACK_CREDITS - 1, reserved_credits: 0 });
   assert.equal((await db().query("SELECT count(*)::int AS count FROM ovanto_credit_ledger WHERE entry_type = 'consume'")).rows[0].count, 1);
+});
+
+test("terminal release refunds consumed credit without touching reserved credits and rejects succeeded jobs", async () => {
+  const created = await createOrder();
+  const unrelated = await createOrder({}, "buyer@example.com");
+  const accountId = created.fulfillment.accountId!;
+  const session = await claimPaidOrder(created.order.id, created.secret, db());
+  const scoped = await getPaidSessionByToken(session.rawSession, db());
+  const scopeOrderId = scoped?.scopeOrderId;
+  assert.equal(scopeOrderId, created.order.id);
+
+  const consumed = await reservePaidCredit(accountId, "video", "consumed-terminal", "f".repeat(64), randomUUID(), scopeOrderId, db());
+  await finalizePaidCredit(consumed.jobId, db());
+  const held = await reservePaidCredit(accountId, "video", "held-terminal", "e".repeat(64), randomUUID(), scopeOrderId, db());
+  const failed = await releasePaidCredit(consumed.jobId, db());
+  assert.equal(failed.status, "failed");
+  assert.equal(failed.creditState, "released");
+  assert.deepEqual(
+    (await db().query("SELECT available_credits, reserved_credits FROM ovanto_credit_balances WHERE order_id = $1", [created.order.id])).rows[0],
+    { available_credits: WAFFO_PACK_CREDITS - 1, reserved_credits: 1 },
+  );
+  assert.equal((await db().query("SELECT count(*)::int AS count FROM ovanto_credit_ledger WHERE order_id = $1 AND entry_type = 'release'", [created.order.id])).rows[0].count, 1);
+  assert.deepEqual(
+    (await db().query("SELECT available_credits, reserved_credits FROM ovanto_credit_balances WHERE order_id = $1", [unrelated.order.id])).rows[0],
+    { available_credits: WAFFO_PACK_CREDITS, reserved_credits: 0 },
+  );
+
+  await releasePaidCredit(held.jobId, db());
+
+  const succeeded = await reservePaidCredit(accountId, "video", "succeeded-no-refund", "a".repeat(64), randomUUID(), scopeOrderId, db());
+  await finalizePaidCredit(succeeded.jobId, db());
+  await updatePaidJobProvider(succeeded.jobId, accountId, { status: "succeeded" }, scopeOrderId, db());
+  await assert.rejects(
+    releasePaidCredit(succeeded.jobId, db()),
+    (error: unknown) => error instanceof PaymentError && error.code === "PAID_JOB_STATE_INVALID",
+  );
+  assert.deepEqual(
+    (await db().query("SELECT available_credits, reserved_credits FROM ovanto_credit_balances WHERE order_id = $1", [created.order.id])).rows[0],
+    { available_credits: WAFFO_PACK_CREDITS - 1, reserved_credits: 0 },
+  );
+  assert.equal((await db().query("SELECT count(*)::int AS count FROM ovanto_credit_ledger WHERE order_id = $1 AND entry_type = 'release'", [created.order.id])).rows[0].count, 2);
+});
+
+test("terminal release rolls back when the source balance is missing", async () => {
+  const created = await createOrder();
+  const accountId = created.fulfillment.accountId!;
+  const session = await claimPaidOrder(created.order.id, created.secret, db());
+  const scoped = await getPaidSessionByToken(session.rawSession, db());
+  const reserved = await reservePaidCredit(accountId, "video", "missing-balance-release", "b".repeat(64), randomUUID(), scoped?.scopeOrderId, db());
+  await db().query("DELETE FROM ovanto_credit_balances WHERE order_id = $1", [created.order.id]);
+
+  await assert.rejects(
+    releasePaidCredit(reserved.jobId, db()),
+    (error: unknown) => error instanceof PaymentError && error.code === "PAID_CREDIT_BALANCE_UNAVAILABLE",
+  );
+  const job = (await db().query("SELECT status, credit_state FROM ovanto_paid_jobs WHERE id = $1", [reserved.jobId])).rows[0];
+  assert.deepEqual(job, { status: "pending", credit_state: "reserved" });
+  assert.equal((await db().query("SELECT count(*)::int AS count FROM ovanto_credit_ledger WHERE entry_type = 'release'")).rows[0].count, 0);
+});
+
+test("terminal release rolls back the balance update when the release ledger insert fails", async () => {
+  const created = await createOrder();
+  const accountId = created.fulfillment.accountId!;
+  const session = await claimPaidOrder(created.order.id, created.secret, db());
+  const scoped = await getPaidSessionByToken(session.rawSession, db());
+  const reserved = await reservePaidCredit(accountId, "video", "ledger-failure-release", "d".repeat(64), randomUUID(), scoped?.scopeOrderId, db());
+  const base = db();
+  const failingLedgerDb: DbPool = {
+    query: base.query.bind(base),
+    async connect() {
+      const connection = await base.connect();
+      return {
+        query: async <T extends Record<string, unknown> = Record<string, unknown>>(text: string, values: readonly unknown[] = []) => {
+          if (text.includes("INSERT INTO ovanto_credit_ledger")) throw new Error("injected ledger failure");
+          return connection.query<T>(text, values);
+        },
+        release: connection.release.bind(connection),
+      };
+    },
+  };
+
+  await assert.rejects(releasePaidCredit(reserved.jobId, failingLedgerDb), /injected ledger failure/);
+  assert.deepEqual(
+    (await db().query("SELECT available_credits, reserved_credits FROM ovanto_credit_balances WHERE order_id = $1", [created.order.id])).rows[0],
+    { available_credits: WAFFO_PACK_CREDITS - 1, reserved_credits: 1 },
+  );
+  assert.deepEqual(
+    (await db().query("SELECT status, credit_state FROM ovanto_paid_jobs WHERE id = $1", [reserved.jobId])).rows[0],
+    { status: "pending", credit_state: "reserved" },
+  );
+  assert.equal((await db().query("SELECT count(*)::int AS count FROM ovanto_credit_ledger WHERE order_id = $1 AND entry_type = 'release'", [created.order.id])).rows[0].count, 0);
+});
+
+test("a completed Kling result request returning 422 becomes one refunded terminal failure", async () => {
+  const originalFetch = globalThis.fetch;
+  const originalFalKey = process.env.FAL_KEY;
+  process.env.FAL_KEY = "sql-test-fal-key";
+  const calls: Array<{ url: string; method: string }> = [];
+  globalThis.fetch = (async (input: URL | RequestInfo, init?: RequestInit) => {
+    const url = typeof input === "string" ? input : input instanceof URL ? input.toString() : input.url;
+    calls.push({ url, method: init?.method ?? (input instanceof Request ? input.method : "GET") });
+    if (url.endsWith("/status")) return new Response(JSON.stringify({ status: "COMPLETED" }), { status: 200, headers: { "content-type": "application/json" } });
+    return new Response(JSON.stringify({ detail: "result unavailable" }), { status: 422, headers: { "content-type": "application/json" } });
+  }) as typeof fetch;
+
+  try {
+    const created = await createOrder();
+    const accountId = created.fulfillment.accountId!;
+    const session = await claimPaidOrder(created.order.id, created.secret, db());
+    const scoped = await getPaidSessionByToken(session.rawSession, db());
+    const scopeOrderId = scoped?.scopeOrderId;
+    const reserved = await reservePaidCredit(accountId, "video", "kling-result-422", "c".repeat(64), randomUUID(), scopeOrderId, db());
+    const processing = await updatePaidJobProvider(
+      reserved.jobId,
+      accountId,
+      {
+        status: "processing",
+        providerRequestId: "kling-request-422",
+        // These persisted URLs represent a pre-queueSlug job. The provider
+        // adapter must reconstruct the valid base queue URLs after rejecting them.
+        providerStatusUrl: "https://queue.fal.run/fal-ai/kling-video/v2.5-turbo/pro/text-to-video/requests/kling-request-422/status",
+        providerResponseUrl: "https://queue.fal.run/fal-ai/kling-video/v2.5-turbo/pro/text-to-video/requests/kling-request-422",
+      },
+      scopeOrderId,
+      db(),
+    );
+    await finalizePaidCredit(processing.id, db());
+
+    const sessionForPoll = { accountId, scopeOrderId, balances: { image: 0, edit: 0, video: WAFFO_PACK_CREDITS } };
+    const first = await pollPaidGeneration(processing.id, sessionForPoll);
+    assert.equal(first.status, "failed");
+    assert.equal(first.creditState, "released");
+    assert.deepEqual(
+      (await db().query("SELECT available_credits, reserved_credits FROM ovanto_credit_balances WHERE order_id = $1", [created.order.id])).rows[0],
+      { available_credits: WAFFO_PACK_CREDITS, reserved_credits: 0 },
+    );
+
+    const second = await pollPaidGeneration(processing.id, sessionForPoll);
+    assert.equal(second.status, "failed");
+    assert.equal(second.creditState, "released");
+    assert.equal(calls.length, 2);
+    assert.ok(calls.every((call) => call.method === "GET"));
+    assert.deepEqual(calls.map((call) => call.url), [
+      "https://queue.fal.run/fal-ai/kling-video/requests/kling-request-422/status",
+      "https://queue.fal.run/fal-ai/kling-video/requests/kling-request-422",
+    ]);
+    assert.equal((await db().query("SELECT count(*)::int AS count FROM ovanto_credit_ledger WHERE order_id = $1 AND entry_type = 'release'", [created.order.id])).rows[0].count, 1);
+  } finally {
+    globalThis.fetch = originalFetch;
+    if (originalFalKey === undefined) delete process.env.FAL_KEY;
+    else process.env.FAL_KEY = originalFalKey;
+  }
+});
+
+test("poll closes existing failed reserved and consumed jobs before any provider read", async () => {
+  const created = await createOrder();
+  const accountId = created.fulfillment.accountId!;
+  const session = await claimPaidOrder(created.order.id, created.secret, db());
+  const scoped = await getPaidSessionByToken(session.rawSession, db());
+  const scopeOrderId = scoped?.scopeOrderId;
+  const consumed = await reservePaidCredit(accountId, "video", "already-failed-consumed", "e".repeat(64), randomUUID(), scopeOrderId, db());
+  await finalizePaidCredit(consumed.jobId, db());
+  await updatePaidJobProvider(consumed.jobId, accountId, { status: "failed" }, scopeOrderId, db());
+  const reserved = await reservePaidCredit(accountId, "video", "already-failed-reserved", "f".repeat(64), randomUUID(), scopeOrderId, db());
+  await updatePaidJobProvider(reserved.jobId, accountId, { status: "failed" }, scopeOrderId, db());
+
+  const sessionForPoll = { accountId, scopeOrderId, balances: { image: 0, edit: 0, video: 1 } };
+  const first = await pollPaidGeneration(consumed.jobId, sessionForPoll);
+  const second = await pollPaidGeneration(reserved.jobId, sessionForPoll);
+  assert.equal(first.creditState, "released");
+  assert.equal(second.creditState, "released");
+  assert.deepEqual(
+    (await db().query("SELECT available_credits, reserved_credits FROM ovanto_credit_balances WHERE order_id = $1", [created.order.id])).rows[0],
+    { available_credits: WAFFO_PACK_CREDITS, reserved_credits: 0 },
+  );
+  await pollPaidGeneration(consumed.jobId, sessionForPoll);
+  await pollPaidGeneration(reserved.jobId, sessionForPoll);
+  assert.equal((await db().query("SELECT count(*)::int AS count FROM ovanto_credit_ledger WHERE order_id = $1 AND entry_type = 'release'", [created.order.id])).rows[0].count, 2);
 });
 
 test("same idempotency key remains one job when requests are serialized by the embedded engine", async () => {

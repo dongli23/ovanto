@@ -169,7 +169,13 @@ test("paid provider helper keeps fixed model schemas and is separate from free r
   const result = await submitPaidGeneration("video", "a calm lake");
   assert.equal(result.model, "fal-ai/kling-video/v2.5-turbo/pro/text-to-video");
   assert.equal(call?.url, "https://queue.fal.run/fal-ai/kling-video/v2.5-turbo/pro/text-to-video");
-  assert.deepEqual(JSON.parse(String(call?.init.body)), { prompt: "a calm lake", duration: "5", aspect_ratio: "16:9", negative_prompt: "", cfg_scale: 7 });
+  assert.deepEqual(JSON.parse(String(call?.init.body)), {
+    prompt: "a calm lake",
+    duration: "5",
+    aspect_ratio: "16:9",
+    negative_prompt: "blur, distort, and low quality",
+    cfg_scale: 0.5,
+  });
 });
 
 test("provider status errors fail closed and output URLs require HTTPS allowlisted CDN hosts", async () => {
@@ -215,4 +221,3 @@ test("status ownership requires both the signed anonymous owner and current trus
   assert.equal(canReadJob(job, "owner-b", "ip-a"), false);
   assert.equal(canReadJob(job, "owner-a", "ip-b"), false);
 });
-

@@ -58,15 +58,18 @@ export async function startPaidGeneration(input: PaidGenerationInput, session: P
 export async function pollPaidGeneration(id: string, session: PaidSession): Promise<PaidJobRecord> {
   const job = await getPaidJob(id, session.accountId, session.scopeOrderId);
   if (!job) throw new PaymentError("PAID_JOB_NOT_FOUND", 404);
+  if (job.status === "failed") return releasePaidCredit(job.id);
+  if (job.status === "succeeded") return job;
   if (job.providerRequestId && job.creditState === "reserved") await finalizePaidCredit(job.id);
-  if (job.status === "succeeded" || job.status === "failed" || !job.providerRequestId) return job;
+  if (!job.providerRequestId) return job;
   const expected = providerFor(job.product, "paid");
   if (job.provider !== expected.provider || job.model !== expected.model) throw new PaymentError("PAID_JOB_STATE_INVALID", 409);
   const result = await pollGeneration(job.provider, job.providerRequestId, job.product, {
     statusUrl: job.providerStatusUrl, responseUrl: job.providerResponseUrl, model: job.model,
   });
   if (result.state === "processing") return job;
-  return updatePaidJobProvider(job.id, session.accountId, result.state === "failed" ? { status: "failed" } : {
+  if (result.state === "failed") return releasePaidCredit(job.id);
+  return updatePaidJobProvider(job.id, session.accountId, {
     status: "succeeded", resultUrl: result.result.url, resultMediaType: result.result.mediaType,
   }, session.scopeOrderId);
 }

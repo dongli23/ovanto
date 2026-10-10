@@ -37,22 +37,7 @@ export async function submitFal(model: ModelDefinition, options: GenerateOptions
         enhance_prompt: false,
       }
     : options.task === "video"
-      ? model.resolution === undefined
-        ? {
-            prompt: options.prompt,
-            duration: String(model.fixedSeconds),
-            aspect_ratio: "16:9",
-            negative_prompt: "",
-            cfg_scale: 7,
-          }
-        : {
-            prompt: options.prompt,
-            duration: String(model.fixedSeconds),
-            resolution: model.resolution,
-            aspect_ratio: "16:9",
-            enable_prompt_expansion: false,
-            enable_safety_checker: true,
-          }
+      ? buildFalVideoInput(model, options.prompt)
       : undefined;
   if (!input) {
     await logFalFailure("submit", model.slug, null, "protocol");
@@ -129,6 +114,7 @@ export async function pollFal(
   }
   if (response.kind === "reject") {
     await logFalFailure("status", model.slug, response.httpStatus, falHttpFailureCategory(response.httpStatus));
+    if (response.httpStatus === 429) throw new ProviderUnavailableError();
     throw new ProviderProtocolError();
   }
   if (!isRecord(response.payload)) {
@@ -174,7 +160,10 @@ async function getFalResult(url: string, task: GenerationTask, headers: HeadersI
     throw new ProviderUnavailableError();
   }
   if (response.kind === "reject") {
-    await logFalFailure("result", modelSlug, response.httpStatus, falHttpFailureCategory(response.httpStatus));
+    const category = falHttpFailureCategory(response.httpStatus);
+    await logFalFailure("result", modelSlug, response.httpStatus, category);
+    if (response.httpStatus === 422) return { state: "failed" };
+    if (response.httpStatus === 429) throw new ProviderUnavailableError();
     throw new ProviderProtocolError();
   }
   if (!isRecord(response.payload)) {
@@ -199,6 +188,35 @@ function resolveModel(task: GenerationTask, modelSlug?: string): ModelDefinition
 
 function queueSlugForModel(model: ModelDefinition): string {
   return model.queueSlug ?? model.slug;
+}
+
+function buildFalVideoInput(model: ModelDefinition, prompt: string): Record<string, unknown> {
+  if (model.slug === "fal-ai/kling-video/v2.5-turbo/pro/text-to-video") {
+    return {
+      prompt,
+      duration: String(model.fixedSeconds),
+      aspect_ratio: "16:9",
+      negative_prompt: "blur, distort, and low quality",
+      cfg_scale: 0.5,
+    };
+  }
+  if (model.resolution === undefined) {
+    return {
+      prompt,
+      duration: String(model.fixedSeconds),
+      aspect_ratio: "16:9",
+      negative_prompt: "",
+      cfg_scale: 7,
+    };
+  }
+  return {
+    prompt,
+    duration: String(model.fixedSeconds),
+    resolution: model.resolution,
+    aspect_ratio: "16:9",
+    enable_prompt_expansion: false,
+    enable_safety_checker: true,
+  };
 }
 
 function isValidFalRequestId(value: string): boolean {
