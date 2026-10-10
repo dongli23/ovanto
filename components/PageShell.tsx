@@ -1,14 +1,28 @@
-import type { PageDefinition } from "../lib/content";
-import { ROUTES } from "../lib/site";
+import type { PageDefinition, ToolKind } from "../lib/content";
+import { ROUTES, type Locale } from "../lib/site";
 import { GeneratorWorkbench } from "./GeneratorWorkbench";
 import { HomePlatform } from "./HomePlatform";
 
 const languageLinks = [
-  { key: "en", label: "English", href: ROUTES.en },
-  { key: "it", label: "Italiano", href: ROUTES.it },
-  { key: "fr", label: "Français", href: ROUTES.fr },
-  { key: "nl", label: "Nederlands", href: ROUTES.nl },
+  { key: "en", label: "English" },
+  { key: "it", label: "Italiano" },
+  { key: "fr", label: "Français" },
+  { key: "nl", label: "Nederlands" },
 ] as const;
+
+function languageHref(locale: Locale, currentToolKind: ToolKind): string {
+  if (currentToolKind === "image") {
+    if (locale === "fr") return ROUTES.frGenerate;
+    if (locale === "nl") return ROUTES.nl;
+  }
+
+  if (currentToolKind === "video" && locale === "fr") return ROUTES.fr;
+  if (currentToolKind === "edit" && locale === "fr") return ROUTES.frEdit;
+
+  if (locale === "en") return ROUTES.en;
+  if (locale === "it") return ROUTES.it;
+  return ROUTES.nl;
+}
 
 const footerLabels: Record<PageDefinition["key"], Record<(typeof languageLinks)[number]["key"], string>> = {
   en: {
@@ -215,7 +229,7 @@ export function PageShell({ page }: { page: PageDefinition }) {
         <nav className="language-nav" aria-label="Language switcher">
           {languageLinks.map((link) => (
             <a
-              href={link.href}
+              href={languageHref(link.key, page.toolKind)}
               key={link.key}
               aria-current={page.locale === link.key ? "page" : undefined}
             >
@@ -265,7 +279,7 @@ export function PageShell({ page }: { page: PageDefinition }) {
           <div><a className="logo-mark" href="/"><span className="logo-dot" aria-hidden="true" />Ovanto</a><p>A light workspace for images, video and creative ideas.</p></div>
           <nav aria-label="Footer AI tools"><h3>AI Tools</h3><a href="#image-workbench">Image Generator</a><a href={ROUTES.fr}>AI Video (French)</a><a href={ROUTES.frEdit}>Photo Editor (French)</a></nav>
           <nav aria-label="Footer resources"><h3>Resources</h3><a href="#inspiration">Inspiration</a><a href="#how-it-works">How it works</a><a href="#faq">FAQ</a></nav>
-          <nav aria-label="Footer languages"><h3>Language</h3>{languageLinks.map(link => <a href={link.href} key={link.key}>{link.label}</a>)}</nav>
+          <nav aria-label="Footer languages"><h3>Language</h3>{languageLinks.map(link => <a href={languageHref(link.key, page.toolKind)} key={link.key}>{link.label}</a>)}</nav>
         </div> : null}
         <div className="footer-row">
           <span>© {new Date().getFullYear()} Ovanto.ai</span>
@@ -278,7 +292,7 @@ export function PageShell({ page }: { page: PageDefinition }) {
           </nav>
           <nav className="footer-links" aria-label="Ovanto language pages" hidden={page.key === "en"}>
             {languageLinks.map((link) => (
-              <a href={link.href} key={link.key}>
+              <a href={ROUTES[link.key]} key={link.key}>
                 {labels[link.key]}
               </a>
             ))}

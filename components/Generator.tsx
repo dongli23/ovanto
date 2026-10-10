@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { PaidAccess, defaultPaidAccessState, type PaidAccessState } from "./PaidAccess";
 import { buildFreeGenerationBody, buildPaidGenerationBody } from "../lib/generation/request-body";
+import { capPromptDraft, readPromptDraft, writePromptDraft } from "../lib/generation/prompt-draft";
 import type { ToolKind } from "../lib/content";
 import type { Locale } from "../lib/site";
 
@@ -440,7 +441,7 @@ export function Generator({
   const localized = copy[locale];
   const kind = generationKind(toolKind);
   const isEdit = toolKind === "edit";
-  const [prompt, setPrompt] = useState("");
+  const [prompt, setPromptState] = useState("");
   const [quota, setQuota] = useState<QuotaResponse | null>(null);
   const [quotaError, setQuotaError] = useState(!turnstileSiteKey);
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
@@ -464,10 +465,28 @@ export function Generator({
   const pendingPaid = useRef(false);
   const idempotencyKey = useRef<string | null>(null);
   const uploadAttempt = useRef(0);
+  const promptEditedRef = useRef(false);
+  const promptRestoreAttemptedRef = useRef(false);
   const turnstileResolver = useRef<{
     resolve: (token: string) => void;
     reject: () => void;
   } | null>(null);
+
+  const setPrompt = useCallback((value: string) => {
+    const nextPrompt = capPromptDraft(value);
+    promptEditedRef.current = true;
+    writePromptDraft(nextPrompt);
+    setPromptState(nextPrompt);
+  }, []);
+
+  useEffect(() => {
+    if (promptRestoreAttemptedRef.current) return;
+    promptRestoreAttemptedRef.current = true;
+    if (promptEditedRef.current) return;
+
+    const draft = readPromptDraft();
+    if (draft) setPromptState(capPromptDraft(draft));
+  }, []);
 
   const loadQuota = useCallback(async () => {
     if (!turnstileSiteKey) {
