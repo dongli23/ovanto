@@ -87,6 +87,8 @@ type Copy = {
   resultFailed: string;
   imageAlt: string;
   videoLabel: string;
+  paidLabel: string;
+  creditsLabel: string;
   waiting: string;
   downloadError: string;
   uploadHint: string;
@@ -131,6 +133,8 @@ const copy: Record<Locale, Copy> = {
     resultFailed: "The generation could not be completed. Try again.",
     imageAlt: "Your generated Ovanto image",
     videoLabel: "Your generated Ovanto video",
+    paidLabel: "Paid",
+    creditsLabel: "credits",
     waiting: "Describe an idea to begin.",
     downloadError: "The file could not be downloaded. Please try again.",
     uploadHint: "Upload an image",
@@ -173,6 +177,8 @@ const copy: Record<Locale, Copy> = {
     resultFailed: "La generazione non è riuscita. Riprova.",
     imageAlt: "La tua immagine generata con Ovanto",
     videoLabel: "Il tuo video generato con Ovanto",
+    paidLabel: "A pagamento",
+    creditsLabel: "crediti",
     waiting: "Descrivi un'idea per iniziare.",
     downloadError: "Non è stato possibile scaricare il file. Riprova.",
     uploadHint: "Carica un'immagine",
@@ -215,6 +221,8 @@ const copy: Record<Locale, Copy> = {
     resultFailed: "La génération n'a pas abouti. Réessayez.",
     imageAlt: "Votre image générée avec Ovanto",
     videoLabel: "Votre vidéo générée avec Ovanto",
+    paidLabel: "Payant",
+    creditsLabel: "crédits",
     waiting: "Décrivez une idée pour commencer.",
     downloadError: "Le fichier n'a pas pu être téléchargé. Réessayez.",
     uploadHint: "Téléchargez une image",
@@ -257,6 +265,8 @@ const copy: Record<Locale, Copy> = {
     resultFailed: "Genereren is niet gelukt. Probeer opnieuw.",
     imageAlt: "Je gegenereerde Ovanto-afbeelding",
     videoLabel: "Je gegenereerde Ovanto-video",
+    paidLabel: "Betaald",
+    creditsLabel: "credits",
     waiting: "Beschrijf een idee om te beginnen.",
     downloadError: "Het bestand kon niet worden gedownload. Probeer opnieuw.",
     uploadHint: "Upload een afbeelding",
@@ -837,7 +847,8 @@ export function Generator({
     void loadQuota();
   };
 
-  const modelName = kind === "video" ? "Wan 2.5" : kind === "edit" ? "Flux Kontext Dev" : "Flux Schnell";
+  const isPaidVideo = kind === "video" && paidState.enabled && paidState.tier === "paid";
+  const modelName = kind === "video" ? (isPaidVideo ? "Kling 2.5 Turbo Pro" : "Wan 2.5") : kind === "edit" ? "Flux Kontext Dev" : "Flux Schnell";
   const outputSetting = kind === "video" ? "480p" : kind === "edit" ? localized.originalLabel : "1:1";
   const settingItems = kind === "video"
     ? [
@@ -850,9 +861,11 @@ export function Generator({
         { label: kind === "edit" ? localized.inputLabel : localized.aspectLabel, value: outputSetting },
       ];
 
-  const quotaLabel = quota
-    ? `Free (${quota.remaining}/${quota.limit} today)`
-    : "Free (unknown/unknown today)";
+  const quotaLabel = isPaidVideo
+    ? `${localized.paidLabel} (${paidState.balance} ${localized.creditsLabel})`
+    : quota
+      ? `Free (${quota.remaining}/${quota.limit} today)`
+      : "Free (unknown/unknown today)";
   const generateDisabled = status === "loading" || (isEdit && (uploadState !== "ready" || !uploadedAsset));
 
   const promptDescription = error ? `${kind}-status ${kind}-error` : `${kind}-status`;
