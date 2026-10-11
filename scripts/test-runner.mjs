@@ -8,6 +8,7 @@ const outDir = path.join(root, ".test-build");
 mkdirSync(outDir, { recursive: true });
 
 const entries = [
+  [path.join(root, "tests", "multilingual-routes.test.ts"), "multilingual-routes.test.cjs"],
   [path.join(root, "tests", "lua-reservation.test.cjs"), "lua-reservation.test.cjs"],
   [path.join(root, "tests", "generation.test.ts"), "generation.test.cjs"],
   [path.join(root, "tests", "generation-payload.test.ts"), "generation-payload.test.cjs"],

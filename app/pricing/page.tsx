@@ -1,30 +1,50 @@
 import type { Metadata } from "next";
 import { LegalPage } from "../../components/LegalPage";
+import { assertPaymentConfiguration } from "../../lib/payments/errors";
 import styles from "../legal.module.css";
+
+export const dynamic = "force-dynamic";
+
+function paymentIsAvailable(): boolean {
+  try {
+    assertPaymentConfiguration();
+    return true;
+  } catch {
+    return false;
+  }
+}
 
 export const metadata: Metadata = {
   title: "Pricing | Ovanto",
-  description: "See Ovanto's current free limits and the planned Ovanto Pro Video Pack.",
+  description: "See Ovanto's current free limits and the Ovanto Pro Video Pack availability.",
   alternates: { canonical: "/pricing/" },
   openGraph: {
     title: "Pricing | Ovanto",
-    description: "See Ovanto's current free limits and the planned Ovanto Pro Video Pack.",
+    description: "See Ovanto's current free limits and the Ovanto Pro Video Pack availability.",
     url: "https://www.ovanto.ai/pricing/",
   },
 };
 
 export default function PricingPage() {
+  const paidAvailable = paymentIsAvailable();
+
   return (
     <LegalPage title="Pricing" date="9 October 2026" dateTime="2026-10-09" eyebrow="Pricing">
       <p className={styles.lead}>
-        Free tools are available subject to regional eligibility, daily limits, and capacity. The Ovanto Pro Video Pack is not yet available for purchase.
+        Free tools are available subject to regional eligibility, daily limits, and capacity. {paidAvailable
+          ? "The Ovanto Pro Video Pack is available through the English video workspace."
+          : "The Ovanto Pro Video Pack is not yet available for purchase."}
       </p>
 
       <section className={styles.pricingStatus} aria-labelledby="pricing-status-title">
-        <p className={styles.statusLabel}>Current availability</p>
-        <h2 id="pricing-status-title">Ovanto Pro Video Pack is not yet available for purchase.</h2>
+        <p className={styles.statusLabel}>{paidAvailable ? "Available now" : "Current availability"}</p>
+        <h2 id="pricing-status-title">
+          {paidAvailable ? "Ovanto Pro Video Pack is available for purchase." : "Ovanto Pro Video Pack is not yet available for purchase."}
+        </h2>
         <p>
-          The pack details and checkout will be shown here when paid purchase becomes available.
+          {paidAvailable
+            ? <>Open the <a href="/video/">English video workspace</a> to start a purchase. The pack includes 3 Pro AI video generations.</>
+            : "The pack details and checkout will be shown here when paid purchase becomes available."}
         </p>
       </section>
 
@@ -55,7 +75,7 @@ export default function PricingPage() {
 
       <section className={styles.pricingSection} aria-labelledby="paid-pricing-title">
         <div className={styles.sectionHeading}>
-          <p className={styles.statusLabel}>Planned paid product</p>
+          <p className={styles.statusLabel}>{paidAvailable ? "Available paid product" : "Planned paid product"}</p>
           <h2 id="paid-pricing-title">Ovanto Pro Video Pack</h2>
           <p>Get 3 Pro AI video generations for US$4.99. Each generation creates one 5-second video using Kling 2.5 Turbo Pro. This is a one-time purchase with no subscription or automatic renewal.</p>
         </div>
@@ -65,7 +85,9 @@ export default function PricingPage() {
           <p className={styles.pricingUnit}>per pack · 3 Pro video generations · 5 seconds each</p>
         </article>
         <p className={styles.pricingNote}>
-          This is a planned product; paid purchase is not currently available. One pack includes three Pro video generations, has no cash value, and does not renew or recharge automatically. The pack has no scheduled expiry at present.
+          {paidAvailable
+            ? "The pack is available through the English video workspace. One pack includes three Pro video generations, has no cash value, and does not renew or recharge automatically. The pack has no scheduled expiry at present."
+            : "This is a planned product; paid purchase is not currently available. One pack includes three Pro video generations, has no cash value, and does not renew or recharge automatically. The pack has no scheduled expiry at present."}
         </p>
       </section>
 
@@ -75,7 +97,9 @@ export default function PricingPage() {
           <h2 id="free-video-faq-title">What happens after I use my free video?</h2>
         </div>
         <p>
-          Free users can create one 5-second AI video in 480p per day per IP. When paid purchase becomes available, you can purchase an Ovanto Pro Video Pack for US$4.99, which includes 3 Pro video generations. It is a one-time purchase with no subscription or automatic renewal.
+          {paidAvailable
+            ? "Free users can create one 5-second AI video in 480p per day per IP. You can purchase an Ovanto Pro Video Pack through the English video workspace for US$4.99, which includes 3 Pro video generations. It is a one-time purchase with no subscription or automatic renewal."
+            : "Free users can create one 5-second AI video in 480p per day per IP. When paid purchase becomes available, you can purchase an Ovanto Pro Video Pack for US$4.99, which includes 3 Pro video generations. It is a one-time purchase with no subscription or automatic renewal."}
         </p>
       </section>
 

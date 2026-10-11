@@ -12,14 +12,16 @@
     "audit:client-secrets": "node scripts/audit-client-secrets.mjs",
     "verify:seo-hardening": "node scripts/verify-seo-hardening.mjs",
     "verify:ui-rebuild": "node scripts/verify-ui-rebuild.mjs",
-    "verify:v4": "node scripts/verify-seo.mjs"
+    "verify:v4": "node scripts/verify-seo.mjs",
+    "test:ui": "playwright test",
+    "verify:multilingual": "node scripts/verify-multilingual-production.mjs"
   },
   "dependencies": {
     "@fal-ai/client": "^1.10.1",
     "@fontsource-variable/manrope": "^5.2.5",
     "@upstash/redis": "^1.39.0",
     "@waffo/pancake-ts": "^0.25.0",
-    "next": "^16.0.0",
+    "next": "^16.3.8",
     "pg": "^8.23.1",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
@@ -27,6 +29,7 @@
   },
   "devDependencies": {
     "@electric-sql/pglite": "^0.5.8",
+    "@playwright/test": "^1.64.0",
     "@tailwindcss/postcss": "^4.1.13",
     "@types/node": "^24.0.0",
     "@types/pg": "^8.23.1",

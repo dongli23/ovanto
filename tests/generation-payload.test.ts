@@ -8,6 +8,16 @@ import {
   readPromptDraft,
   writePromptDraft,
 } from "../lib/generation/prompt-draft";
+import {
+  buildGenerationAttemptSignature,
+  clearGenerationWorkspaceState,
+  generationWorkspaceStorageKey,
+  readExplicitVideoTier,
+  readGenerationWorkspaceState,
+  writeExplicitVideoTier,
+  writeGenerationWorkspaceState,
+  type GenerationWorkspaceState,
+} from "../lib/generation/workspace-state";
 
 function createPromptStorage() {
   const values = new Map<string, string>();
@@ -22,6 +32,22 @@ function createPromptStorage() {
       values.delete(key);
     },
     values,
+  };
+}
+
+function createWorkspaceState(kind: "image" | "video" | "edit" = "image"): GenerationWorkspaceState {
+  const paid = kind === "video";
+  return {
+    version: 1,
+    kind,
+    attemptSignature: buildGenerationAttemptSignature({ kind, paid, prompt: "a quiet scene", assetId: kind === "edit" ? "asset-123" : undefined }),
+    idempotencyKey: "11111111-2222-4333-8444-555555555555",
+    paid,
+    pendingJob: { id: "22222222-3333-4444-8555-666666666666", paid },
+    result: null,
+    resultJob: null,
+    uploadedAsset: kind === "edit" ? { assetId: "asset-123", url: "https://fal.media/assets/asset-123" } : null,
+    uploadName: kind === "edit" ? "source.png" : null,
   };
 }
 
@@ -123,4 +149,70 @@ test("prompt drafts are capped on write and reject oversized stored values", () 
 
   storage.setItem(PROMPT_DRAFT_STORAGE_KEY, oversized);
   assert.equal(readPromptDraft(storage), "");
+});
+
+test("workspace state preserves a pending attempt and isolates tool kinds", () => {
+  const storage = createPromptStorage();
+  const imageState = createWorkspaceState("image");
+  writeGenerationWorkspaceState(imageState, storage);
+
+  assert.deepEqual(readGenerationWorkspaceState("image", storage), imageState);
+  assert.equal(readGenerationWorkspaceState("video", storage), null);
+  assert.equal(storage.values.has(generationWorkspaceStorageKey("video")), false);
+});
+
+test("workspace state restores a validated terminal result and edit upload", () => {
+  const storage = createPromptStorage();
+  const state = createWorkspaceState("edit");
+  const completed: GenerationWorkspaceState = {
+    ...state,
+    pendingJob: null,
+    result: { url: "https://fal.media/results/edit.webp", mediaType: "image" },
+    resultJob: { id: "22222222-3333-4444-8555-666666666666", paid: false },
+  };
+  writeGenerationWorkspaceState(completed, storage);
+
+  assert.deepEqual(readGenerationWorkspaceState("edit", storage), completed);
+});
+
+test("workspace state rejects malformed, cross-kind, and mismatched media data", () => {
+  const storage = createPromptStorage();
+  const imageKey = generationWorkspaceStorageKey("image");
+  storage.setItem(imageKey, "{broken");
+  assert.equal(readGenerationWorkspaceState("image", storage), null);
+  assert.equal(storage.values.has(imageKey), false);
+
+  storage.setItem(imageKey, JSON.stringify({ ...createWorkspaceState("video"), result: { url: "https://fal.media/results/video.mp4", mediaType: "image" }, pendingJob: null, resultJob: { id: "22222222-3333-4444-8555-666666666666", paid: true } }));
+  assert.equal(readGenerationWorkspaceState("image", storage), null);
+  assert.equal(storage.values.has(imageKey), false);
+});
+
+test("workspace persistence tolerates unavailable storage and clear is idempotent", () => {
+  const unavailable = {
+    getItem() {
+      throw new Error("storage unavailable");
+    },
+    setItem() {
+      throw new Error("storage unavailable");
+    },
+    removeItem() {
+      throw new Error("storage unavailable");
+    },
+  };
+
+  assert.doesNotThrow(() => {
+    writeGenerationWorkspaceState(createWorkspaceState(), unavailable);
+    assert.equal(readGenerationWorkspaceState("image", unavailable), null);
+    clearGenerationWorkspaceState("image", unavailable);
+    clearGenerationWorkspaceState("image", unavailable);
+  });
+});
+
+test("explicit video tier selection round trips independently of generation state", () => {
+  const storage = createPromptStorage();
+  assert.equal(readExplicitVideoTier(storage), null);
+  writeExplicitVideoTier("free", storage);
+  assert.equal(readExplicitVideoTier(storage), "free");
+  writeExplicitVideoTier("paid", storage);
+  assert.equal(readExplicitVideoTier(storage), "paid");
 });

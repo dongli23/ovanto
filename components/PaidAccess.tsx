@@ -2,6 +2,11 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { Locale } from "../lib/site";
+import {
+  readExplicitVideoTier,
+  writeExplicitVideoTier,
+  type ExplicitVideoTier,
+} from "../lib/generation/workspace-state";
 
 export type PaidProductKey = "image" | "edit" | "video";
 export type PaidTier = "free" | "paid";
@@ -55,6 +60,10 @@ type Copy = {
   checkoutError: string;
   codeSent: string;
   signedIn: string;
+  paymentInformation: string;
+  terms: string;
+  privacy: string;
+  refundPolicy: string;
 };
 
 const PACK_NAME = "Ovanto Pro Video Pack";
@@ -88,6 +97,10 @@ const copy: Record<Locale, Copy> = {
     checkoutError: "Payment could not be started. Please try again.",
     codeSent: "A code was sent if this email has paid access.",
     signedIn: "Paid credits are ready.",
+    paymentInformation: "Payment information",
+    terms: "Terms",
+    privacy: "Privacy",
+    refundPolicy: "Refund policy",
   },
   it: {
     title: "Accesso a pagamento",
@@ -117,6 +130,10 @@ const copy: Record<Locale, Copy> = {
     checkoutError: "Non è stato possibile avviare il pagamento. Riprova.",
     codeSent: "Se questa email ha accesso a pagamento, è stato inviato un codice.",
     signedIn: "I crediti a pagamento sono pronti.",
+    paymentInformation: "Informazioni di pagamento",
+    terms: "Termini",
+    privacy: "Privacy",
+    refundPolicy: "Politica di rimborso",
   },
   fr: {
     title: "Accès payant",
@@ -146,6 +163,10 @@ const copy: Record<Locale, Copy> = {
     checkoutError: "Le paiement n'a pas pu démarrer. Réessayez.",
     codeSent: "Un code a été envoyé si cet e-mail dispose d'un accès payant.",
     signedIn: "Vos crédits payants sont prêts.",
+    paymentInformation: "Informations de paiement",
+    terms: "Conditions",
+    privacy: "Confidentialité",
+    refundPolicy: "Politique de remboursement",
   },
   nl: {
     title: "Betaalde toegang",
@@ -175,6 +196,10 @@ const copy: Record<Locale, Copy> = {
     checkoutError: "De betaling kon niet worden gestart. Probeer opnieuw.",
     codeSent: "Als dit e-mailadres betaalde toegang heeft, is een code verstuurd.",
     signedIn: "Je betaalde credits staan klaar.",
+    paymentInformation: "Betalingsinformatie",
+    terms: "Voorwaarden",
+    privacy: "Privacy",
+    refundPolicy: "Restitutiebeleid",
   },
 };
 
@@ -286,6 +311,24 @@ export function PaidAccess({
   const [activationBusy, setActivationBusy] = useState(false);
   const checkoutIdentity = useRef<{ fingerprint: string; key: string } | null>(null);
   const claimedSession = useRef(false);
+  const explicitTierRef = useRef<ExplicitVideoTier | null>(null);
+  const tierRestoreKindRef = useRef<PaidProductKey | null>(null);
+
+  const selectTier = useCallback((nextTier: PaidTier) => {
+    setTier(nextTier);
+    if (kind === "video") {
+      explicitTierRef.current = nextTier;
+      writeExplicitVideoTier(nextTier);
+    }
+  }, [kind]);
+
+  useEffect(() => {
+    if (tierRestoreKindRef.current === kind) return;
+    tierRestoreKindRef.current = kind;
+    const storedTier = kind === "video" ? readExplicitVideoTier() : null;
+    explicitTierRef.current = storedTier;
+    setTier(storedTier ?? "free");
+  }, [kind]);
 
   const publish = useCallback(() => {
     onStateChange?.({
@@ -307,7 +350,7 @@ export function PaidAccess({
     const nextBalance = isAuthenticated ? parseBalances(payload?.balances)[kind] : 0;
     setAuthenticated(isAuthenticated);
     setBalance(nextBalance);
-    if (nextBalance > 0) setTier("paid");
+    if (nextBalance > 0 && explicitTierRef.current === null) setTier("paid");
   }, [kind]);
 
   const loadSession = useCallback(async () => {
@@ -349,7 +392,7 @@ export function PaidAccess({
   useEffect(() => {
     if (typeof remainingFromGeneration !== "number" || remainingFromGeneration < 0) return;
     setBalance(remainingFromGeneration);
-    if (remainingFromGeneration > 0) setTier("paid");
+    if (remainingFromGeneration > 0 && explicitTierRef.current === null) setTier("paid");
   }, [remainingFromGeneration]);
 
   useEffect(() => {
@@ -515,10 +558,10 @@ export function PaidAccess({
       {visible ? (
         <>
           <div className="paid-tier-row" role="group" aria-label={localized.title}>
-            <button type="button" className={`paid-tier ${tier === "free" ? "is-selected" : ""}`} onClick={() => setTier("free")} disabled={busy}>
+            <button type="button" className={`paid-tier ${tier === "free" ? "is-selected" : ""}`} onClick={() => selectTier("free")} disabled={busy}>
               {localized.free}
             </button>
-            <button type="button" className={`paid-tier ${tier === "paid" ? "is-selected" : ""}`} onClick={() => setTier("paid")} disabled={busy}>
+            <button type="button" className={`paid-tier ${tier === "paid" ? "is-selected" : ""}`} onClick={() => selectTier("paid")} disabled={busy}>
               {localized.paid}
             </button>
             <span className="paid-balance" aria-live="polite">{balance} {localized.credits}</span>
@@ -541,10 +584,10 @@ export function PaidAccess({
                   <button type="button" className="paid-payment-button" onClick={startCheckout} disabled={checkoutState === "loading"}>
                     {checkoutState === "loading" ? localized.loading : localized.cta}
                   </button>
-                  <nav className="paid-product-copy" aria-label="Payment information">
-                    <a href="/terms/">Terms</a>
-                    <a href="/privacy/">Privacy</a>
-                    <a href="/terms/#refunds">Refund policy</a>
+                  <nav className="paid-product-copy" aria-label={localized.paymentInformation}>
+                    <a href="/terms/">{localized.terms}</a>
+                    <a href="/privacy/">{localized.privacy}</a>
+                    <a href="/terms/#refunds">{localized.refundPolicy}</a>
                   </nav>
                 </>
               ) : null}

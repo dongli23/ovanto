@@ -6,6 +6,15 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { PaidAccess, defaultPaidAccessState, type PaidAccessState } from "./PaidAccess";
 import { buildFreeGenerationBody, buildPaidGenerationBody } from "../lib/generation/request-body";
 import { capPromptDraft, readPromptDraft, writePromptDraft } from "../lib/generation/prompt-draft";
+import {
+  buildGenerationAttemptSignature,
+  clearGenerationWorkspaceAttempt,
+  clearGenerationWorkspaceState,
+  readExplicitVideoTier,
+  readGenerationWorkspaceState,
+  type GenerationWorkspaceState,
+  writeGenerationWorkspaceState,
+} from "../lib/generation/workspace-state";
 import type { ToolKind } from "../lib/content";
 import type { Locale } from "../lib/site";
 
@@ -74,7 +83,7 @@ declare global {
 type Copy = {
   generate: string;
   promptLabel: string;
-  placeholder: string;
+  placeholders: Record<GenerationKind, string>;
   download: string;
   openResult: string;
   retry: string;
@@ -87,6 +96,7 @@ type Copy = {
   resultReady: string;
   resultFailed: string;
   imageAlt: string;
+  editAlt: string;
   videoLabel: string;
   paidLabel: string;
   creditsLabel: string;
@@ -109,18 +119,27 @@ type Copy = {
   inputLabel: string;
   aspectLabel: string;
   outputLabel: string;
+  providerOutput: string;
   durationLabel: string;
   originalLabel: string;
   beforeLabel: string;
   afterLabel: string;
   examplesLabel: string;
+  previewDescription: Record<GenerationKind, string>;
+  freeQuota: (remaining: number, limit: number) => string;
+  unknownQuota: string;
+  securityLabel: string;
 };
 
 const copy: Record<Locale, Copy> = {
   en: {
     generate: "Generate",
     promptLabel: "Prompt",
-    placeholder: "Describe the image you want…",
+    placeholders: {
+      image: "Describe the image you want…",
+      video: "Describe the video you want…",
+      edit: "Describe how you want to edit the image…",
+    },
     download: "Download",
     openResult: "Open result",
     retry: "Try again",
@@ -133,6 +152,7 @@ const copy: Record<Locale, Copy> = {
     resultReady: "Your result is ready.",
     resultFailed: "The generation could not be completed. Try again.",
     imageAlt: "Your generated Ovanto image",
+    editAlt: "Your edited Ovanto image",
     videoLabel: "Your generated Ovanto video",
     paidLabel: "Paid",
     creditsLabel: "credits",
@@ -155,16 +175,29 @@ const copy: Record<Locale, Copy> = {
     inputLabel: "Input",
     aspectLabel: "Aspect ratio",
     outputLabel: "Output",
+    providerOutput: "Provider output",
     durationLabel: "Duration",
     originalLabel: "Original",
     beforeLabel: "Before",
     afterLabel: "After",
     examplesLabel: "Try an example prompt",
+    previewDescription: {
+      image: "Your generated image will appear here.",
+      video: "Your generated video will appear here.",
+      edit: "Your edited image will appear here.",
+    },
+    freeQuota: (remaining, limit) => `Free (${remaining}/${limit} today)`,
+    unknownQuota: "Free (quota unavailable)",
+    securityLabel: "Security verification",
   },
   it: {
     generate: "Genera",
     promptLabel: "Prompt",
-    placeholder: "Descrivi il video che vuoi…",
+    placeholders: {
+      image: "Descrivi l'immagine che vuoi creare…",
+      video: "Descrivi il video che vuoi creare…",
+      edit: "Descrivi come vuoi modificare l'immagine…",
+    },
     download: "Scarica",
     openResult: "Apri il risultato",
     retry: "Riprova",
@@ -177,6 +210,7 @@ const copy: Record<Locale, Copy> = {
     resultReady: "Il risultato è pronto.",
     resultFailed: "La generazione non è riuscita. Riprova.",
     imageAlt: "La tua immagine generata con Ovanto",
+    editAlt: "La tua immagine modificata con Ovanto",
     videoLabel: "Il tuo video generato con Ovanto",
     paidLabel: "A pagamento",
     creditsLabel: "crediti",
@@ -199,16 +233,29 @@ const copy: Record<Locale, Copy> = {
     inputLabel: "Ingresso",
     aspectLabel: "Formato",
     outputLabel: "Qualità",
+    providerOutput: "Output del provider",
     durationLabel: "Durata",
     originalLabel: "Originale",
     beforeLabel: "Prima",
     afterLabel: "Dopo",
     examplesLabel: "Prova un prompt di esempio",
+    previewDescription: {
+      image: "Qui apparirà la tua immagine generata.",
+      video: "Qui apparirà il tuo video generato.",
+      edit: "Qui apparirà la tua immagine modificata.",
+    },
+    freeQuota: (remaining, limit) => `Gratis (${remaining}/${limit} oggi)`,
+    unknownQuota: "Gratis (quota non disponibile)",
+    securityLabel: "Verifica di sicurezza",
   },
   fr: {
     generate: "Générer",
     promptLabel: "Prompt",
-    placeholder: "Décrivez ce que vous voulez…",
+    placeholders: {
+      image: "Décrivez l'image que vous voulez créer…",
+      video: "Décrivez la vidéo que vous voulez créer…",
+      edit: "Décrivez comment modifier l'image…",
+    },
     download: "Télécharger",
     openResult: "Ouvrir le résultat",
     retry: "Réessayer",
@@ -221,6 +268,7 @@ const copy: Record<Locale, Copy> = {
     resultReady: "Votre résultat est prêt.",
     resultFailed: "La génération n'a pas abouti. Réessayez.",
     imageAlt: "Votre image générée avec Ovanto",
+    editAlt: "Votre image retouchée avec Ovanto",
     videoLabel: "Votre vidéo générée avec Ovanto",
     paidLabel: "Payant",
     creditsLabel: "crédits",
@@ -243,16 +291,29 @@ const copy: Record<Locale, Copy> = {
     inputLabel: "Entrée",
     aspectLabel: "Format",
     outputLabel: "Qualité",
+    providerOutput: "Sortie du fournisseur",
     durationLabel: "Durée",
     originalLabel: "Original",
     beforeLabel: "Avant",
     afterLabel: "Après",
     examplesLabel: "Essayez un prompt exemple",
+    previewDescription: {
+      image: "Votre image générée apparaîtra ici.",
+      video: "Votre vidéo générée apparaîtra ici.",
+      edit: "Votre image retouchée apparaîtra ici.",
+    },
+    freeQuota: (remaining, limit) => `Gratuit (${remaining}/${limit} aujourd'hui)`,
+    unknownQuota: "Gratuit (quota indisponible)",
+    securityLabel: "Vérification de sécurité",
   },
   nl: {
     generate: "Genereren",
     promptLabel: "Prompt",
-    placeholder: "Beschrijf wat je wilt maken…",
+    placeholders: {
+      image: "Beschrijf de afbeelding die je wilt maken…",
+      video: "Beschrijf de video die je wilt maken…",
+      edit: "Beschrijf hoe je de afbeelding wilt bewerken…",
+    },
     download: "Downloaden",
     openResult: "Resultaat openen",
     retry: "Opnieuw proberen",
@@ -265,6 +326,7 @@ const copy: Record<Locale, Copy> = {
     resultReady: "Je resultaat staat klaar.",
     resultFailed: "Genereren is niet gelukt. Probeer opnieuw.",
     imageAlt: "Je gegenereerde Ovanto-afbeelding",
+    editAlt: "Je bewerkte Ovanto-afbeelding",
     videoLabel: "Je gegenereerde Ovanto-video",
     paidLabel: "Betaald",
     creditsLabel: "credits",
@@ -287,11 +349,20 @@ const copy: Record<Locale, Copy> = {
     inputLabel: "Invoer",
     aspectLabel: "Beeldverhouding",
     outputLabel: "Uitvoer",
+    providerOutput: "Uitvoer van provider",
     durationLabel: "Duur",
     originalLabel: "Origineel",
     beforeLabel: "Voor",
     afterLabel: "Na",
     examplesLabel: "Probeer een voorbeeldprompt",
+    previewDescription: {
+      image: "Je gegenereerde afbeelding verschijnt hier.",
+      video: "Je gegenereerde video verschijnt hier.",
+      edit: "Je bewerkte afbeelding verschijnt hier.",
+    },
+    freeQuota: (remaining, limit) => `Gratis (${remaining}/${limit} vandaag)`,
+    unknownQuota: "Gratis (quotum niet beschikbaar)",
+    securityLabel: "Beveiligingscontrole",
   },
 };
 
@@ -467,10 +538,15 @@ export function Generator({
   const uploadAttempt = useRef(0);
   const promptEditedRef = useRef(false);
   const promptRestoreAttemptedRef = useRef(false);
+  const workspaceRestoreKindRef = useRef<GenerationKind | null>(null);
   const turnstileResolver = useRef<{
     resolve: (token: string) => void;
     reject: () => void;
   } | null>(null);
+
+  const persistWorkspaceState = useCallback((state: Omit<GenerationWorkspaceState, "version" | "kind">) => {
+    writeGenerationWorkspaceState({ version: 1, kind, ...state });
+  }, [kind]);
 
   const setPrompt = useCallback((value: string) => {
     const nextPrompt = capPromptDraft(value);
@@ -487,6 +563,33 @@ export function Generator({
     const draft = readPromptDraft();
     if (draft) setPromptState(capPromptDraft(draft));
   }, []);
+
+  useEffect(() => {
+    if (workspaceRestoreKindRef.current === kind) return;
+    workspaceRestoreKindRef.current = kind;
+
+    const saved = readGenerationWorkspaceState(kind);
+    if (!saved) return;
+
+    if (saved.uploadedAsset) {
+      setUploadedAsset(saved.uploadedAsset);
+      setUploadName(saved.uploadName);
+      setUploadState("ready");
+    }
+    if (saved.pendingJob) {
+      if (!saved.attemptSignature || !saved.idempotencyKey || saved.paid === null) return;
+      attemptIdentity.current = saved.attemptSignature;
+      idempotencyKey.current = saved.idempotencyKey;
+      pendingPaid.current = saved.paid;
+      pendingJobId.current = saved.pendingJob.id;
+      return;
+    }
+    if (saved.result && saved.resultJob) {
+      setResult(saved.result);
+      setResultJob(saved.resultJob);
+      setStatus("success");
+    }
+  }, [kind]);
 
   const loadQuota = useCallback(async () => {
     if (!turnstileSiteKey) {
@@ -610,6 +713,7 @@ export function Generator({
     attemptIdentity.current = null;
     pendingPaid.current = false;
     idempotencyKey.current = null;
+    clearGenerationWorkspaceState(kind);
 
     if (!isAllowedUploadFile(file)) {
       setUploadState("error");
@@ -667,6 +771,16 @@ export function Generator({
       setUploadedAsset({ assetId: initPayload.assetId, url: completePayload.url });
       setUploadState("ready");
       setUploadError(null);
+      persistWorkspaceState({
+        attemptSignature: null,
+        idempotencyKey: null,
+        paid: null,
+        pendingJob: null,
+        result: null,
+        resultJob: null,
+        uploadedAsset: { assetId: initPayload.assetId, url: completePayload.url },
+        uploadName: file.name.slice(0, 256),
+      });
     } catch (caught) {
       if (uploadAttempt.current !== requestId) return;
       const apiCode = caught instanceof Error ? (caught as Error & { code?: unknown }).code : undefined;
@@ -722,8 +836,23 @@ export function Generator({
       return;
     }
     const paidSelected = paidState.enabled && paidState.tier === "paid";
-    const attemptSignature = `${paidSelected ? "paid" : "free"}:${kind}:${trimmedPrompt}:${uploadedAsset?.assetId ?? ""}`;
-    const canResumePendingJob = Boolean(pendingJobId.current && attemptIdentity.current === attemptSignature);
+    const requestedAttemptSignature = buildGenerationAttemptSignature({
+      kind,
+      paid: paidSelected,
+      prompt: trimmedPrompt,
+      assetId: uploadedAsset?.assetId,
+    });
+    const pendingAttemptSignature = pendingPaid.current
+      ? buildGenerationAttemptSignature({ kind, paid: true, prompt: trimmedPrompt, assetId: uploadedAsset?.assetId })
+      : buildGenerationAttemptSignature({ kind, paid: false, prompt: trimmedPrompt, assetId: uploadedAsset?.assetId });
+    const explicitVideoTier = kind === "video" ? readExplicitVideoTier() : null;
+    const canResumePendingJob = Boolean(
+      pendingJobId.current
+      && attemptIdentity.current
+      && attemptIdentity.current === pendingAttemptSignature
+      && (attemptIdentity.current === requestedAttemptSignature || explicitVideoTier === null),
+    );
+    const attemptSignature = canResumePendingJob ? attemptIdentity.current! : requestedAttemptSignature;
     const paidAttemptMode = canResumePendingJob ? pendingPaid.current : paidSelected;
     if (paidAttemptMode && !canResumePendingJob && paidState.balance <= 0) {
       setError(localized.paidCreditsRequired);
@@ -750,6 +879,7 @@ export function Generator({
     setDownloadError(null);
     try {
       if (attemptIdentity.current !== attemptSignature) {
+        clearGenerationWorkspaceAttempt(kind);
         attemptIdentity.current = attemptSignature;
         pendingJobId.current = null;
         pendingPaid.current = paidAttemptMode;
@@ -786,6 +916,16 @@ export function Generator({
         if (paidAttemptMode) applyPaidRemaining(responsePayload.remaining);
         else applyRemaining(responsePayload.remaining);
         pendingJobId.current = responsePayload.id;
+        persistWorkspaceState({
+          attemptSignature,
+          idempotencyKey: idempotencyKey.current,
+          paid: paidAttemptMode,
+          pendingJob: { id: responsePayload.id, paid: paidAttemptMode },
+          result: null,
+          resultJob: null,
+          uploadedAsset,
+          uploadName,
+        });
         payload = responsePayload;
         if (payload.status === "pending" && paidAttemptMode && payload.code === "SUBMISSION_UNCERTAIN") {
           setError(localized.paidSubmissionUncertain);
@@ -808,6 +948,7 @@ export function Generator({
       if (finished.status !== "succeeded" || !finished.result) {
         setError(finished.code ? errorCodeMessage(finished.code, localized) : localized.resultFailed);
         setStatus("error");
+        clearGenerationWorkspaceAttempt(kind);
         pendingJobId.current = null;
         attemptIdentity.current = null;
         pendingPaid.current = false;
@@ -817,6 +958,16 @@ export function Generator({
       setResult(finished.result);
       setResultJob({ id: finished.id, paid: paidAttemptMode });
       setStatus("success");
+      persistWorkspaceState({
+        attemptSignature,
+        idempotencyKey: idempotencyKey.current,
+        paid: paidAttemptMode,
+        pendingJob: null,
+        result: finished.result,
+        resultJob: { id: finished.id, paid: paidAttemptMode },
+        uploadedAsset,
+        uploadName,
+      });
       pendingJobId.current = null;
       attemptIdentity.current = null;
       pendingPaid.current = false;
@@ -868,7 +1019,7 @@ export function Generator({
 
   const isPaidVideo = kind === "video" && paidState.enabled && paidState.tier === "paid";
   const modelName = kind === "video" ? (isPaidVideo ? "Kling 2.5 Turbo Pro" : "Wan 2.5") : kind === "edit" ? "Flux Kontext Dev" : "Flux Schnell";
-  const outputSetting = kind === "video" ? "480p" : kind === "edit" ? localized.originalLabel : "1:1";
+  const outputSetting = kind === "video" ? (isPaidVideo ? localized.providerOutput : "480p") : kind === "edit" ? localized.originalLabel : "1:1";
   const settingItems = kind === "video"
     ? [
         { label: localized.modelLabel, value: modelName },
@@ -883,11 +1034,12 @@ export function Generator({
   const quotaLabel = isPaidVideo
     ? `${localized.paidLabel} (${paidState.balance} ${localized.creditsLabel})`
     : quota
-      ? `Free (${quota.remaining}/${quota.limit} today)`
-      : "Free (unknown/unknown today)";
+      ? localized.freeQuota(quota.remaining, quota.limit)
+      : localized.unknownQuota;
   const generateDisabled = status === "loading" || (isEdit && (uploadState !== "ready" || !uploadedAsset));
 
   const promptDescription = error ? `${kind}-status ${kind}-error` : `${kind}-status`;
+  const resultImageAlt = isEdit ? localized.editAlt : localized.imageAlt;
 
   const renderMedia = (media: GenerationResult, className = "generated-media") => media.mediaType === "video" ? (
     <video
@@ -901,7 +1053,7 @@ export function Generator({
       aria-label={localized.videoLabel}
     />
   ) : (
-    <Image className={className} src={media.url} width={1024} height={1024} alt={localized.imageAlt} unoptimized />
+    <Image className={className} src={media.url} width={1024} height={1024} alt={resultImageAlt} unoptimized />
   );
 
   return (
@@ -909,7 +1061,7 @@ export function Generator({
       {turnstileSiteKey ? (
         <Script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" strategy="afterInteractive" />
       ) : null}
-      <div ref={turnstileContainer} className="turnstile-container" aria-label="Security verification" />
+      <div ref={turnstileContainer} className="turnstile-container" aria-label={localized.securityLabel} />
       <p className="tool-value">{valueLine}</p>
       <div className="workbench-grid">
         <div className="workbench-controls">
@@ -956,7 +1108,7 @@ export function Generator({
                     ref={promptRef}
                     id={`${kind}-prompt`}
                     className="prompt-input"
-                    placeholder={localized.placeholder}
+                    placeholder={localized.placeholders[kind]}
                     value={prompt}
                     onChange={(event) => setPrompt(event.target.value)}
                     maxLength={2000}
@@ -975,7 +1127,7 @@ export function Generator({
                   ref={promptRef}
                   id={`${kind}-prompt`}
                   className="prompt-input"
-                  placeholder={localized.placeholder}
+                  placeholder={localized.placeholders[kind]}
                   value={prompt}
                   onChange={(event) => setPrompt(event.target.value)}
                   maxLength={kind === "video" ? 1500 : 2000}
@@ -1015,7 +1167,7 @@ export function Generator({
               <div className="workbench-empty">
                 <svg viewBox="0 0 40 40" fill="none" aria-hidden="true"><rect x="5" y="5" width="30" height="30" rx="7" stroke="currentColor" strokeWidth="1.5"/><circle cx="15" cy="15" r="3" stroke="currentColor" strokeWidth="1.5"/><path d="m7 29 9-9 6 6 5-5 7 8" stroke="currentColor" strokeWidth="1.5"/></svg>
                 <strong>{localized.waiting}</strong>
-                {locale === "en" ? <p>Your generated image will appear here.</p> : null}
+                <p>{localized.previewDescription[kind]}</p>
               </div>
             ) : null}
             {isEdit && uploadedAsset && status === "success" && result ? (

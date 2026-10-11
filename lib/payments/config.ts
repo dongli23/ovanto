@@ -79,11 +79,13 @@ export const MAX_CHECKOUT_BODY_BYTES = 16 * 1024;
  */
 export const CHECKOUT_RETURN_PATHS = [
   "/",
+  "/video/",
   "/it/",
   "/fr/",
   "/fr/photo-ia-gratuit",
   "/fr/modifier-photo-ia",
   "/nl/",
+  "/nl/ai-video-maken/",
   "/nl/afbeeldingen-maken-met-ai",
 ] as const;
 

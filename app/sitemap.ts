@@ -1,18 +1,14 @@
 import type { MetadataRoute } from "next";
-import { canonicalUrl, ROUTES } from "../lib/site";
+import { canonicalUrl, ROUTES, TOOL_ROUTES } from "../lib/site";
 
 const PUBLIC_ROUTES = [
-  ROUTES.en,
-  ROUTES.it,
-  ROUTES.fr,
-  ROUTES.frGenerate,
-  ROUTES.frEdit,
-  ROUTES.nl,
+  ...Object.values(TOOL_ROUTES).flatMap((localeRoutes) => Object.values(localeRoutes)),
+  // Keep the existing Dutch image landing page discoverable alongside the locale matrix.
   ROUTES.nlGenerate,
   "/pricing/",
   "/terms/",
   "/privacy/",
-] as const;
+].filter((pathname, index, routes) => routes.indexOf(pathname) === index);
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return PUBLIC_ROUTES.map((pathname) => ({

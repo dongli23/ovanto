@@ -1,6 +1,7 @@
-import { ABSOLUTE_ROUTES, type Locale } from "./site";
+import { ABSOLUTE_ROUTES, type Locale, type ToolKind } from "./site";
+import { TOOL_CONTENT } from "./tool-content";
 
-export type ToolKind = "image" | "video" | "edit";
+export type { ToolKind } from "./site";
 
 export type FaqItem = {
   question: string;
@@ -28,7 +29,13 @@ export type PageDefinition = {
     | "frGenerate"
     | "frEdit"
     | "nl"
-    | "nlGenerate";
+    | "nlGenerate"
+    | "enVideo"
+    | "enEdit"
+    | "itImage"
+    | "itEdit"
+    | "nlVideo"
+    | "nlEdit";
   locale: Locale;
   path: string;
   url: string;
@@ -523,4 +530,5 @@ export const PAGE_CONTENT: Record<PageDefinition["key"], PageDefinition> = {
     toolKind: "image",
     isVideo: false,
   },
+  ...TOOL_CONTENT,
 };
