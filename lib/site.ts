@@ -74,6 +74,20 @@ export function toolRoute(locale: Locale, toolKind: ToolKind): string {
   return TOOL_ROUTES[locale][toolKind];
 }
 
+/**
+ * The complete, deduplicated set of canonical public HTML paths.
+ * sitemap.ts and proxy.ts both consume this so the canonical set never drifts.
+ */
+export const PUBLIC_HTML_ROUTES = Array.from(
+  new Set([
+    ...Object.values(TOOL_ROUTES).flatMap((localeRoutes) => Object.values(localeRoutes)),
+    ROUTES.nlGenerate,
+    "/pricing/",
+    "/terms/",
+    "/privacy/",
+  ]),
+).sort((a, b) => a.localeCompare(b));
+
 export function localeFromPath(pathname: string): Locale {
   if (pathname === "/it" || pathname.startsWith("/it/")) return "it";
   if (pathname === "/fr" || pathname.startsWith("/fr/")) return "fr";

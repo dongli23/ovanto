@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { PAGE_CONTENT } from "../lib/content";
-import { canonicalPath, canonicalUrl, SITE_URL, SUPPORTED_LOCALES, TOOL_ROUTES, toolRoute, type ToolKind } from "../lib/site";
+import { PUBLIC_HTML_ROUTES, canonicalPath, canonicalUrl, SITE_URL, SUPPORTED_LOCALES, TOOL_ROUTES, toolRoute, type ToolKind } from "../lib/site";
 import sitemap from "../app/sitemap";
 import { assertCheckoutReturnPath, CHECKOUT_RETURN_PATHS } from "../lib/payments/config";
 import { proxy } from "../proxy";
@@ -26,6 +26,19 @@ test("every TOOL_ROUTES HTML path is the canonical trailing-slash form", () => {
       assert.equal(path, canonicalPath(path), `${locale}/${kind} not canonical: ${path}`);
       assert.ok(path.endsWith("/"), `${locale}/${kind} missing trailing slash: ${path}`);
     }
+  }
+});
+
+test("PUBLIC_HTML_ROUTES is the complete canonical public page set", () => {
+  assert.equal(PUBLIC_HTML_ROUTES.length, 16, "expected 16 public HTML routes");
+  for (const pathname of PUBLIC_HTML_ROUTES) {
+    assert.equal(pathname, canonicalPath(pathname), `${pathname} not canonical`);
+    assert.ok(pathname === "/" || pathname.endsWith("/"), `${pathname} missing trailing slash`);
+    assert.ok(!pathname.startsWith("/api/"), `${pathname} is an API route`);
+  }
+  // Contains the previously missing pages.
+  for (const required of ["/nl/afbeeldingen-maken-met-ai/", "/pricing/", "/terms/", "/privacy/"]) {
+    assert.ok(PUBLIC_HTML_ROUTES.includes(required), `missing ${required}`);
   }
 });
 
@@ -87,7 +100,15 @@ test("checkout returnPath whitelist accepts every locale video route and only ca
   assert.throws(() => assertCheckoutReturnPath("https://evil.example/video/"));
 });
 
-test("proxy redirects bare public HTML paths to the trailing-slash URL with 308", () => {
+test("sitemap URL count matches PUBLIC_HTML_ROUTES", () => {
+  const urls = sitemap().map((entry) => entry.url);
+  assert.equal(urls.length, PUBLIC_HTML_ROUTES.length);
+  for (const pathname of PUBLIC_HTML_ROUTES) {
+    assert.ok(urls.includes(canonicalUrl(pathname)), `sitemap missing ${pathname}`);
+  }
+});
+
+test("proxy redirects every bare PUBLIC_HTML_ROUTE to its trailing-slash canonical with 308", () => {
   const previousVercelEnv = process.env.VERCEL_ENV;
   process.env.VERCEL_ENV = "production";
   try {
@@ -98,12 +119,18 @@ test("proxy redirects bare public HTML paths to the trailing-slash URL with 308"
         headers: new Headers(),
       } as never;
     };
-    // Bare public HTML route: single 308 to the canonical slashed URL.
-    const redirected = proxy(makeRequest("/fr/modifier-photo-ia")) as Response;
-    assert.equal(redirected.status, 308);
-    assert.equal(redirected.headers.get("location"), "https://www.ovanto.ai/fr/modifier-photo-ia/");
-    // Canonical, API, metadata and unknown paths must pass through untouched.
-    for (const pathname of ["/fr/modifier-photo-ia/", "/video/", "/api/waffo/catalog", "/api/waffo/catalog/", "/robots.txt", "/sitemap.xml", "/pricing/", "/unknown"]) {
+    for (const pathname of PUBLIC_HTML_ROUTES) {
+      if (pathname === "/") continue; // root is already canonical
+      const bare = pathname.replace(/\/+$/, "");
+      const redirected = proxy(makeRequest(bare)) as Response;
+      assert.equal(redirected.status, 308, `${bare} should redirect`);
+      assert.equal(redirected.headers.get("location"), `https://www.ovanto.ai${pathname}`, `${bare} wrong Location`);
+      const slashed = proxy(makeRequest(pathname)) as Response;
+      assert.notEqual(slashed.status, 308, `${pathname} must not redirect`);
+      assert.equal(slashed.headers.get("location"), null, `${pathname} must not carry a redirect Location`);
+    }
+    // API, metadata and unknown paths must pass through untouched.
+    for (const pathname of ["/api/waffo/catalog", "/api/waffo/catalog/", "/robots.txt", "/sitemap.xml", "/unknown"]) {
       const response = proxy(makeRequest(pathname)) as Response;
       assert.notEqual(response.status, 308, `${pathname} must not redirect`);
       assert.equal(response.headers.get("location"), null, `${pathname} must not carry a redirect Location`);

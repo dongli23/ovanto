@@ -1,12 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import { localeFromPath, TOOL_ROUTES, canonicalPath } from "./lib/site";
+import { localeFromPath, PUBLIC_HTML_ROUTES, canonicalPath } from "./lib/site";
 
-// Canonical public HTML routes (lib/site.ts TOOL_ROUTES). Bare forms get one
-// 308 to the trailing-slash URL; API routes, metadata routes and static files
-// never match this set.
-const CANONICAL_HTML_PATHS: ReadonlySet<string> = new Set(
-  Object.values(TOOL_ROUTES).flatMap((localeRoutes) => Object.values(localeRoutes)),
-);
+// Complete canonical public HTML routes (lib/site.ts PUBLIC_HTML_ROUTES).
+// Bare forms get one 308 to the trailing-slash URL; API routes, metadata
+// routes and static files never match this set.
+const CANONICAL_HTML_PATHS: ReadonlySet<string> = new Set(PUBLIC_HTML_ROUTES);
 
 export function proxy(request: NextRequest) {
   const requestHeaders = new Headers(request.headers);
