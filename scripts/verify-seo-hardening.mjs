@@ -7,7 +7,7 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const base = (process.env.BASE_URL || "http://localhost:3001").replace(/\/$/, "");
 const baseOrigin = new URL(base).origin;
-const baselineCommit = "6210ea612a57695cb4aa2721ef77c6245950c369";
+const baselineCommit = "fec1bc7";
 const siteOrigin = "https://www.ovanto.ai";
 const reportPath = path.resolve(repoRoot, process.env.OVANTO_REPORT_PATH || "docs/validation/seo-hardening.json");
 const cachePath = process.env.OVANTO_PAGE_CACHE ? path.resolve(process.env.OVANTO_PAGE_CACHE) : null;
@@ -16,12 +16,29 @@ const routePaths = [
   "/",
   "/it/",
   "/fr/",
-  "/fr/photo-ia-gratuit",
-  "/fr/modifier-photo-ia",
+  "/fr/photo-ia-gratuit/",
+  "/fr/modifier-photo-ia/",
   "/nl/",
-  "/nl/afbeeldingen-maken-met-ai",
+  "/nl/afbeeldingen-maken-met-ai/",
 ];
-const sitemapUrls = routePaths.map((pathname) => `${siteOrigin}${pathname.endsWith("/") ? pathname : `${pathname}/`}`);
+const sitemapUrls = [
+  `${siteOrigin}/`,
+  `${siteOrigin}/video/`,
+  `${siteOrigin}/edit/`,
+  `${siteOrigin}/it/immagini-ai/`,
+  `${siteOrigin}/it/`,
+  `${siteOrigin}/it/modifica-foto-ai/`,
+  `${siteOrigin}/fr/photo-ia-gratuit/`,
+  `${siteOrigin}/fr/`,
+  `${siteOrigin}/fr/modifier-photo-ia/`,
+  `${siteOrigin}/nl/`,
+  `${siteOrigin}/nl/ai-video-maken/`,
+  `${siteOrigin}/nl/foto-bewerken-ai/`,
+  `${siteOrigin}/nl/afbeeldingen-maken-met-ai/`,
+  `${siteOrigin}/pricing/`,
+  `${siteOrigin}/terms/`,
+  `${siteOrigin}/privacy/`,
+];
 const hreflangs = {
   en: `${siteOrigin}/`,
   it: `${siteOrigin}/it/`,
@@ -33,10 +50,10 @@ const expectedModeByPath = {
   "/": "image",
   "/it/": "video",
   "/fr/": "video",
-  "/fr/photo-ia-gratuit": "image",
-  "/fr/modifier-photo-ia": "edit",
+  "/fr/photo-ia-gratuit/": "image",
+  "/fr/modifier-photo-ia/": "edit",
   "/nl/": "image",
-  "/nl/afbeeldingen-maken-met-ai": "image",
+  "/nl/afbeeldingen-maken-met-ai/": "image",
 };
 const modeLabels = {
   en: { image: "Image", edit: "Edit", video: "Video" },
@@ -46,7 +63,7 @@ const modeLabels = {
 };
 const toolLinks = [
   "/",
-  "/fr/modifier-photo-ia",
+  "/fr/modifier-photo-ia/",
   "/it/",
 ];
 const oldRootEditFaqPhrase = /download the finished file without uploading an image/i;
@@ -272,17 +289,24 @@ async function main() {
   for (const pathname of routePaths) {
     const page = pagesByPath.get(pathname);
     if (!page) continue;
-    const variants = pathname === "/"
-      ? [pathname]
-      : [...new Set([pathname.replace(/\/+$/, ""), trailingPath(pathname)])];
+    // Canonical trailing-slash variant must serve HTTP 200; the bare
+    // non-slash variant must redirect once to the canonical URL.
+    const bareVariant = pathname === "/" ? null : pathname.replace(/\/+$/, "");
+    const variants = bareVariant ? [pathname, bareVariant] : [pathname];
     const parsedVariants = [];
     for (const variant of variants) {
       const response = await responseFor(variant);
       if (!response) continue;
+      const label = `${pathname} (${variant})`;
+      if (variant !== pathname) {
+        const location = response.headers.get("location");
+        check(response.status === 301 || response.status === 308, `${label}: bare URL redirects once`);
+        check(location !== null && new URL(location, new URL(variant, base)).href === expectedCanonical(pathname), `${label}: redirect Location is canonical trailing URL`);
+        continue;
+      }
       const html = await response.text();
       const parsed = parsePage(html, page, variant);
       parsedVariants.push(parsed);
-      const label = `${pathname} (${variant})`;
       check(response.status === 200, `${label}: HTTP 200`);
       check(response.headers.get("location") === null, `${label}: no redirect`);
       if (new URL(base).hostname.toLowerCase() === "www.ovanto.ai") {
@@ -382,21 +406,6 @@ async function main() {
       check(!oldRootEditFaqPhrase.test(pathname === "/" ? parsed.visible : ""), `${label}: root edit-only FAQ phrase`);
 
     }
-    if (parsedVariants.length > 1) {
-      const [first, second] = parsedVariants;
-      const identity = (parsed) => JSON.stringify({
-        htmlLang: parsed.htmlLang,
-        title: parsed.title,
-        description: parsed.description,
-        h1: parsed.h1,
-        h2: parsed.h2,
-        canonical: parsed.canonical.map((tag) => attr(tag, "href")),
-        alternates: parsed.alternates.map((tag) => [attr(tag, "hreflang"), attr(tag, "href")]),
-        ogUrl: attr(parsed.meta("og:url"), "content"),
-        schemas: parsed.schemas,
-      });
-      check(identity(first) === identity(second), `${pathname}: slash variants differ in SEO identity`);
-    }
     if (parsedVariants[0]) {
       parsedPages.set(pathname, parsedVariants[0]);
       rows.push({
@@ -429,7 +438,7 @@ async function main() {
     const locs = [...body.matchAll(/<loc>([\s\S]*?)<\/loc>/gi)].map((match) => decode(match[1].trim()));
     check(sitemap.status === 200, "/sitemap.xml: HTTP 200");
     check(/(?:application|text)\/xml/i.test(contentType), "/sitemap.xml: XML content type");
-    check(JSON.stringify(locs) === JSON.stringify(sitemapUrls), "/sitemap.xml: exact seven www URLs");
+    check(JSON.stringify(locs) === JSON.stringify(sitemapUrls), "/sitemap.xml: exact 16 www trailing-slash URLs");
     check(locs.every((url) => url.startsWith(`${siteOrigin}/`) && !/vercel\.app|\/api\/|\/test/i.test(url)), "/sitemap.xml: no preview/API/test URL");
   }
 

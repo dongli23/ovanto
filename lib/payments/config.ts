@@ -82,11 +82,11 @@ export const CHECKOUT_RETURN_PATHS = [
   "/video/",
   "/it/",
   "/fr/",
-  "/fr/photo-ia-gratuit",
-  "/fr/modifier-photo-ia",
+  "/fr/photo-ia-gratuit/",
+  "/fr/modifier-photo-ia/",
   "/nl/",
   "/nl/ai-video-maken/",
-  "/nl/afbeeldingen-maken-met-ai",
+  "/nl/afbeeldingen-maken-met-ai/",
 ] as const;
 
 export type CheckoutReturnPath = (typeof CHECKOUT_RETURN_PATHS)[number];

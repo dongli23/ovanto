@@ -268,8 +268,8 @@ export const PAGE_CONTENT: Record<PageDefinition["key"], PageDefinition> = {
     examples: examples.fr,
     trustPoints: ["Gratuit : 1 vidéo IA/jour", "5 secondes · 480p", "3 vidéos Pro pour 4,99 $US"],
     extraLinks: [
-      { href: "/fr/photo-ia-gratuit", label: "Photo IA gratuit" },
-      { href: "/fr/modifier-photo-ia", label: "Modifier photo IA" },
+      { href: "/fr/photo-ia-gratuit/", label: "Photo IA gratuit" },
+      { href: "/fr/modifier-photo-ia/", label: "Modifier photo IA" },
     ],
     toolKind: "video",
     isVideo: true,
@@ -277,7 +277,7 @@ export const PAGE_CONTENT: Record<PageDefinition["key"], PageDefinition> = {
   frGenerate: {
     key: "frGenerate",
     locale: "fr",
-    path: "/fr/photo-ia-gratuit",
+    path: "/fr/photo-ia-gratuit/",
     url: ABSOLUTE_ROUTES.frGenerate,
     title: "Photo IA Gratuit — Générez Vos Images en Ligne | Ovanto",
     description:
@@ -334,14 +334,14 @@ export const PAGE_CONTENT: Record<PageDefinition["key"], PageDefinition> = {
     ],
     examples: examples.fr,
     trustPoints: ["Gratuit : 3 images/jour", "Sans inscription", "Prompt → Image"],
-    extraLinks: [{ href: "/fr/modifier-photo-ia", label: "Modifier photo IA" }],
+    extraLinks: [{ href: "/fr/modifier-photo-ia/", label: "Modifier photo IA" }],
     toolKind: "image",
     isVideo: false,
   },
   frEdit: {
     key: "frEdit",
     locale: "fr",
-    path: "/fr/modifier-photo-ia",
+    path: "/fr/modifier-photo-ia/",
     url: ABSOLUTE_ROUTES.frEdit,
     title: "Modifier Photo IA — Retouche et Édition en Ligne | Ovanto",
     description:
@@ -398,7 +398,7 @@ export const PAGE_CONTENT: Record<PageDefinition["key"], PageDefinition> = {
     ],
     examples: examples.fr,
     trustPoints: ["Gratuit : 1 modification/jour", "Sans inscription", "Avant / Après"],
-    extraLinks: [{ href: "/fr/photo-ia-gratuit", label: "Photo IA gratuit" }],
+    extraLinks: [{ href: "/fr/photo-ia-gratuit/", label: "Photo IA gratuit" }],
     toolKind: "edit",
     isVideo: false,
   },
@@ -462,14 +462,14 @@ export const PAGE_CONTENT: Record<PageDefinition["key"], PageDefinition> = {
     ],
     examples: examples.nl,
     trustPoints: ["Gratis: 3 afbeeldingen per dag", "Geen registratie", "Prompt → Afbeelding"],
-    extraLinks: [{ href: "/nl/afbeeldingen-maken-met-ai", label: "Afbeeldingen maken met AI" }],
+    extraLinks: [{ href: "/nl/afbeeldingen-maken-met-ai/", label: "Afbeeldingen maken met AI" }],
     toolKind: "image",
     isVideo: false,
   },
   nlGenerate: {
     key: "nlGenerate",
     locale: "nl",
-    path: "/nl/afbeeldingen-maken-met-ai",
+    path: "/nl/afbeeldingen-maken-met-ai/",
     url: ABSOLUTE_ROUTES.nlGenerate,
     title: "Afbeeldingen Maken Met AI — Online Generator | Ovanto",
     description:

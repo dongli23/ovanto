@@ -11,9 +11,9 @@ export const ROUTES = {
   nl: "/nl/",
   nlVideo: "/nl/ai-video-maken/",
   nlEdit: "/nl/foto-bewerken-ai/",
-  frGenerate: "/fr/photo-ia-gratuit",
-  frEdit: "/fr/modifier-photo-ia",
-  nlGenerate: "/nl/afbeeldingen-maken-met-ai",
+  frGenerate: "/fr/photo-ia-gratuit/",
+  frEdit: "/fr/modifier-photo-ia/",
+  nlGenerate: "/nl/afbeeldingen-maken-met-ai/",
 } as const;
 
 export function canonicalPath(pathname: string): string {

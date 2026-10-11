@@ -9,7 +9,7 @@ const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), ".."
 const base = (process.env.BASE_URL || "http://localhost:3001").replace(/\/$/, "");
 const baseOrigin = new URL(base).origin;
 const siteOrigin = "https://www.ovanto.ai";
-const baselineCommit = "3277957";
+const baselineCommit = "fec1bc7";
 const reportPath = path.resolve(repoRoot, process.env.OVANTO_REPORT_PATH || "docs/validation/deploy-01-local.json");
 const cachePath = process.env.OVANTO_PAGE_CACHE ? path.resolve(process.env.OVANTO_PAGE_CACHE) : null;
 
@@ -17,20 +17,20 @@ const routePaths = [
   "/",
   "/it/",
   "/fr/",
-  "/fr/photo-ia-gratuit",
-  "/fr/modifier-photo-ia",
+  "/fr/photo-ia-gratuit/",
+  "/fr/modifier-photo-ia/",
   "/nl/",
-  "/nl/afbeeldingen-maken-met-ai",
+  "/nl/afbeeldingen-maken-met-ai/",
 ];
 
 const expectedModeByPath = {
   "/": "image",
   "/it/": "video",
   "/fr/": "video",
-  "/fr/photo-ia-gratuit": "image",
-  "/fr/modifier-photo-ia": "edit",
+  "/fr/photo-ia-gratuit/": "image",
+  "/fr/modifier-photo-ia/": "edit",
   "/nl/": "image",
-  "/nl/afbeeldingen-maken-met-ai": "image",
+  "/nl/afbeeldingen-maken-met-ai/": "image",
 };
 
 const modeLabels = {
@@ -395,14 +395,8 @@ async function main() {
         check(response.status === 200, `${variant}: canonical route HTTP 200`);
         check(!location, `${variant}: canonical route has no redirect`);
       } else if (canonicalPathname.endsWith("/")) {
-        if (response.status === 301 || response.status === 308) {
-          check(new URL(location, new URL(variant, base)).href === canonical, `${variant}: redirect to canonical trailing URL`);
-        } else {
-          check(response.status === 200 && !location, `${variant}: slash variant status`);
-          if (response.status === 200 && !location && ["/fr/photo-ia-gratuit", "/fr/modifier-photo-ia", "/nl/afbeeldingen-maken-met-ai"].includes(stripTrailingPath(variant))) {
-            pending.push(`${variant}: trailing-slash normalization pending; canonicalUrl currently ends with /`);
-          }
-        }
+        check(response.status === 301 || response.status === 308, `${variant}: bare URL redirects once`);
+        check(new URL(location, new URL(variant, base)).href === canonical, `${variant}: redirect Location is canonical trailing URL`);
       } else {
         check(response.status === 301 || response.status === 308, `${variant}: redirect to non-trailing canonical`);
         check(new URL(location, new URL(variant, base)).href === canonical, `${variant}: redirect Location`);
