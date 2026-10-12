@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { toolRoute, type Locale, type ToolKind } from "../lib/site";
+import { getToolPlatformCopy } from "../lib/tool-platform-copy";
 import { BENEFIT_ICONS, WORKSPACE_COPY } from "../lib/workspace-copy";
 
 function SectionHeading({ eyebrow, title, description }: { eyebrow: string; title: string; description?: string }) {
@@ -21,9 +22,12 @@ const inspirationImages = [
   "/examples/botanical.svg",
 ] as const;
 
-export function HomePlatform({ locale }: { locale: Locale }) {
-  const copy = WORKSPACE_COPY[locale].platform;
+export function HomePlatform({ locale, toolKind }: { locale: Locale; toolKind: ToolKind }) {
+  const copy = getToolPlatformCopy(locale, toolKind, WORKSPACE_COPY[locale].platform);
   const imageHref = `${toolRoute(locale, "image")}#image-workbench`;
+  const workbenchHref = `${toolRoute(locale, toolKind)}#${toolKind}-workbench`;
+  const modelName = toolKind === "image" ? "Flux Schnell" : toolKind === "video" ? "Wan 2.5 · Kling 2.5 Turbo Pro" : "Flux Kontext Dev";
+  const modelMonogram = toolKind === "image" ? "F" : toolKind === "video" ? "V" : "K";
 
   return <div className="platform-sections">
     <section id="ai-tools" className="platform-section" aria-label={copy.aria.tools}>
@@ -37,7 +41,7 @@ export function HomePlatform({ locale }: { locale: Locale }) {
     <section id="ai-models" className="platform-section platform-model-section" aria-label={copy.aria.models}>
       <SectionHeading eyebrow={copy.models.eyebrow} title={copy.models.title} description={copy.models.description} />
       <div><article className="platform-model">
-        <div className="model-monogram" aria-hidden="true">F<span>↗</span></div><div><span className="platform-status">{copy.models.status}</span><h3>Flux Schnell</h3><p>{copy.models.modelDescription}</p><small>{copy.models.details}</small><a href={imageHref}>{copy.models.cta} <span aria-hidden="true">→</span></a></div>
+        <div className="model-monogram" aria-hidden="true">{modelMonogram}<span>↗</span></div><div><span className="platform-status">{copy.models.status}</span><h3>{modelName}</h3><p>{copy.models.modelDescription}</p><small>{copy.models.details}</small><a href={workbenchHref}>{copy.models.cta} <span aria-hidden="true">→</span></a></div>
       </article></div>
     </section>
     <section id="inspiration" className="platform-section" aria-label={copy.aria.inspiration}>
@@ -57,10 +61,10 @@ export function HomePlatform({ locale }: { locale: Locale }) {
     </section>
     <section id="advanced-features" className="platform-section" aria-label={copy.aria.features}>
       <SectionHeading eyebrow={copy.features.eyebrow} title={copy.features.title} />
-      <div className="platform-feature"><div><span className="platform-status">{copy.features.promptStatus}</span><h3>{copy.features.promptTitle}</h3><p>{copy.features.promptDescription}</p><a href={imageHref}>{copy.features.promptCta} <span aria-hidden="true">→</span></a></div>
+      <div className="platform-feature"><div><span className="platform-status">{copy.features.promptStatus}</span><h3>{copy.features.promptTitle}</h3><p>{copy.features.promptDescription}</p><a href={workbenchHref}>{copy.features.promptCta} <span aria-hidden="true">→</span></a></div>
         <div className="prompt-demonstration" aria-label={copy.aria.promptPreview}><span>{copy.features.promptPreviewLabel}</span><p>{copy.features.promptText}</p><div className="prompt-structure">{copy.features.promptTags.map((tag) => <span key={tag}>{tag}</span>)}</div><small>{copy.features.promptNote}</small></div>
       </div>
-      <div className="platform-feature platform-feature-reverse"><div><span className="platform-status">{copy.features.workflowStatus}</span><h3>{copy.features.workflowTitle}</h3><p>{copy.features.workflowDescription}</p><a href={imageHref}>{copy.features.workflowCta} <span aria-hidden="true">→</span></a></div>
+      <div className="platform-feature platform-feature-reverse"><div><span className="platform-status">{copy.features.workflowStatus}</span><h3>{copy.features.workflowTitle}</h3><p>{copy.features.workflowDescription}</p><a href={workbenchHref}>{copy.features.workflowCta} <span aria-hidden="true">→</span></a></div>
         <figure className="workflow-demonstration"><Image src="/examples/landscape.webp" width={960} height={720} alt={copy.features.workflowAlt} sizes="(max-width: 760px) 100vw, 45vw" loading="lazy" /><figcaption>{copy.features.workflowCaption}</figcaption></figure>
       </div>
     </section>

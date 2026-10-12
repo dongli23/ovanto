@@ -14,6 +14,26 @@ function paymentIsAvailable(): boolean {
   }
 }
 
+const videoWorkspaces = [
+  { href: "/video/", label: "English" },
+  { href: "/it/", label: "Italiano" },
+  { href: "/fr/", label: "Français" },
+  { href: "/nl/ai-video-maken/", label: "Nederlands" },
+] as const;
+
+function VideoWorkspaceLinks() {
+  return (
+    <span>
+      {videoWorkspaces.map((workspace, index) => (
+        <span key={workspace.href}>
+          {index > 0 ? ", " : null}
+          <a href={workspace.href}>{workspace.label}</a>
+        </span>
+      ))}
+    </span>
+  );
+}
+
 export const metadata: Metadata = {
   title: "Pricing | Ovanto",
   description: "See Ovanto's current free limits and the Ovanto Pro Video Pack availability.",
@@ -29,10 +49,10 @@ export default function PricingPage() {
   const paidAvailable = paymentIsAvailable();
 
   return (
-    <LegalPage title="Pricing" date="9 October 2026" dateTime="2026-10-09" eyebrow="Pricing">
+    <LegalPage title="Pricing" date="13 October 2026" dateTime="2026-10-13" eyebrow="Pricing">
       <p className={styles.lead}>
         Free tools are available subject to regional eligibility, daily limits, and capacity. {paidAvailable
-          ? "The Ovanto Pro Video Pack is available through the English video workspace."
+          ? "The Ovanto Pro Video Pack is available through Ovanto's English, Italian, French, and Dutch video workspaces."
           : "The Ovanto Pro Video Pack is not yet available for purchase."}
       </p>
 
@@ -43,7 +63,7 @@ export default function PricingPage() {
         </h2>
         <p>
           {paidAvailable
-            ? <>Open the <a href="/video/">English video workspace</a> to start a purchase. The pack includes 3 Pro AI video generations.</>
+            ? <>Start a purchase in your preferred video workspace: <VideoWorkspaceLinks />. The pack includes 3 Pro AI video generations.</>
             : "The pack details and checkout will be shown here when paid purchase becomes available."}
         </p>
       </section>
@@ -86,7 +106,7 @@ export default function PricingPage() {
         </article>
         <p className={styles.pricingNote}>
           {paidAvailable
-            ? "The pack is available through the English video workspace. One pack includes three Pro video generations, has no cash value, and does not renew or recharge automatically. The pack has no scheduled expiry at present."
+            ? "The pack is available through the English, Italian, French, and Dutch video workspaces. One pack includes three Pro video generations, has no cash value, and does not renew or recharge automatically. The pack has no scheduled expiry at present."
             : "This is a planned product; paid purchase is not currently available. One pack includes three Pro video generations, has no cash value, and does not renew or recharge automatically. The pack has no scheduled expiry at present."}
         </p>
       </section>
@@ -98,7 +118,7 @@ export default function PricingPage() {
         </div>
         <p>
           {paidAvailable
-            ? "Free users can create one 5-second AI video in 480p per day per IP. You can purchase an Ovanto Pro Video Pack through the English video workspace for US$4.99, which includes 3 Pro video generations. It is a one-time purchase with no subscription or automatic renewal."
+            ? "Free users can create one 5-second AI video in 480p per day per IP. You can purchase an Ovanto Pro Video Pack through any English, Italian, French, or Dutch video workspace for US$4.99, which includes 3 Pro video generations. It is a one-time purchase with no subscription or automatic renewal."
             : "Free users can create one 5-second AI video in 480p per day per IP. When paid purchase becomes available, you can purchase an Ovanto Pro Video Pack for US$4.99, which includes 3 Pro video generations. It is a one-time purchase with no subscription or automatic renewal."}
         </p>
       </section>

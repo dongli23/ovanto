@@ -13,6 +13,7 @@ export const ROUTES = {
   nlEdit: "/nl/foto-bewerken-ai/",
   frGenerate: "/fr/photo-ia-gratuit/",
   frEdit: "/fr/modifier-photo-ia/",
+  /** Legacy Dutch image landing page. Kept only so proxy can redirect it. */
   nlGenerate: "/nl/afbeeldingen-maken-met-ai/",
 } as const;
 
@@ -81,7 +82,6 @@ export function toolRoute(locale: Locale, toolKind: ToolKind): string {
 export const PUBLIC_HTML_ROUTES = Array.from(
   new Set([
     ...Object.values(TOOL_ROUTES).flatMap((localeRoutes) => Object.values(localeRoutes)),
-    ROUTES.nlGenerate,
     "/pricing/",
     "/terms/",
     "/privacy/",

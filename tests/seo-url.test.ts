@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { PAGE_CONTENT } from "../lib/content";
-import { PUBLIC_HTML_ROUTES, canonicalPath, canonicalUrl, SITE_URL, SUPPORTED_LOCALES, TOOL_ROUTES, toolRoute, type ToolKind } from "../lib/site";
+import { PUBLIC_HTML_ROUTES, canonicalPath, canonicalUrl, ROUTES, SITE_URL, SUPPORTED_LOCALES, TOOL_ROUTES, toolRoute, type ToolKind } from "../lib/site";
 import sitemap from "../app/sitemap";
 import { assertCheckoutReturnPath, CHECKOUT_RETURN_PATHS } from "../lib/payments/config";
 import { proxy } from "../proxy";
@@ -14,7 +14,7 @@ test("canonicalPath normalizes bare and slashed forms to one trailing-slash path
   assert.equal(canonicalPath("/"), "/");
   assert.equal(canonicalPath("/video"), "/video/");
   // Idempotent on already-canonical input.
-  for (const pathname of ["/", "/it/", "/nl/afbeeldingen-maken-met-ai/"]) {
+  for (const pathname of ["/", "/it/", ROUTES.nlGenerate]) {
     assert.equal(canonicalPath(canonicalPath(pathname)), canonicalPath(pathname));
   }
 });
@@ -30,14 +30,15 @@ test("every TOOL_ROUTES HTML path is the canonical trailing-slash form", () => {
 });
 
 test("PUBLIC_HTML_ROUTES is the complete canonical public page set", () => {
-  assert.equal(PUBLIC_HTML_ROUTES.length, 16, "expected 16 public HTML routes");
+  assert.equal(PUBLIC_HTML_ROUTES.length, 15, "expected 15 public HTML routes");
   for (const pathname of PUBLIC_HTML_ROUTES) {
     assert.equal(pathname, canonicalPath(pathname), `${pathname} not canonical`);
     assert.ok(pathname === "/" || pathname.endsWith("/"), `${pathname} missing trailing slash`);
     assert.ok(!pathname.startsWith("/api/"), `${pathname} is an API route`);
   }
-  // Contains the previously missing pages.
-  for (const required of ["/nl/afbeeldingen-maken-met-ai/", "/pricing/", "/terms/", "/privacy/"]) {
+  assert.ok(!PUBLIC_HTML_ROUTES.includes(ROUTES.nlGenerate), "legacy Dutch image route must not be canonical");
+  // Contains the public legal pages.
+  for (const required of ["/pricing/", "/terms/", "/privacy/"]) {
     assert.ok(PUBLIC_HTML_ROUTES.includes(required), `missing ${required}`);
   }
 });
@@ -105,6 +106,26 @@ test("sitemap URL count matches PUBLIC_HTML_ROUTES", () => {
   assert.equal(urls.length, PUBLIC_HTML_ROUTES.length);
   for (const pathname of PUBLIC_HTML_ROUTES) {
     assert.ok(urls.includes(canonicalUrl(pathname)), `sitemap missing ${pathname}`);
+  }
+});
+
+test("proxy redirects the retired Dutch image route directly to /nl/ with 301", () => {
+  const makeRequest = (pathname: string) => {
+    const url = new URL(`https://www.ovanto.ai${pathname}`);
+    return {
+      nextUrl: { hostname: url.hostname, origin: url.origin, pathname: url.pathname, search: url.search },
+      headers: new Headers(),
+    } as never;
+  };
+  for (const pathname of ["/nl/afbeeldingen-maken-met-ai", "/nl/afbeeldingen-maken-met-ai/"]) {
+    const redirected = proxy(makeRequest(`${pathname}?utm_source=legacy`)) as Response;
+    assert.equal(redirected.status, 301, `${pathname} should redirect permanently`);
+    assert.equal(redirected.headers.get("location"), "https://www.ovanto.ai/nl/?utm_source=legacy");
+  }
+  for (const pathname of ["/api/nl/afbeeldingen-maken-met-ai", "/api/nl/afbeeldingen-maken-met-ai/"]) {
+    const response = proxy(makeRequest(pathname)) as Response;
+    assert.notEqual(response.status, 301, `${pathname} must not use the HTML redirect`);
+    assert.equal(response.headers.get("location"), null, `${pathname} must not carry a redirect Location`);
   }
 });
 

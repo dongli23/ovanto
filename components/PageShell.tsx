@@ -156,7 +156,7 @@ export function PageShell({ page }: { page: PageDefinition }) {
               ))}
             </div>
           </div>
-          <div className="tool-wrap" id="image-workbench">
+          <div className="tool-wrap" id={`${page.toolKind}-workbench`}>
             <GeneratorWorkbench
               locale={page.locale}
               title={page.h1}
@@ -167,7 +167,7 @@ export function PageShell({ page }: { page: PageDefinition }) {
           </div>
         </section>
 
-        <HomePlatform locale={page.locale} />
+        <HomePlatform locale={page.locale} toolKind={page.toolKind} />
         <ToolsLinks page={page} />
 
         <div className="content-wrap">

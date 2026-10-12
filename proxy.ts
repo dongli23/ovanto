@@ -10,6 +10,15 @@ export function proxy(request: NextRequest) {
   const requestHeaders = new Headers(request.headers);
   const pathname = request.nextUrl.pathname;
 
+  // The Dutch keyword landing page duplicated the canonical Dutch image
+  // workspace. Redirect both URL forms directly to the canonical page so the
+  // legacy path is never rendered or included in the sitemap. Keep the query
+  // string intact for old shared links and campaign URLs.
+  if (canonicalPath(pathname) === "/nl/afbeeldingen-maken-met-ai/") {
+    const target = new URL(`/nl/${request.nextUrl.search}`, request.nextUrl.origin);
+    return NextResponse.redirect(target, 301);
+  }
+
   // Canonical URL policy: /path -> 308 -> /path/ for public HTML pages only.
   // Implemented here instead of next.config redirects()/trailingSlash, both
   // verified to misbehave on Next 16.3.8 (redirect self-loop / API redirect).

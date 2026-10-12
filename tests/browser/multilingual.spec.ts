@@ -98,12 +98,27 @@ test("paid video model/balance and explicit free choice survive language switch"
   await expect(page.locator(".workbench-settings")).not.toContainText("480p");
 });
 
-test("legacy Dutch image route retains complete tools and equivalent language links", async ({ page }) => {
-  expect((await page.goto("/nl/afbeeldingen-maken-met-ai/"))?.status()).toBe(200);
-  await expect(page.locator(".workbench-modes a")).toHaveCount(3);
+test("legacy Dutch image route permanently redirects to the canonical workspace", async ({ page, request }) => {
+  for (const path of ["/nl/afbeeldingen-maken-met-ai", "/nl/afbeeldingen-maken-met-ai/"]) {
+    const response = await request.get(`${path}?utm_source=legacy`, { maxRedirects: 0 });
+    expect(response.status()).toBe(301);
+    const location = response.headers().location;
+    expect(location).toBeTruthy();
+    const actual = new URL(location!, response.url());
+    const expected = new URL("/nl/?utm_source=legacy", response.url());
+    expect(actual.origin).toBe(expected.origin);
+    expect(actual.pathname).toBe(expected.pathname);
+    expect(actual.search).toBe(expected.search);
+  }
+  const finalResponse = await page.goto("/nl/afbeeldingen-maken-met-ai/?utm_source=legacy");
+  expect(finalResponse?.status()).toBe(200);
+  const finalUrl = new URL(page.url());
+  expect(finalUrl.pathname).toBe("/nl/");
+  expect(finalUrl.search).toBe("?utm_source=legacy");
   await expect(page.locator("html")).toHaveAttribute("lang", "nl");
-  await expect(page.locator("head link[rel=canonical]")).toHaveAttribute("href", canonicalUrl("/nl/afbeeldingen-maken-met-ai/"));
-  await expect(page.locator(".language-nav a[hreflang=it]")).toHaveAttribute("href", toolRoute("it", "image"));
+  await expect(page.locator(".workbench-modes a")).toHaveCount(3);
+  await expect(page.locator("head link[rel=canonical]")).toHaveAttribute("href", canonicalUrl("/nl/"));
+  await expect(page.locator("#image-workbench")).toBeVisible();
 });
 
 const fixturePrompt = "Existing task UI regression fixture";

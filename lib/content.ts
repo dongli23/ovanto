@@ -29,7 +29,6 @@ export type PageDefinition = {
     | "frGenerate"
     | "frEdit"
     | "nl"
-    | "nlGenerate"
     | "enVideo"
     | "enEdit"
     | "itImage"
@@ -413,7 +412,7 @@ export const PAGE_CONTENT: Record<PageDefinition["key"], PageDefinition> = {
     h1: "AI Afbeelding Maken Gratis",
     valueLine: "Beschrijf je idee en maak een helder beeld direct in je browser.",
     h2s: [
-      "In 3 Stappen een AI Afbeelding Maken",
+      "Afbeeldingen Maken Met AI in 3 Stappen",
       "Waarom Zonder Account Werken Fijn Is",
       "Wat Je Kunt Maken met Ovanto",
       "Veelgestelde Vragen",
@@ -462,71 +461,7 @@ export const PAGE_CONTENT: Record<PageDefinition["key"], PageDefinition> = {
     ],
     examples: examples.nl,
     trustPoints: ["Gratis: 3 afbeeldingen per dag", "Geen registratie", "Prompt → Afbeelding"],
-    extraLinks: [{ href: "/nl/afbeeldingen-maken-met-ai/", label: "Afbeeldingen maken met AI" }],
-    toolKind: "image",
-    isVideo: false,
-  },
-  nlGenerate: {
-    key: "nlGenerate",
-    locale: "nl",
-    path: "/nl/afbeeldingen-maken-met-ai/",
-    url: ABSOLUTE_ROUTES.nlGenerate,
-    title: "Afbeeldingen Maken Met AI — Online Generator | Ovanto",
-    description:
-      "Afbeeldingen maken met AI: kies een stijl, beschrijf je idee en genereer online afbeeldingen. Gratis, zonder account.",
-    h1: "Afbeeldingen Maken Met AI",
-    valueLine: "Kies een stijl, beschrijf je idee en maak online een beeld.",
-    h2s: [
-      "Afbeeldingen Maken Met AI: Zo Werkt Het",
-      "Stijlen en Voorbeelden",
-      "Tips voor Betere Resultaten",
-      "Veelgestelde Vragen",
-    ],
-    sectionLeads: [
-      "Beschrijf je idee, bekijk het resultaat en download de afbeelding wanneer die klaar is. De stappen blijven overzichtelijk, van prompt tot bestand, zodat je eerst de richting kunt beoordelen voordat je verder werkt. Als het beeld niet precies aansluit, wijzig dan één keuze, bijvoorbeeld de stijl, de uitsnede of het licht. Zo wordt elke nieuwe poging informatief in plaats van willekeurig. De korte volgorde helpt bij een eerste concept, een presentatie of een visuele referentie die je later wilt bewaren.",
-      "Een duidelijke stijlkeuze helpt om het gewenste beeld af te bakenen. De gratis bundel bevat 3 afbeeldingen per dag per IP en 1 video van 480p/5 seconden per dag per IP. Zonder account kun je een eerste richting snel testen voor een overleg, een concept of een persoonlijk project. Prompt en resultaat blijven in dezelfde browserstroom, waardoor je kunt vergelijken zonder profielinstellingen. De dagelijkse hoeveelheid is bewust overzichtelijk: schrijf een duidelijke vraag, beoordeel het beeld en verbeter daarna één relevant detail.",
-      "Noem onderwerp, compositie, licht, kleuren en stijl voor een gerichte prompt. Concrete details maken het eenvoudiger om je bedoeling te volgen. Begin met het element dat de kijker als eerste moet zien en beschrijf daarna de ruimte eromheen. Een product vraagt vaak om materiaal en camerastandpunt, een avatar om expressie en uitsnede, en een landschap om seizoen, weer en horizon. Met een heldere volgorde blijft de prompt leesbaar en krijgt de afbeelding een samenhangend uitgangspunt.",
-    ],
-    sectionDetails: [
-      [
-        "Begin met onderwerp en situatie in één zin. Een stille werktafel bij ochtendlicht geeft een duidelijk vertrekpunt; daarna kun je kleuren, afstand en stijl toevoegen zonder de hoofdgedachte te verliezen. Hierdoor blijft duidelijk wat de kijker eerst moet zien.",
-        "Bekijk eerst de compositie voordat je kleine details beoordeelt. Als het onderwerp niet genoeg ruimte krijgt, verander dan de uitsnede of achtergrond. Eén gerichte wijziging per poging maakt het resultaat eenvoudiger te vergelijken.",
-      ],
-      [
-        "Geen account nodig hebben is handig wanneer je kort wilt overleggen. Je kunt een richting tonen, de bruikbare versie bewaren en later terugkomen zonder gegevens aan een tijdelijk concept te koppelen.",
-        "De browserstroom houdt de creatieve keuze eenvoudig. Het beeld is een startpunt voor een ontwerp of gesprek; jij bepaalt welke versie past en welke aanwijzing nog scherper moet worden. Zo blijft het proces bruikbaar voor een korte of langere verkenning.",
-      ],
-      [
-        "Een stijl wordt duidelijker wanneer je ook licht, materiaal en afstand noemt. Voor een illustratie helpt een kleurpalet, voor een product helpt een oppervlak, en voor een landschap helpen weer en tijdstip. Deze volgorde maakt het eenvoudiger om prioriteiten in je prompt te bewaren.",
-        "Deze drie prompt-richtingen geven mogelijke onderwerpen en composities. Gebruik ze als aanleiding om je scène te bedenken en beschrijf daarna je eigen onderwerp, kader en licht.",
-      ],
-    ],
-    faq: [
-      {
-        question: "Hoe kan ik afbeeldingen maken met AI?",
-        answer:
-          "Beschrijf je idee in een prompt en genereer de afbeelding zonder account. Je kunt tot 3 afbeeldingen per dag per IP maken en daarna downloaden.",
-      },
-      {
-        question: "Welke stijlen en voorbeelden kan ik gebruiken?",
-        answer:
-          "Beschrijf zonder account een productbeeld, avatar, landschap of illustratie en voeg de gewenste stijl toe. Bekijk het resultaat en download het wanneer het past.",
-      },
-      {
-        question: "Hoe krijg ik betere resultaten?",
-        answer:
-          "Noem onderwerp, compositie, licht, kleuren en stijl. Begin met het belangrijkste element, wijzig één detail per poging en download de bruikbare versie.",
-      },
-    ],
-    steps: ["Beschrijf je idee", "Genereren", "Downloaden"],
-    useCases: [
-      "Kies een stijl en beschrijf een onderwerp voor een helder eerste concept. Voeg een compositie toe als de indeling belangrijk is. Benoem ook het belangrijkste contrast of de kleur die de kijker als eerste moet opmerken.",
-      "Werk een productbeeld uit met een concrete setting, lichtbron en camerastandpunt. Materiaal en kleur maken de presentatie specifieker. Laat ruimte vrij wanneer het beeld later naast een titel of producttekst komt te staan.",
-      "Maak een illustratie door sfeer, kleuren en compositie te benoemen. Een duidelijk referentiepunt helpt om de scène samenhangend te houden. Een seizoen, lichtbron of eenvoudige actie kan de gekozen stijl meer richting geven.",
-    ],
-    examples: examples.nl,
-    trustPoints: ["Gratis: 3 afbeeldingen per dag", "Geen registratie", "Prompt → Afbeelding"],
-    extraLinks: [{ href: "/nl/", label: "AI afbeelding maken gratis" }],
+    extraLinks: [],
     toolKind: "image",
     isVideo: false,
   },

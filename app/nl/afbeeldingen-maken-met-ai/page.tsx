@@ -1,19 +1,7 @@
-import { PageShell } from "../../../components/PageShell";
-import { PAGE_CONTENT } from "../../../lib/content";
-import { faqJsonLd, metadataFor } from "../../../lib/seo";
+import { permanentRedirect } from "next/navigation";
 
-export const metadata = metadataFor(PAGE_CONTENT.nlGenerate);
-
-export default function DutchImageGenerationPage() {
-  const page = PAGE_CONTENT.nlGenerate;
-
-  return (
-    <>
-      <PageShell page={page} />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd(page)) }}
-      />
-    </>
-  );
+// Requests are redirected by proxy.ts before this legacy route can render.
+// Keep a route module for builds and for deployments where Proxy is bypassed.
+export default function DutchImageGenerationLegacyPage() {
+  permanentRedirect("/nl/");
 }
