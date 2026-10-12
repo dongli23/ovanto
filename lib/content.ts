@@ -192,7 +192,7 @@ export const PAGE_CONTENT: Record<PageDefinition["key"], PageDefinition> = {
       {
         question: "Cosa succede dopo aver usato il video gratuito?",
         answer:
-          "Ogni IP può creare gratuitamente 1 video AI di 5 secondi in 480p al giorno. Quando il pagamento sarà disponibile, potrai acquistare un Ovanto Pro Video Pack da 4,99 USD, che include 3 generazioni video Pro. È un acquisto una tantum, senza abbonamento né rinnovo automatico.",
+          "Ogni IP può creare gratuitamente 1 video AI di 5 secondi in 480p al giorno. Puoi anche acquistare un Ovanto Pro Video Pack da 4,99 USD con 3 generazioni video Pro. È un acquisto una tantum, senza abbonamento né rinnovo automatico.",
       },
     ],
     steps: ["Scrivi il prompt", "Genera", "Scarica"],
@@ -255,7 +255,7 @@ export const PAGE_CONTENT: Record<PageDefinition["key"], PageDefinition> = {
       {
         question: "Que se passe-t-il après avoir utilisé ma vidéo gratuite ?",
         answer:
-          "Chaque IP peut créer gratuitement 1 vidéo IA de 5 secondes en 480p par jour. Lorsque le paiement sera disponible, vous pourrez acheter un Ovanto Pro Video Pack à 4,99 $US, comprenant 3 générations de vidéos Pro. Il s'agit d'un achat unique, sans abonnement ni renouvellement automatique.",
+          "Chaque IP peut créer gratuitement 1 vidéo IA de 5 secondes en 480p par jour. Vous pouvez également acheter un Ovanto Pro Video Pack à 4,99 $US comprenant 3 générations de vidéos Pro. Il s'agit d'un achat unique, sans abonnement ni renouvellement automatique.",
       },
     ],
     steps: ["Écrivez le prompt", "Générez", "Téléchargez"],
