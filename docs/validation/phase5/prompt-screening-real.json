@@ -1,0 +1,60 @@
+{
+  "checkedAt": "2026-10-15T11:57:13.370Z",
+  "environment": "isolated loopback HTTP safety gate in protected Vercel staged Production build; real Production Waffo Scan Prompt; production quota GET only",
+  "http_status": 403,
+  "response": {
+    "error": {
+      "code": "CONTENT_SAFETY_REVIEW",
+      "message": "This prompt requires additional review before generation."
+    }
+  },
+  "benign_prompt_check": {
+    "allowed": true,
+    "error_code": null
+  },
+  "quota_before": {
+    "remaining": 3,
+    "limit": 3,
+    "available": true
+  },
+  "quota_after": {
+    "remaining": 3,
+    "limit": 3,
+    "available": true
+  },
+  "audit": [
+    {
+      "timestamp": "2026-10-15T11:57:12.091Z",
+      "locale": "en",
+      "categories": [
+        "adult_nsfw",
+        "csam_minor"
+      ],
+      "allowed": false,
+      "action": "review",
+      "reason": "review_required"
+    },
+    {
+      "timestamp": "2026-10-15T11:57:13.107Z",
+      "locale": "en",
+      "categories": [],
+      "allowed": true,
+      "action": "allow",
+      "reason": "allowed"
+    }
+  ],
+  "scan_http_statuses": [
+    200,
+    200
+  ],
+  "provider_requests": 0,
+  "new_generation_created": false,
+  "production_generation_post_sent": false,
+  "evidence": {
+    "deployment_id": "dpl_9e6K2BCTmQkJ6dQwG4KmiQXX8mvD",
+    "source": "Vercel build logs",
+    "production_domain_promoted": false,
+    "validation_note": "Build stopped because probe expected provider block only. Real provider review is blocked by the application with HTTP 403; benign prompt allowed.",
+    "quota_scope": "Anonymous quota for the staged build's outbound IP, not an assertion about another browser/IP"
+  }
+}

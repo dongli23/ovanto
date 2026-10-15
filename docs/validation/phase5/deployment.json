@@ -1,0 +1,23 @@
+{
+  "checkedAt": "2026-10-15T12:03:40.383Z",
+  "deployment_id": "dpl_Hf2JaTCs6MiqMHWsvCVxBNXK7Yan",
+  "url": "ovanto-m55lskdwt-donglis-projects.vercel.app",
+  "ready_state": "READY",
+  "target": "production",
+  "commit": "04bcde372338011a858b2fc819d2f2de9d46f6d2",
+  "branch": "main",
+  "promotion_cli_result": "Success: deployment promoted to production",
+  "production_domain": "https://www.ovanto.ai",
+  "staged_aup_get": 200,
+  "production_public_verification": "17 routes; 0 failed checks",
+  "tests": {
+    "pass": 165,
+    "fail": 0
+  },
+  "typecheck": "PASS",
+  "production_build": "PASS",
+  "post_deploy_quota_get": { "status": 200, "remaining": 3, "limit": 3, "available": true },
+  "generation_requests_created": 0,
+  "payment_requests_created": 0,
+  "production_environment_modified": false
+}

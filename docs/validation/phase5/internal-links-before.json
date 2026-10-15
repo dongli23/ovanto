@@ -1,0 +1,20 @@
+{
+  "capturedAt": "2026-10-15T11:29:52.083Z",
+  "origin": "https://www.ovanto.ai",
+  "scope": "original 12 TOOL_ROUTES only",
+  "cookiesSent": false,
+  "routes": [
+    { "locale": "en", "kind": "image", "path": "/", "status": 200, "summaryLinks": ["/", "/edit/", "/video/"], "contextLinks": [], "contextPresent": false },
+    { "locale": "en", "kind": "video", "path": "/video/", "status": 200, "summaryLinks": ["/", "/edit/", "/video/"], "contextLinks": ["/", "/edit/"], "contextPresent": true },
+    { "locale": "en", "kind": "edit", "path": "/edit/", "status": 200, "summaryLinks": ["/", "/edit/", "/video/"], "contextLinks": ["/", "/video/"], "contextPresent": true },
+    { "locale": "it", "kind": "image", "path": "/it/immagini-ai/", "status": 200, "summaryLinks": ["/it/immagini-ai/", "/it/modifica-foto-ai/", "/it/"], "contextLinks": ["/it/", "/it/modifica-foto-ai/"], "contextPresent": true },
+    { "locale": "it", "kind": "video", "path": "/it/", "status": 200, "summaryLinks": ["/it/immagini-ai/", "/it/modifica-foto-ai/", "/it/"], "contextLinks": [], "contextPresent": false },
+    { "locale": "it", "kind": "edit", "path": "/it/modifica-foto-ai/", "status": 200, "summaryLinks": ["/it/immagini-ai/", "/it/modifica-foto-ai/", "/it/"], "contextLinks": ["/it/immagini-ai/", "/it/"], "contextPresent": true },
+    { "locale": "fr", "kind": "image", "path": "/fr/photo-ia-gratuit/", "status": 200, "summaryLinks": ["/fr/photo-ia-gratuit/", "/fr/modifier-photo-ia/", "/fr/"], "contextLinks": ["/fr/modifier-photo-ia/"], "contextPresent": true },
+    { "locale": "fr", "kind": "video", "path": "/fr/", "status": 200, "summaryLinks": ["/fr/photo-ia-gratuit/", "/fr/modifier-photo-ia/", "/fr/"], "contextLinks": ["/fr/photo-ia-gratuit/", "/fr/modifier-photo-ia/"], "contextPresent": true },
+    { "locale": "fr", "kind": "edit", "path": "/fr/modifier-photo-ia/", "status": 200, "summaryLinks": ["/fr/photo-ia-gratuit/", "/fr/modifier-photo-ia/", "/fr/"], "contextLinks": ["/fr/photo-ia-gratuit/"], "contextPresent": true },
+    { "locale": "nl", "kind": "image", "path": "/nl/", "status": 200, "summaryLinks": ["/nl/", "/nl/foto-bewerken-ai/", "/nl/ai-video-maken/"], "contextLinks": [], "contextPresent": false },
+    { "locale": "nl", "kind": "video", "path": "/nl/ai-video-maken/", "status": 200, "summaryLinks": ["/nl/", "/nl/foto-bewerken-ai/", "/nl/ai-video-maken/"], "contextLinks": ["/nl/", "/nl/foto-bewerken-ai/"], "contextPresent": true },
+    { "locale": "nl", "kind": "edit", "path": "/nl/foto-bewerken-ai/", "status": 200, "summaryLinks": ["/nl/", "/nl/foto-bewerken-ai/", "/nl/ai-video-maken/"], "contextLinks": ["/nl/", "/nl/ai-video-maken/"], "contextPresent": true }
+  ]
+}

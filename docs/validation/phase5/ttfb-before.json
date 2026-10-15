@@ -1,0 +1,99 @@
+{
+  "measuredAt": "2026-10-15T11:23:22.779Z",
+  "label": "before",
+  "url": "https://www.ovanto.ai/",
+  "method": "GET",
+  "cookiesSent": false,
+  "requestCount": 5,
+  "measurements": [
+    {
+      "attempt": 1,
+      "startedAt": "2026-10-15T11:23:18.988Z",
+      "status": 200,
+      "ttfbMs": 1060.59,
+      "totalMs": 1365.15,
+      "headers": {
+        "x-vercel-cache": "MISS",
+        "age": "0",
+        "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+        "x-matched-path": "/",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 15 Oct 2026 11:23:20 GMT"
+      }
+    },
+    {
+      "attempt": 2,
+      "startedAt": "2026-10-15T11:23:20.356Z",
+      "status": 200,
+      "ttfbMs": 371.96,
+      "totalMs": 517.58,
+      "headers": {
+        "x-vercel-cache": "MISS",
+        "age": "0",
+        "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+        "x-matched-path": "/",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 15 Oct 2026 11:23:20 GMT"
+      }
+    },
+    {
+      "attempt": 3,
+      "startedAt": "2026-10-15T11:23:20.874Z",
+      "status": 200,
+      "ttfbMs": 367.95,
+      "totalMs": 663.92,
+      "headers": {
+        "x-vercel-cache": "MISS",
+        "age": "0",
+        "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+        "x-matched-path": "/",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 15 Oct 2026 11:23:21 GMT"
+      }
+    },
+    {
+      "attempt": 4,
+      "startedAt": "2026-10-15T11:23:21.538Z",
+      "status": 200,
+      "ttfbMs": 367.97,
+      "totalMs": 519.16,
+      "headers": {
+        "x-vercel-cache": "MISS",
+        "age": "0",
+        "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+        "x-matched-path": "/",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 15 Oct 2026 11:23:21 GMT"
+      }
+    },
+    {
+      "attempt": 5,
+      "startedAt": "2026-10-15T11:23:22.057Z",
+      "status": 200,
+      "ttfbMs": 360.17,
+      "totalMs": 722.34,
+      "headers": {
+        "x-vercel-cache": "MISS",
+        "age": "0",
+        "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+        "x-matched-path": "/",
+        "content-type": "text/html; charset=utf-8",
+        "date": "Thu, 15 Oct 2026 11:23:22 GMT"
+      }
+    }
+  ],
+  "summary": {
+    "successfulRequests": 5,
+    "firstRequestTtfbMs": 1060.59,
+    "subsequentTtfbMs": [
+      371.96,
+      367.95,
+      367.97,
+      360.17
+    ],
+    "medianTtfbMs": 367.97,
+    "p95TtfbMs": 1060.59,
+    "minTtfbMs": 360.17,
+    "maxTtfbMs": 1060.59
+  }
+}

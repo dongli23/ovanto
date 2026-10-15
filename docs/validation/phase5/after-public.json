@@ -1,0 +1,837 @@
+{
+  "checkedAt": "2026-10-15T12:02:47.666Z",
+  "origin": "https://www.ovanto.ai",
+  "methodPolicy": "GET only",
+  "cookiesSent": false,
+  "mutationRequests": 0,
+  "publicRouteCount": 17,
+  "pages": [
+    {
+      "pathname": "/",
+      "status": 200,
+      "title": "Free AI Image Generator, No Sign Up | Ovanto"
+    },
+    {
+      "pathname": "/aup/",
+      "status": 200,
+      "title": "Acceptable Use Policy | Ovanto"
+    },
+    {
+      "pathname": "/edit/",
+      "status": 200,
+      "title": "AI Photo Editor Online, No Sign Up — Edit Photos Free | Ovanto"
+    },
+    {
+      "pathname": "/fr/",
+      "status": 200,
+      "title": "Générateur de Vidéo IA Gratuit Sans Inscription — Créez Maintenant | Ovanto"
+    },
+    {
+      "pathname": "/fr/modifier-photo-ia/",
+      "status": 200,
+      "title": "Modifier Photo IA — Retouche et Édition en Ligne | Ovanto"
+    },
+    {
+      "pathname": "/fr/photo-ia-gratuit/",
+      "status": 200,
+      "title": "Photo IA Gratuit — Générez Vos Images en Ligne | Ovanto"
+    },
+    {
+      "pathname": "/fr/retouche-photo-ia/",
+      "status": 200,
+      "title": "Retouche Photo IA — Améliorez Vos Photos | Ovanto"
+    },
+    {
+      "pathname": "/it/",
+      "status": 200,
+      "title": "Generatore Video AI Gratis Senza Registrazione — Crea Subito | Ovanto"
+    },
+    {
+      "pathname": "/it/immagini-ai/",
+      "status": 200,
+      "title": "Generatore di Immagini AI Gratis Senza Registrazione | Ovanto"
+    },
+    {
+      "pathname": "/it/modifica-foto-ai/",
+      "status": 200,
+      "title": "Modifica Foto con AI Online Gratis — Senza Registrazione | Ovanto"
+    },
+    {
+      "pathname": "/nl/",
+      "status": 200,
+      "title": "AI Afbeelding Maken Gratis — Zonder Account | Ovanto"
+    },
+    {
+      "pathname": "/nl/ai-video-maken/",
+      "status": 200,
+      "title": "AI Video Maken Gratis Zonder Registratie | Ovanto"
+    },
+    {
+      "pathname": "/nl/foto-bewerken-ai/",
+      "status": 200,
+      "title": "Foto Bewerken met AI Online — Zonder Registratie | Ovanto"
+    },
+    {
+      "pathname": "/pricing/",
+      "status": 200,
+      "title": "Pricing | Ovanto"
+    },
+    {
+      "pathname": "/privacy/",
+      "status": 200,
+      "title": "Privacy Policy | Ovanto"
+    },
+    {
+      "pathname": "/terms/",
+      "status": 200,
+      "title": "Terms of Service | Ovanto"
+    },
+    {
+      "pathname": "/video/",
+      "status": 200,
+      "title": "Free AI Video Generator, No Sign Up — Create Short Videos | Ovanto"
+    }
+  ],
+  "checks": [
+    {
+      "name": "public route registry has 17 routes",
+      "pass": true,
+      "actual": 17
+    },
+    {
+      "name": "GET /",
+      "pass": true,
+      "status": 200
+    },
+    {
+      "name": "GET /aup/",
+      "pass": true,
+      "status": 200
+    },
+    {
+      "name": "GET /edit/",
+      "pass": true,
+      "status": 200
+    },
+    {
+      "name": "GET /fr/",
+      "pass": true,
+      "status": 200
+    },
+    {
+      "name": "GET /fr/modifier-photo-ia/",
+      "pass": true,
+      "status": 200
+    },
+    {
+      "name": "GET /fr/photo-ia-gratuit/",
+      "pass": true,
+      "status": 200
+    },
+    {
+      "name": "GET /fr/retouche-photo-ia/",
+      "pass": true,
+      "status": 200
+    },
+    {
+      "name": "GET /it/",
+      "pass": true,
+      "status": 200
+    },
+    {
+      "name": "GET /it/immagini-ai/",
+      "pass": true,
+      "status": 200
+    },
+    {
+      "name": "GET /it/modifica-foto-ai/",
+      "pass": true,
+      "status": 200
+    },
+    {
+      "name": "GET /nl/",
+      "pass": true,
+      "status": 200
+    },
+    {
+      "name": "GET /nl/ai-video-maken/",
+      "pass": true,
+      "status": 200
+    },
+    {
+      "name": "GET /nl/foto-bewerken-ai/",
+      "pass": true,
+      "status": 200
+    },
+    {
+      "name": "GET /pricing/",
+      "pass": true,
+      "status": 200
+    },
+    {
+      "name": "GET /privacy/",
+      "pass": true,
+      "status": 200
+    },
+    {
+      "name": "GET /terms/",
+      "pass": true,
+      "status": 200
+    },
+    {
+      "name": "GET /video/",
+      "pass": true,
+      "status": 200
+    },
+    {
+      "name": "/: tools-summary has three same-locale links",
+      "pass": true,
+      "actual": [
+        "/",
+        "/edit/",
+        "/video/"
+      ],
+      "expected": [
+        "/",
+        "/edit/",
+        "/video/"
+      ]
+    },
+    {
+      "name": "/: context-links has same-locale tool links",
+      "pass": true,
+      "actual": [
+        "/edit/",
+        "/video/"
+      ],
+      "expectedAtLeast": [
+        "/video/",
+        "/edit/"
+      ]
+    },
+    {
+      "name": "/: localized AUP footer link",
+      "pass": true,
+      "actual": {
+        "href": "/aup/",
+        "text": "Acceptable use"
+      },
+      "expected": {
+        "href": "/aup/",
+        "text": "Acceptable use"
+      }
+    },
+    {
+      "name": "/video/: tools-summary has three same-locale links",
+      "pass": true,
+      "actual": [
+        "/",
+        "/edit/",
+        "/video/"
+      ],
+      "expected": [
+        "/",
+        "/edit/",
+        "/video/"
+      ]
+    },
+    {
+      "name": "/video/: context-links has same-locale tool links",
+      "pass": true,
+      "actual": [
+        "/",
+        "/edit/"
+      ],
+      "expectedAtLeast": [
+        "/",
+        "/edit/"
+      ]
+    },
+    {
+      "name": "/video/: localized AUP footer link",
+      "pass": true,
+      "actual": {
+        "href": "/aup/",
+        "text": "Acceptable use"
+      },
+      "expected": {
+        "href": "/aup/",
+        "text": "Acceptable use"
+      }
+    },
+    {
+      "name": "/edit/: tools-summary has three same-locale links",
+      "pass": true,
+      "actual": [
+        "/",
+        "/edit/",
+        "/video/"
+      ],
+      "expected": [
+        "/",
+        "/edit/",
+        "/video/"
+      ]
+    },
+    {
+      "name": "/edit/: context-links has same-locale tool links",
+      "pass": true,
+      "actual": [
+        "/",
+        "/video/"
+      ],
+      "expectedAtLeast": [
+        "/",
+        "/video/"
+      ]
+    },
+    {
+      "name": "/edit/: localized AUP footer link",
+      "pass": true,
+      "actual": {
+        "href": "/aup/",
+        "text": "Acceptable use"
+      },
+      "expected": {
+        "href": "/aup/",
+        "text": "Acceptable use"
+      }
+    },
+    {
+      "name": "/it/immagini-ai/: tools-summary has three same-locale links",
+      "pass": true,
+      "actual": [
+        "/it/immagini-ai/",
+        "/it/modifica-foto-ai/",
+        "/it/"
+      ],
+      "expected": [
+        "/it/",
+        "/it/immagini-ai/",
+        "/it/modifica-foto-ai/"
+      ]
+    },
+    {
+      "name": "/it/immagini-ai/: context-links has same-locale tool links",
+      "pass": true,
+      "actual": [
+        "/it/modifica-foto-ai/",
+        "/it/"
+      ],
+      "expectedAtLeast": [
+        "/it/",
+        "/it/modifica-foto-ai/"
+      ]
+    },
+    {
+      "name": "/it/immagini-ai/: localized AUP footer link",
+      "pass": true,
+      "actual": {
+        "href": "/aup/",
+        "text": "Uso accettabile"
+      },
+      "expected": {
+        "href": "/aup/",
+        "text": "Uso accettabile"
+      }
+    },
+    {
+      "name": "/it/: tools-summary has three same-locale links",
+      "pass": true,
+      "actual": [
+        "/it/immagini-ai/",
+        "/it/modifica-foto-ai/",
+        "/it/"
+      ],
+      "expected": [
+        "/it/",
+        "/it/immagini-ai/",
+        "/it/modifica-foto-ai/"
+      ]
+    },
+    {
+      "name": "/it/: context-links has same-locale tool links",
+      "pass": true,
+      "actual": [
+        "/it/immagini-ai/",
+        "/it/modifica-foto-ai/"
+      ],
+      "expectedAtLeast": [
+        "/it/immagini-ai/",
+        "/it/modifica-foto-ai/"
+      ]
+    },
+    {
+      "name": "/it/: localized AUP footer link",
+      "pass": true,
+      "actual": {
+        "href": "/aup/",
+        "text": "Uso accettabile"
+      },
+      "expected": {
+        "href": "/aup/",
+        "text": "Uso accettabile"
+      }
+    },
+    {
+      "name": "/it/modifica-foto-ai/: tools-summary has three same-locale links",
+      "pass": true,
+      "actual": [
+        "/it/immagini-ai/",
+        "/it/modifica-foto-ai/",
+        "/it/"
+      ],
+      "expected": [
+        "/it/",
+        "/it/immagini-ai/",
+        "/it/modifica-foto-ai/"
+      ]
+    },
+    {
+      "name": "/it/modifica-foto-ai/: context-links has same-locale tool links",
+      "pass": true,
+      "actual": [
+        "/it/immagini-ai/",
+        "/it/"
+      ],
+      "expectedAtLeast": [
+        "/it/immagini-ai/",
+        "/it/"
+      ]
+    },
+    {
+      "name": "/it/modifica-foto-ai/: localized AUP footer link",
+      "pass": true,
+      "actual": {
+        "href": "/aup/",
+        "text": "Uso accettabile"
+      },
+      "expected": {
+        "href": "/aup/",
+        "text": "Uso accettabile"
+      }
+    },
+    {
+      "name": "/fr/photo-ia-gratuit/: tools-summary has three same-locale links",
+      "pass": true,
+      "actual": [
+        "/fr/photo-ia-gratuit/",
+        "/fr/modifier-photo-ia/",
+        "/fr/"
+      ],
+      "expected": [
+        "/fr/",
+        "/fr/modifier-photo-ia/",
+        "/fr/photo-ia-gratuit/"
+      ]
+    },
+    {
+      "name": "/fr/photo-ia-gratuit/: context-links has same-locale tool links",
+      "pass": true,
+      "actual": [
+        "/fr/modifier-photo-ia/",
+        "/fr/",
+        "/fr/retouche-photo-ia/"
+      ],
+      "expectedAtLeast": [
+        "/fr/",
+        "/fr/modifier-photo-ia/"
+      ]
+    },
+    {
+      "name": "/fr/photo-ia-gratuit/: localized AUP footer link",
+      "pass": true,
+      "actual": {
+        "href": "/aup/",
+        "text": "Utilisation acceptable"
+      },
+      "expected": {
+        "href": "/aup/",
+        "text": "Utilisation acceptable"
+      }
+    },
+    {
+      "name": "/fr/: tools-summary has three same-locale links",
+      "pass": true,
+      "actual": [
+        "/fr/photo-ia-gratuit/",
+        "/fr/modifier-photo-ia/",
+        "/fr/"
+      ],
+      "expected": [
+        "/fr/",
+        "/fr/modifier-photo-ia/",
+        "/fr/photo-ia-gratuit/"
+      ]
+    },
+    {
+      "name": "/fr/: context-links has same-locale tool links",
+      "pass": true,
+      "actual": [
+        "/fr/photo-ia-gratuit/",
+        "/fr/modifier-photo-ia/"
+      ],
+      "expectedAtLeast": [
+        "/fr/photo-ia-gratuit/",
+        "/fr/modifier-photo-ia/"
+      ]
+    },
+    {
+      "name": "/fr/: localized AUP footer link",
+      "pass": true,
+      "actual": {
+        "href": "/aup/",
+        "text": "Utilisation acceptable"
+      },
+      "expected": {
+        "href": "/aup/",
+        "text": "Utilisation acceptable"
+      }
+    },
+    {
+      "name": "/fr/modifier-photo-ia/: tools-summary has three same-locale links",
+      "pass": true,
+      "actual": [
+        "/fr/photo-ia-gratuit/",
+        "/fr/modifier-photo-ia/",
+        "/fr/"
+      ],
+      "expected": [
+        "/fr/",
+        "/fr/modifier-photo-ia/",
+        "/fr/photo-ia-gratuit/"
+      ]
+    },
+    {
+      "name": "/fr/modifier-photo-ia/: context-links has same-locale tool links",
+      "pass": true,
+      "actual": [
+        "/fr/photo-ia-gratuit/",
+        "/fr/",
+        "/fr/retouche-photo-ia/"
+      ],
+      "expectedAtLeast": [
+        "/fr/photo-ia-gratuit/",
+        "/fr/"
+      ]
+    },
+    {
+      "name": "/fr/modifier-photo-ia/: localized AUP footer link",
+      "pass": true,
+      "actual": {
+        "href": "/aup/",
+        "text": "Utilisation acceptable"
+      },
+      "expected": {
+        "href": "/aup/",
+        "text": "Utilisation acceptable"
+      }
+    },
+    {
+      "name": "/nl/: tools-summary has three same-locale links",
+      "pass": true,
+      "actual": [
+        "/nl/",
+        "/nl/foto-bewerken-ai/",
+        "/nl/ai-video-maken/"
+      ],
+      "expected": [
+        "/nl/",
+        "/nl/ai-video-maken/",
+        "/nl/foto-bewerken-ai/"
+      ]
+    },
+    {
+      "name": "/nl/: context-links has same-locale tool links",
+      "pass": true,
+      "actual": [
+        "/nl/foto-bewerken-ai/",
+        "/nl/ai-video-maken/"
+      ],
+      "expectedAtLeast": [
+        "/nl/ai-video-maken/",
+        "/nl/foto-bewerken-ai/"
+      ]
+    },
+    {
+      "name": "/nl/: localized AUP footer link",
+      "pass": true,
+      "actual": {
+        "href": "/aup/",
+        "text": "Aanvaardbaar gebruik"
+      },
+      "expected": {
+        "href": "/aup/",
+        "text": "Aanvaardbaar gebruik"
+      }
+    },
+    {
+      "name": "/nl/ai-video-maken/: tools-summary has three same-locale links",
+      "pass": true,
+      "actual": [
+        "/nl/",
+        "/nl/foto-bewerken-ai/",
+        "/nl/ai-video-maken/"
+      ],
+      "expected": [
+        "/nl/",
+        "/nl/ai-video-maken/",
+        "/nl/foto-bewerken-ai/"
+      ]
+    },
+    {
+      "name": "/nl/ai-video-maken/: context-links has same-locale tool links",
+      "pass": true,
+      "actual": [
+        "/nl/",
+        "/nl/foto-bewerken-ai/"
+      ],
+      "expectedAtLeast": [
+        "/nl/",
+        "/nl/foto-bewerken-ai/"
+      ]
+    },
+    {
+      "name": "/nl/ai-video-maken/: localized AUP footer link",
+      "pass": true,
+      "actual": {
+        "href": "/aup/",
+        "text": "Aanvaardbaar gebruik"
+      },
+      "expected": {
+        "href": "/aup/",
+        "text": "Aanvaardbaar gebruik"
+      }
+    },
+    {
+      "name": "/nl/foto-bewerken-ai/: tools-summary has three same-locale links",
+      "pass": true,
+      "actual": [
+        "/nl/",
+        "/nl/foto-bewerken-ai/",
+        "/nl/ai-video-maken/"
+      ],
+      "expected": [
+        "/nl/",
+        "/nl/ai-video-maken/",
+        "/nl/foto-bewerken-ai/"
+      ]
+    },
+    {
+      "name": "/nl/foto-bewerken-ai/: context-links has same-locale tool links",
+      "pass": true,
+      "actual": [
+        "/nl/",
+        "/nl/ai-video-maken/"
+      ],
+      "expectedAtLeast": [
+        "/nl/",
+        "/nl/ai-video-maken/"
+      ]
+    },
+    {
+      "name": "/nl/foto-bewerken-ai/: localized AUP footer link",
+      "pass": true,
+      "actual": {
+        "href": "/aup/",
+        "text": "Aanvaardbaar gebruik"
+      },
+      "expected": {
+        "href": "/aup/",
+        "text": "Aanvaardbaar gebruik"
+      }
+    },
+    {
+      "name": "A1 retouche title is at most 60 characters",
+      "pass": true,
+      "actualLength": 49
+    },
+    {
+      "name": "A1 retouche H1 is distinct from modifier page",
+      "pass": true,
+      "retoucheH1": "Retouche Photo IA : Améliorez Vos Photos",
+      "modifierH1": "Modifier Photo IA en Ligne"
+    },
+    {
+      "name": "A1 retouche canonical",
+      "pass": true,
+      "actual": "https://www.ovanto.ai/fr/retouche-photo-ia/"
+    },
+    {
+      "name": "A1 retouche has exactly the required hreflangs",
+      "pass": true,
+      "actual": {
+        "en": "https://www.ovanto.ai/edit/",
+        "it": "https://www.ovanto.ai/it/modifica-foto-ai/",
+        "fr": "https://www.ovanto.ai/fr/retouche-photo-ia/",
+        "nl": "https://www.ovanto.ai/nl/foto-bewerken-ai/",
+        "x-default": "https://www.ovanto.ai/edit/"
+      },
+      "expected": {
+        "en": "https://www.ovanto.ai/edit/",
+        "it": "https://www.ovanto.ai/it/modifica-foto-ai/",
+        "fr": "https://www.ovanto.ai/fr/retouche-photo-ia/",
+        "nl": "https://www.ovanto.ai/nl/foto-bewerken-ai/",
+        "x-default": "https://www.ovanto.ai/edit/"
+      }
+    },
+    {
+      "name": "A1 retouche includes WebApplication and FAQPage JSON-LD",
+      "pass": true,
+      "actual": [
+        "WebApplication",
+        "FAQPage"
+      ]
+    },
+    {
+      "name": "B2 homepage title retains both keywords within 60 characters",
+      "pass": true,
+      "title": "Free AI Image Generator, No Sign Up | Ovanto",
+      "length": 44
+    },
+    {
+      "name": "B2 homepage og:title matches the concise title",
+      "pass": true,
+      "title": "Free AI Image Generator, No Sign Up | Ovanto",
+      "ogTitle": "Free AI Image Generator, No Sign Up | Ovanto"
+    },
+    {
+      "name": "A2 AUP contains all four required sections",
+      "pass": true,
+      "sections": [
+        "content-standards",
+        "moderation",
+        "reporting",
+        "enforcement"
+      ]
+    },
+    {
+      "name": "A2 AUP exposes the reporting mailbox",
+      "pass": true
+    },
+    {
+      "name": "C2 content-safety-en exists with lang",
+      "pass": true,
+      "lang": "en"
+    },
+    {
+      "name": "C2 refund-process-en exists with lang",
+      "pass": true,
+      "lang": "en"
+    },
+    {
+      "name": "C2 content-safety-it exists with lang",
+      "pass": true,
+      "lang": "it"
+    },
+    {
+      "name": "C2 refund-process-it exists with lang",
+      "pass": true,
+      "lang": "it"
+    },
+    {
+      "name": "C2 content-safety-fr exists with lang",
+      "pass": true,
+      "lang": "fr"
+    },
+    {
+      "name": "C2 refund-process-fr exists with lang",
+      "pass": true,
+      "lang": "fr"
+    },
+    {
+      "name": "C2 content-safety-nl exists with lang",
+      "pass": true,
+      "lang": "nl"
+    },
+    {
+      "name": "C2 refund-process-nl exists with lang",
+      "pass": true,
+      "lang": "nl"
+    },
+    {
+      "name": "C2 terms states screening before provider submission",
+      "pass": true
+    },
+    {
+      "name": "C2 terms exposes refund policy and points to mandatory consumer rights",
+      "pass": true
+    },
+    {
+      "name": "sitemap contains all 17 canonical URLs",
+      "pass": true,
+      "actualCount": 17,
+      "expectedCount": 17
+    },
+    {
+      "name": "no API mutation was requested",
+      "pass": true,
+      "mutationRequests": 0
+    }
+  ],
+  "sitemap": {
+    "status": 200,
+    "count": 17,
+    "urls": [
+      "https://www.ovanto.ai/",
+      "https://www.ovanto.ai/aup/",
+      "https://www.ovanto.ai/edit/",
+      "https://www.ovanto.ai/fr/",
+      "https://www.ovanto.ai/fr/modifier-photo-ia/",
+      "https://www.ovanto.ai/fr/photo-ia-gratuit/",
+      "https://www.ovanto.ai/fr/retouche-photo-ia/",
+      "https://www.ovanto.ai/it/",
+      "https://www.ovanto.ai/it/immagini-ai/",
+      "https://www.ovanto.ai/it/modifica-foto-ai/",
+      "https://www.ovanto.ai/nl/",
+      "https://www.ovanto.ai/nl/ai-video-maken/",
+      "https://www.ovanto.ai/nl/foto-bewerken-ai/",
+      "https://www.ovanto.ai/pricing/",
+      "https://www.ovanto.ai/privacy/",
+      "https://www.ovanto.ai/terms/",
+      "https://www.ovanto.ai/video/"
+    ]
+  },
+  "compliance": {
+    "terms": {
+      "contentSafety": {
+        "en": {
+          "lang": "en",
+          "text": "Generation prompts are screened by Waffo's content-safety service before a request reserves a free allowance or paid credit or is sent to an AI provider. Only an allow verdict proceeds; block, review or unavailable screening stops the request without a generation debit. Audit logs record the time, interface language, reported categories and whether the request was allowed, without recording prompt text. Provider checks vary by model; the free Wan video path also requests the provider safety checker. Screening and manual report review cannot guarantee detection of every violation. See our Acceptable Use Policy ."
+        },
+        "it": {
+          "lang": "it",
+          "text": "Italiano: I prompt sono controllati dal servizio di sicurezza dei contenuti di Waffo prima di riservare una quota gratuita o un credito a pagamento e prima dell'invio al provider AI. Solo l'esito allow prosegue; block, review o servizio non disponibile fermano la richiesta senza addebito di generazione. I log registrano data e ora, lingua dell'interfaccia, categorie segnalate ed esito, senza il testo del prompt. I controlli dei provider variano per modello; il video gratuito Wan richiede anche il controllo del provider. Nessun controllo automatico o manuale garantisce di rilevare tutte le violazioni. Consulta la politica di utilizzo accettabile ."
+        },
+        "fr": {
+          "lang": "fr",
+          "text": "Français : Les prompts sont examinés par le service de sécurité des contenus de Waffo avant toute réservation de quota gratuit ou de crédit payant et tout envoi au fournisseur IA. Seul le verdict allow permet de continuer ; block, review ou une vérification indisponible arrêtent la demande sans débit de génération. Les journaux indiquent l'heure, la langue de l'interface, les catégories signalées et la décision, sans le texte du prompt. Les contrôles du fournisseur varient selon le modèle ; la vidéo gratuite Wan demande aussi son contrôle de sécurité. Les contrôles automatiques et l'examen des signalements ne garantissent pas la détection de toute violation. Consultez la politique d'utilisation acceptable ."
+        },
+        "nl": {
+          "lang": "nl",
+          "text": "Nederlands: Prompts worden door de inhoudsveiligheidsdienst van Waffo gecontroleerd voordat een gratis tegoed of betaald credit wordt gereserveerd en voordat een verzoek naar de AI-provider gaat. Alleen allow gaat door; block, review of een onbeschikbare controle stopt het verzoek zonder generatiedebet. Auditlogs bevatten tijdstip, interfacetaal, gemelde categorieën en besluit, zonder prompttekst. Providercontroles verschillen per model; de gratis Wan-videoroute vraagt ook de veiligheidscontrole van de provider aan. Automatische controles en handmatige beoordeling van meldingen kunnen niet elke overtreding ontdekken. Zie het beleid voor aanvaardbaar gebruik ."
+        }
+      },
+      "refundProcess": {
+        "en": {
+          "lang": "en",
+          "text": "Email hello@ovanto.ai from the email associated with your account and include the order ID and a short explanation. Do not send card numbers, security codes, passwords, or other payment secrets. We aim to acknowledge requests within 2 business days. For purchases through Waffo Pancake, Waffo is the merchant of record and seller identified at checkout; monetary refunds follow Waffo's refund request, review and processing procedure and the applicable checkout terms and law. Ovanto helps with product and order information and coordinates the request; it does not replace Waffo's approval or processing. Bank posting times may vary."
+        },
+        "it": {
+          "lang": "it",
+          "text": "Italiano: Per gli acquisti tramite Waffo Pancake, Waffo è il venditore e merchant of record indicato al checkout. I rimborsi monetari seguono la sua procedura di richiesta, verifica ed elaborazione, le condizioni del checkout e la legge applicabile. Scrivi a hello@ovanto.ai con l'ID dell'ordine: Ovanto aiuta a raccogliere le informazioni e a coordinare la richiesta, senza sostituire l'approvazione di Waffo. La promessa di rimborso entro 7 giorni per crediti interamente inutilizzati non limita i diritti inderogabili della sezione 14."
+        },
+        "fr": {
+          "lang": "fr",
+          "text": "Français : Pour les achats via Waffo Pancake, Waffo est le vendeur et merchant of record indiqué au paiement. Les remboursements monétaires suivent sa procédure de demande, d'examen et de traitement, les conditions du paiement et la loi applicable. Écrivez à hello@ovanto.ai avec l'identifiant de commande : Ovanto aide à réunir les informations et à coordonner la demande, sans se substituer à l'approbation de Waffo. La promesse de remboursement sous 7 jours pour des crédits entièrement inutilisés ne limite pas les droits impératifs de la section 14."
+        },
+        "nl": {
+          "lang": "nl",
+          "text": "Nederlands: Bij aankopen via Waffo Pancake is Waffo de verkoper en merchant of record die bij het afrekenen wordt vermeld. Geldelijke terugbetalingen volgen de aanvraag-, beoordelings- en verwerkingsprocedure van Waffo, de betaalvoorwaarden en het toepasselijke recht. Mail hello@ovanto.ai met het bestelnummer: Ovanto helpt met informatie en afstemming, maar vervangt de goedkeuring van Waffo niet. De terugbetalingsbelofte van 7 dagen voor volledig ongebruikte credits beperkt de dwingende rechten in sectie 14 niet."
+        }
+      }
+    }
+  },
+  "pass": true,
+  "failures": []
+}
