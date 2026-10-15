@@ -25,7 +25,7 @@ const inspirationImages = [
 export function HomePlatform({ locale, toolKind, variant }: { locale: Locale; toolKind: ToolKind; variant?: "frRetouch" }) {
   const copy = getToolPlatformCopy(locale, toolKind, WORKSPACE_COPY[locale].platform, variant);
   const imageHref = `${toolRoute(locale, "image")}#image-workbench`;
-  const workbenchHref = `${toolRoute(locale, toolKind)}#${toolKind}-workbench`;
+  const workbenchHref = variant === "frRetouch" ? "/fr/retouche-photo-ia/#edit-workbench" : `${toolRoute(locale, toolKind)}#${toolKind}-workbench`;
   const modelName = toolKind === "image" ? "Flux Schnell" : toolKind === "video" ? "Wan 2.5 · Kling 2.5 Turbo Pro" : "Flux Kontext Dev";
   const modelMonogram = toolKind === "image" ? "F" : toolKind === "video" ? "V" : "K";
 
