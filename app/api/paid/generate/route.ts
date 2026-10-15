@@ -9,6 +9,7 @@ import { assertSessionConfiguration, noStore, PaymentError, paymentResponse } fr
 import { balancesFor } from "../../../../lib/payments/store";
 import { parsePaidGenerationInput } from "../../../../lib/paid-generation/input";
 import { publicPaidJob, startPaidGeneration } from "../../../../lib/paid-generation/service";
+import { assertPromptSafe, resolveContentSafetyLocale } from "../../../../lib/generation/content-safety";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -21,6 +22,7 @@ export async function POST(request: Request) {
     const session = await getPaidSession(request);
     if (!session) throw new PaymentError("PAID_SESSION_REQUIRED", 401);
     const input = await parsePaidGenerationInput(request);
+    await assertPromptSafe(input.prompt, resolveContentSafetyLocale(request));
     let sourceImageUrl: string | undefined;
     if (input.kind === "edit") {
       const identity = getDailyIdentity(request, await cookies());

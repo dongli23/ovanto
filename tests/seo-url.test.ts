@@ -30,7 +30,7 @@ test("every TOOL_ROUTES HTML path is the canonical trailing-slash form", () => {
 });
 
 test("PUBLIC_HTML_ROUTES is the complete canonical public page set", () => {
-  assert.equal(PUBLIC_HTML_ROUTES.length, 15, "expected 15 public HTML routes");
+  assert.equal(PUBLIC_HTML_ROUTES.length, 17, "expected 17 public HTML routes");
   for (const pathname of PUBLIC_HTML_ROUTES) {
     assert.equal(pathname, canonicalPath(pathname), `${pathname} not canonical`);
     assert.ok(pathname === "/" || pathname.endsWith("/"), `${pathname} missing trailing slash`);
@@ -38,9 +38,31 @@ test("PUBLIC_HTML_ROUTES is the complete canonical public page set", () => {
   }
   assert.ok(!PUBLIC_HTML_ROUTES.includes(ROUTES.nlGenerate), "legacy Dutch image route must not be canonical");
   // Contains the public legal pages.
-  for (const required of ["/pricing/", "/terms/", "/privacy/"]) {
+  for (const required of ["/fr/retouche-photo-ia/", "/aup/", "/pricing/", "/terms/", "/privacy/"]) {
     assert.ok(PUBLIC_HTML_ROUTES.includes(required), `missing ${required}`);
   }
+});
+
+test("French retouch page has the required five-alternate route map", () => {
+  const expected = {
+    en: "/edit/",
+    it: "/it/modifica-foto-ai/",
+    fr: "/fr/retouche-photo-ia/",
+    nl: "/nl/foto-bewerken-ai/",
+    "x-default": "/edit/",
+  };
+  assert.equal(ROUTES.frRetouch, expected.fr);
+  assert.notEqual(PAGE_CONTENT.frRetouch.h1, PAGE_CONTENT.frEdit.h1);
+  assert.deepEqual(
+    {
+      en: toolRoute("en", "edit"),
+      it: toolRoute("it", "edit"),
+      fr: ROUTES.frRetouch,
+      nl: toolRoute("nl", "edit"),
+      "x-default": toolRoute("en", "edit"),
+    },
+    expected,
+  );
 });
 
 test("all page content paths and extra links are canonical trailing-slash URLs", () => {
@@ -72,7 +94,7 @@ test("sitemap HTML URLs all carry the trailing slash and keep legal pages", () =
     assert.ok(pathname === "/" || pathname.endsWith("/"), `bare HTML URL in sitemap: ${url}`);
     assert.ok(!pathname.startsWith("/api/"), `API URL in sitemap: ${url}`);
   }
-  for (const legal of ["/pricing/", "/terms/", "/privacy/"]) {
+  for (const legal of ["/aup/", "/pricing/", "/terms/", "/privacy/"]) {
     assert.ok(urls.includes(canonicalUrl(legal)), `legal page missing from sitemap: ${legal}`);
   }
 });

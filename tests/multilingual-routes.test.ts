@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { existsSync } from "node:fs";
 import { PAGE_CONTENT } from "../lib/content";
-import { SUPPORTED_LOCALES, TOOL_ROUTES, canonicalPath, canonicalUrl, localeFromPath, toolRoute, type ToolKind } from "../lib/site";
+import { ROUTES, SUPPORTED_LOCALES, TOOL_ROUTES, canonicalPath, canonicalUrl, localeFromPath, toolRoute, type ToolKind } from "../lib/site";
 import sitemap from "../app/sitemap";
 import { assertCheckoutReturnPath } from "../lib/payments/config";
 
@@ -32,6 +32,33 @@ test("tool language alternates all identify the same workflow", () => {
       assert.equal(target?.locale, locale);
     }
   }
+});
+
+test("French retouch landing page keeps a distinct improvement intent", () => {
+  const retouch = PAGE_CONTENT.frRetouch;
+  const modifier = PAGE_CONTENT.frEdit;
+  assert.equal(retouch.path, ROUTES.frRetouch);
+  assert.equal(retouch.locale, "fr");
+  assert.equal(retouch.toolKind, "edit");
+  assert.notEqual(retouch.h1, modifier.h1);
+  assert.match(retouch.h1, /retouche|retoucher/i);
+  assert.match(retouch.description, /retouch/i);
+  assert.deepEqual(
+    {
+      en: toolRoute("en", "edit"),
+      it: toolRoute("it", "edit"),
+      fr: ROUTES.frRetouch,
+      nl: toolRoute("nl", "edit"),
+      "x-default": toolRoute("en", "edit"),
+    },
+    {
+      en: "/edit/",
+      it: "/it/modifica-foto-ai/",
+      fr: "/fr/retouche-photo-ia/",
+      nl: "/nl/foto-bewerken-ai/",
+      "x-default": "/edit/",
+    },
+  );
 });
 
 test("sitemap includes every tool page without duplicate canonical URLs", () => {

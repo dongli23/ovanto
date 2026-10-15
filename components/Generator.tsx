@@ -114,6 +114,8 @@ type Copy = {
   paidCreditsRequired: string;
   paidSessionRequired: string;
   paidSubmissionUncertain: string;
+  contentSafetyBlocked: string;
+  contentSafetyReview: string;
   settingsLabel: string;
   modelLabel: string;
   inputLabel: string;
@@ -170,6 +172,8 @@ const copy: Record<Locale, Copy> = {
     paidCreditsRequired: "Select a paid credit balance before generating, or continue to payment below.",
     paidSessionRequired: "Paid access needs to be activated before generating.",
     paidSubmissionUncertain: "Request outcome is being checked; your credit remains reserved.",
+    contentSafetyBlocked: "This prompt does not meet our content rules. Please revise it and try again.",
+    contentSafetyReview: "This prompt could not be cleared for generation. Please try again shortly; no credit was used.",
     settingsLabel: "Generation settings",
     modelLabel: "Model",
     inputLabel: "Input",
@@ -228,6 +232,8 @@ const copy: Record<Locale, Copy> = {
     paidCreditsRequired: "Seleziona un saldo di crediti a pagamento prima di generare oppure vai al pagamento qui sotto.",
     paidSessionRequired: "L'accesso a pagamento deve essere attivato prima di generare.",
     paidSubmissionUncertain: "Stiamo verificando l'esito della richiesta; il tuo credito resta riservato.",
+    contentSafetyBlocked: "Questo prompt non rispetta le regole sui contenuti. Modificalo e riprova.",
+    contentSafetyReview: "Questo prompt non ha potuto essere approvato per la generazione. Riprova tra poco; non è stato usato alcun credito.",
     settingsLabel: "Impostazioni di generazione",
     modelLabel: "Modello",
     inputLabel: "Ingresso",
@@ -286,6 +292,8 @@ const copy: Record<Locale, Copy> = {
     paidCreditsRequired: "Sélectionnez un solde de crédits payants avant de générer, ou continuez vers le paiement ci-dessous.",
     paidSessionRequired: "L'accès payant doit être activé avant de générer.",
     paidSubmissionUncertain: "Le résultat de la demande est vérifié ; votre crédit reste réservé.",
+    contentSafetyBlocked: "Ce prompt ne respecte pas nos règles de contenu. Modifiez-le puis réessayez.",
+    contentSafetyReview: "Ce prompt n'a pas pu être validé pour la génération. Réessayez dans un instant ; aucun crédit n'a été utilisé.",
     settingsLabel: "Paramètres de génération",
     modelLabel: "Modèle",
     inputLabel: "Entrée",
@@ -344,6 +352,8 @@ const copy: Record<Locale, Copy> = {
     paidCreditsRequired: "Kies een saldo met betaalde credits voordat je genereert, of ga hieronder door naar de betaling.",
     paidSessionRequired: "Betaalde toegang moet worden geactiveerd voordat je kunt genereren.",
     paidSubmissionUncertain: "De uitkomst van je aanvraag wordt gecontroleerd; je credit blijft gereserveerd.",
+    contentSafetyBlocked: "Deze prompt voldoet niet aan onze inhoudsregels. Pas de prompt aan en probeer het opnieuw.",
+    contentSafetyReview: "Deze prompt kon niet worden goedgekeurd voor generatie. Probeer het zo opnieuw; er is geen credit gebruikt.",
     settingsLabel: "Generatie-instellingen",
     modelLabel: "Model",
     inputLabel: "Invoer",
@@ -412,6 +422,8 @@ function newIdempotencyKey() {
 }
 
 function errorCodeMessage(code: string | undefined, localized: Copy) {
+  if (code === "CONTENT_SAFETY_BLOCKED") return localized.contentSafetyBlocked;
+  if (code === "CONTENT_SAFETY_REVIEW" || code === "CONTENT_SAFETY_UNAVAILABLE") return localized.contentSafetyReview;
   if (code === "DAILY_LIMIT_REACHED" || code === "FREE_LIMIT_REACHED" || code === "RATE_LIMITED") return localized.limitReached;
   if (code === "INSUFFICIENT_CREDITS") return localized.paidCreditsRequired;
   if (code === "SUBMISSION_UNCERTAIN") return localized.paidSubmissionUncertain;
@@ -903,7 +915,7 @@ export function Generator({
           : buildFreeGenerationBody(payloadInput, await getTurnstileToken());
         const response = await fetch(paidAttemptMode ? "/api/paid/generate" : "/api/generate", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: { "Content-Type": "application/json", "X-Ovanto-Interface-Locale": locale },
           body: JSON.stringify(requestBody),
         });
         const responsePayload = await readJson<GenerationResponse & { error?: { code?: string } }>(response);

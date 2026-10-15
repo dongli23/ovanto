@@ -128,6 +128,7 @@ export type WorkspaceCopy = {
     contentSafety: string;
     terms: string;
     privacy: string;
+    aup: string;
     languagePagesAria: string;
   };
   platform: HomePlatformCopy;
@@ -486,7 +487,7 @@ export const WORKSPACE_COPY: Record<Locale, WorkspaceCopy> = {
       },
     },
     toolsLinks: { label: "Tools", summaryIntro: "Choose the workflow that fits your idea:", image: "create an AI image", edit: "edit a photo with AI", video: "create an AI video", relatedAria: "Related Ovanto tools" },
-    footer: { description: "A light workspace for images, video and creative ideas.", toolsHeading: "AI Tools", resourcesHeading: "Resources", languageHeading: "Language", image: "Image Generator", video: "AI Video", edit: "AI Photo Editor", inspiration: "Inspiration", howItWorks: "How it works", faq: "FAQ", supportAria: "Support and legal pages", support: "Support: hello@ovanto.ai", pricing: "Pricing", contentSafety: "Content safety", terms: "Terms", privacy: "Privacy", languagePagesAria: "Ovanto language pages" },
+    footer: { description: "A light workspace for images, video and creative ideas.", toolsHeading: "AI Tools", resourcesHeading: "Resources", languageHeading: "Language", image: "Image Generator", video: "AI Video", edit: "AI Photo Editor", inspiration: "Inspiration", howItWorks: "How it works", faq: "FAQ", supportAria: "Support and legal pages", support: "Support: hello@ovanto.ai", pricing: "Pricing", contentSafety: "Content safety", terms: "Terms", privacy: "Privacy", aup: "Acceptable use", languagePagesAria: "Ovanto language pages" },
     platform: enPlatform,
   },
   it: {
@@ -514,7 +515,7 @@ export const WORKSPACE_COPY: Record<Locale, WorkspaceCopy> = {
       },
     },
     toolsLinks: { label: "Strumenti", summaryIntro: "Scegli il flusso adatto alla tua idea:", image: "crea un'immagine con l'AI", edit: "modifica una foto con l'AI", video: "crea un video con l'AI", relatedAria: "Strumenti Ovanto correlati" },
-    footer: { description: "Uno spazio leggero per immagini, video e idee creative.", toolsHeading: "Strumenti AI", resourcesHeading: "Risorse", languageHeading: "Lingua", image: "Generatore di immagini", video: "Video AI", edit: "Editor foto AI", inspiration: "Ispirazione", howItWorks: "Come funziona", faq: "Domande frequenti", supportAria: "Supporto e pagine legali", support: "Supporto: hello@ovanto.ai", pricing: "Prezzi", contentSafety: "Sicurezza dei contenuti", terms: "Termini", privacy: "Privacy", languagePagesAria: "Pagine Ovanto nelle varie lingue" },
+    footer: { description: "Uno spazio leggero per immagini, video e idee creative.", toolsHeading: "Strumenti AI", resourcesHeading: "Risorse", languageHeading: "Lingua", image: "Generatore di immagini", video: "Video AI", edit: "Editor foto AI", inspiration: "Ispirazione", howItWorks: "Come funziona", faq: "Domande frequenti", supportAria: "Supporto e pagine legali", support: "Supporto: hello@ovanto.ai", pricing: "Prezzi", contentSafety: "Sicurezza dei contenuti", terms: "Termini", privacy: "Privacy", aup: "Uso accettabile", languagePagesAria: "Pagine Ovanto nelle varie lingue" },
     platform: itPlatform,
   },
   fr: {
@@ -542,7 +543,7 @@ export const WORKSPACE_COPY: Record<Locale, WorkspaceCopy> = {
       },
     },
     toolsLinks: { label: "Outils", summaryIntro: "Choisissez le parcours adapté à votre idée :", image: "créer une image avec l'IA", edit: "retoucher une photo avec l'IA", video: "créer une vidéo avec l'IA", relatedAria: "Outils Ovanto associés" },
-    footer: { description: "Un espace léger pour les images, les vidéos et les idées créatives.", toolsHeading: "Outils IA", resourcesHeading: "Ressources", languageHeading: "Langue", image: "Générateur d'images", video: "Vidéo IA", edit: "Éditeur photo IA", inspiration: "Inspiration", howItWorks: "Fonctionnement", faq: "Questions fréquentes", supportAria: "Support et pages légales", support: "Support : hello@ovanto.ai", pricing: "Tarifs", contentSafety: "Sécurité des contenus", terms: "Conditions", privacy: "Confidentialité", languagePagesAria: "Pages Ovanto dans les autres langues" },
+    footer: { description: "Un espace léger pour les images, les vidéos et les idées créatives.", toolsHeading: "Outils IA", resourcesHeading: "Ressources", languageHeading: "Langue", image: "Générateur d'images", video: "Vidéo IA", edit: "Éditeur photo IA", inspiration: "Inspiration", howItWorks: "Fonctionnement", faq: "Questions fréquentes", supportAria: "Support et pages légales", support: "Support : hello@ovanto.ai", pricing: "Tarifs", contentSafety: "Sécurité des contenus", terms: "Conditions", privacy: "Confidentialité", aup: "Utilisation acceptable", languagePagesAria: "Pages Ovanto dans les autres langues" },
     platform: frPlatform,
   },
   nl: {
@@ -570,7 +571,7 @@ export const WORKSPACE_COPY: Record<Locale, WorkspaceCopy> = {
       },
     },
     toolsLinks: { label: "Hulpmiddelen", summaryIntro: "Kies de workflow die bij je idee past:", image: "maak een AI-afbeelding", edit: "bewerk een foto met AI", video: "maak een AI-video", relatedAria: "Gerelateerde Ovanto-tools" },
-    footer: { description: "Een lichte werkruimte voor afbeeldingen, video en creatieve ideeën.", toolsHeading: "AI-tools", resourcesHeading: "Bronnen", languageHeading: "Taal", image: "Afbeeldingengenerator", video: "AI-video", edit: "AI-fotobewerker", inspiration: "Inspiratie", howItWorks: "Zo werkt het", faq: "Veelgestelde vragen", supportAria: "Support en juridische pagina's", support: "Support: hello@ovanto.ai", pricing: "Prijzen", contentSafety: "Contentveiligheid", terms: "Voorwaarden", privacy: "Privacy", languagePagesAria: "Ovanto-taalpagina's" },
+    footer: { description: "Een lichte werkruimte voor afbeeldingen, video en creatieve ideeën.", toolsHeading: "AI-tools", resourcesHeading: "Bronnen", languageHeading: "Taal", image: "Afbeeldingengenerator", video: "AI-video", edit: "AI-fotobewerker", inspiration: "Inspiratie", howItWorks: "Zo werkt het", faq: "Veelgestelde vragen", supportAria: "Support en juridische pagina's", support: "Support: hello@ovanto.ai", pricing: "Prijzen", contentSafety: "Contentveiligheid", terms: "Voorwaarden", privacy: "Privacy", aup: "Aanvaardbaar gebruik", languagePagesAria: "Ovanto-taalpagina's" },
     platform: nlPlatform,
   },
 };

@@ -72,6 +72,15 @@ const frEditInspiration: readonly PlatformInspirationCopy[] = [
   { name: "Couleur botanique", detail: "Feuilles et équilibre visuel", alt: "Référence conceptuelle pour retoucher une illustration botanique" },
 ];
 
+const frRetouchInspiration: readonly PlatformInspirationCopy[] = [
+  { name: "Lumière équilibrée", detail: "Douceur et volumes naturels", alt: "Référence conceptuelle pour améliorer la lumière d'une photo" },
+  { name: "Couleurs naturelles", detail: "Balance et ambiance fidèle", alt: "Référence conceptuelle pour équilibrer les couleurs d'une photo" },
+  { name: "Détails de texture", detail: "Matières et contours lisibles", alt: "Référence conceptuelle pour clarifier les détails d'une photo" },
+  { name: "Contraste mesuré", detail: "Relief sans changement de scène", alt: "Référence conceptuelle pour ajuster le contraste d'une photo" },
+  { name: "Teint préservé", detail: "Traits et expression reconnaissables", alt: "Référence conceptuelle pour retoucher un portrait naturellement" },
+  { name: "Clarté des formes", detail: "Lecture simple et rendu naturel", alt: "Référence conceptuelle pour améliorer la lisibilité d'une image" },
+];
+
 const nlEditInspiration: readonly PlatformInspirationCopy[] = [
   { name: "Portretlicht", detail: "Expressie en warme tint", alt: "Conceptreferentie voor het bewerken van een portret" },
   { name: "Productoppervlak", detail: "Object en presentatie", alt: "Conceptreferentie voor het bewerken van een productfoto" },
@@ -82,6 +91,55 @@ const nlEditInspiration: readonly PlatformInspirationCopy[] = [
 ];
 
 type NonImageToolKind = Exclude<ToolKind, "image">;
+
+const frRetouchOverride: ToolPlatformOverride = {
+  models: {
+    eyebrow: "Modèle de retouche photo",
+    title: "Améliorez le rendu, gardez l'image fidèle.",
+    description: "Flux Kontext Dev guide des retouches par texte sur une photo importée : lumière, couleurs et détails peuvent être affinés. Le résultat ne garantit ni une restauration sans perte ni une amélioration exacte de chaque détail.",
+    modelDescription: "Flux Kontext Dev pour une retouche guidée de la lumière, des couleurs et des détails d'une photo importée.",
+    details: "Photo importée · lumière, couleurs et détails · quota quotidien gratuit",
+    cta: "Ouvrir l'espace de retouche",
+  },
+  inspiration: {
+    title: "Définissez l'amélioration avant de l'appliquer.",
+    description: "Six références conceptuelles pour préciser la lumière, les couleurs, les textures et le niveau de détail à préserver. Elles montrent des directions de retouche, pas des résultats garantis.",
+    items: frRetouchInspiration,
+  },
+  benefits: {
+    title: "Améliorez la photo sans perdre son intention.",
+    items: [
+      { title: "Lumière équilibrée", text: "Décrivez une lumière plus douce ou mieux répartie en conservant le sujet." },
+      { title: "Couleurs plus lisibles", text: "Demandez une balance naturelle sans imposer un nouveau style à la scène." },
+      { title: "Détails à préserver", text: "Nommez les textures, contours et traits qui doivent rester reconnaissables." },
+      { title: "Retouche mesurée", text: "Une instruction ciblée aide à limiter le changement au rendu de la photo." },
+      { title: "Comparaison avant/après", text: "Vérifiez la fidélité de l'image source avant de conserver le résultat." },
+      { title: "Dans le navigateur", text: "Importez, comparez et téléchargez dans le même espace de retouche." },
+    ],
+  },
+  process: {
+    title: "De la photo source à une amélioration ciblée, en trois étapes.",
+    steps: [
+      { title: "Importer", text: "Choisissez la photo dont vous voulez améliorer le rendu." },
+      { title: "Décrire", text: "Précisez la lumière, les couleurs, les détails et ce qui doit rester reconnaissable." },
+      { title: "Comparer", text: "Vérifiez le résultat avec la source : la retouche guidée par le texte peut modifier certains détails." },
+    ],
+  },
+  features: {
+    promptTitle: "Un brief pour améliorer le rendu.",
+    promptDescription: "Indiquez la lumière, la balance des couleurs et les détails à clarifier. Précisez ce qui doit rester reconnaissable. Flux Kontext Dev suit une direction textuelle et ne garantit pas une restauration sans perte.",
+    promptCta: "Essayer un prompt de retouche",
+    promptPreviewLabel: "Brief d'amélioration · prompt d'exemple",
+    promptText: "Équilibrez la lumière, gardez les traits naturels et clarifiez légèrement les détails",
+    promptTags: ["Lumière", "Couleurs", "Détails"],
+    promptNote: "Modifiez le texte et vérifiez le résultat avant de le conserver.",
+    workflowTitle: "Comparez la retouche à la photo source.",
+    workflowDescription: "Vérifiez les traits, les textures et les couleurs après chaque résultat. Affinez le prompt si nécessaire : une retouche guidée par le texte peut modifier certains détails.",
+    workflowCta: "Commencer une retouche",
+    workflowAlt: "Référence conceptuelle pour améliorer la lumière et les couleurs d'une photo",
+    workflowCaption: "Référence conceptuelle · une direction d'amélioration, pas un résultat garanti",
+  },
+};
 
 const overrides: Record<Locale, Record<NonImageToolKind, ToolPlatformOverride>> = {
   en: {
@@ -478,9 +536,11 @@ const overrides: Record<Locale, Record<NonImageToolKind, ToolPlatformOverride>> 
   },
 };
 
-export function getToolPlatformCopy(locale: Locale, toolKind: ToolKind, base: HomePlatformCopy): HomePlatformCopy {
+export function getToolPlatformCopy(locale: Locale, toolKind: ToolKind, base: HomePlatformCopy, variant?: "frRetouch"): HomePlatformCopy {
   if (toolKind === "image") return base;
-  const override = overrides[locale][toolKind];
+  const override = variant === "frRetouch" && locale === "fr" && toolKind === "edit"
+    ? frRetouchOverride
+    : overrides[locale][toolKind];
   if (!override) return base;
 
   return {

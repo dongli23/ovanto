@@ -14,8 +14,8 @@ export const metadata: Metadata = {
 
 export default function TermsPage() {
   return (
-    <LegalPage title="Terms of Service" date="9 October 2026" dateTime="2026-10-09">
-      <p><strong>Version 1.1 · Updated and effective 9 October 2026</strong></p>
+    <LegalPage title="Terms of Service" date="15 October 2026" dateTime="2026-10-15">
+      <p><strong>Version 1.2 · Updated and effective 15 October 2026</strong></p>
 
       <p>
         These Terms of Service (the “Terms”) govern your access to and use of Ovanto,
@@ -91,8 +91,8 @@ export default function TermsPage() {
         at the final checkout where required.
       </p>
       <p>
-        Where checkout is provided through Waffo Pancake, Waffo Pancake may act as the
-        merchant of record or reseller for that transaction, as identified at checkout.
+        Where checkout is provided through Waffo Pancake, Waffo Pancake acts as the
+        merchant of record and seller for that transaction, as identified at checkout.
         We do not store full payment card numbers on our servers. Payment providers may
         apply their own terms and privacy notices in addition to these Terms.
       </p>
@@ -103,6 +103,8 @@ export default function TermsPage() {
           Refunds for one-time credit purchases follow these rules. This does not limit
           any refund, withdrawal, chargeback, or other consumer right that cannot
           lawfully be waived.
+          {" "}The 7-day unused-credit promise below is additional to, and does not limit,
+          the mandatory rights described in <a href="#consumer-rights">section 14</a>.
         </p>
         <h3>6.1 When a refund may be available</h3>
         <ul>
@@ -112,14 +114,20 @@ export default function TermsPage() {
           <li>Credits already consumed by a completed service are not refundable except where mandatory law requires otherwise.</li>
         </ul>
         <h3>6.2 How to request a refund</h3>
-        <p>
+        <p id="refund-process-en" lang="en">
           Email <a href="mailto:hello@ovanto.ai">hello@ovanto.ai</a> from the email
           associated with your account and include the order ID and a short explanation.
           Do not send card numbers, security codes, passwords, or other payment secrets.
-          We aim to acknowledge requests within 2 business days. Approved refunds are
-          normally initiated within 5–10 business days; the bank or payment provider
-          may take additional time to post the funds.
+          We aim to acknowledge requests within 2 business days. For purchases through
+          Waffo Pancake, Waffo is the merchant of record and seller identified at
+          checkout; monetary refunds follow Waffo's refund request, review and
+          processing procedure and the applicable checkout terms and law. Ovanto
+          helps with product and order information and coordinates the request; it
+          does not replace Waffo's approval or processing. Bank posting times may vary.
         </p>
+        <p id="refund-process-it" lang="it"><strong>Italiano:</strong> Per gli acquisti tramite Waffo Pancake, Waffo è il venditore e merchant of record indicato al checkout. I rimborsi monetari seguono la sua procedura di richiesta, verifica ed elaborazione, le condizioni del checkout e la legge applicabile. Scrivi a <a href="mailto:hello@ovanto.ai">hello@ovanto.ai</a> con l'ID dell'ordine: Ovanto aiuta a raccogliere le informazioni e a coordinare la richiesta, senza sostituire l'approvazione di Waffo. La promessa di rimborso entro 7 giorni per crediti interamente inutilizzati non limita i diritti inderogabili della sezione 14.</p>
+        <p id="refund-process-fr" lang="fr"><strong>Français :</strong> Pour les achats via Waffo Pancake, Waffo est le vendeur et merchant of record indiqué au paiement. Les remboursements monétaires suivent sa procédure de demande, d'examen et de traitement, les conditions du paiement et la loi applicable. Écrivez à <a href="mailto:hello@ovanto.ai">hello@ovanto.ai</a> avec l'identifiant de commande : Ovanto aide à réunir les informations et à coordonner la demande, sans se substituer à l'approbation de Waffo. La promesse de remboursement sous 7 jours pour des crédits entièrement inutilisés ne limite pas les droits impératifs de la section 14.</p>
+        <p id="refund-process-nl" lang="nl"><strong>Nederlands:</strong> Bij aankopen via Waffo Pancake is Waffo de verkoper en merchant of record die bij het afrekenen wordt vermeld. Geldelijke terugbetalingen volgen de aanvraag-, beoordelings- en verwerkingsprocedure van Waffo, de betaalvoorwaarden en het toepasselijke recht. Mail <a href="mailto:hello@ovanto.ai">hello@ovanto.ai</a> met het bestelnummer: Ovanto helpt met informatie en afstemming, maar vervangt de goedkeuring van Waffo niet. De terugbetalingsbelofte van 7 dagen voor volledig ongebruikte credits beperkt de dwingende rechten in sectie 14 niet.</p>
       </section>
 
       <h2>7. Billing questions and disputes</h2>
@@ -174,11 +182,10 @@ export default function TermsPage() {
         </ul>
 
         <h3 id="moderation">9.1 Safety checks and review</h3>
-        <p>
-          Provider checks vary by model. The current free Wan video path requests the
-          provider safety checker. These checks are complemented by manual review of
-          reported content and do not guarantee detection of every violation.
-        </p>
+        <p id="content-safety-en" lang="en">Generation prompts are screened by Waffo's content-safety service before a request reserves a free allowance or paid credit or is sent to an AI provider. Only an allow verdict proceeds; block, review or unavailable screening stops the request without a generation debit. Audit logs record the time, interface language, reported categories and whether the request was allowed, without recording prompt text. Provider checks vary by model; the free Wan video path also requests the provider safety checker. Screening and manual report review cannot guarantee detection of every violation. See our <a href="/aup/">Acceptable Use Policy</a>.</p>
+        <p id="content-safety-it" lang="it"><strong>Italiano:</strong> I prompt sono controllati dal servizio di sicurezza dei contenuti di Waffo prima di riservare una quota gratuita o un credito a pagamento e prima dell'invio al provider AI. Solo l'esito allow prosegue; block, review o servizio non disponibile fermano la richiesta senza addebito di generazione. I log registrano data e ora, lingua dell'interfaccia, categorie segnalate ed esito, senza il testo del prompt. I controlli dei provider variano per modello; il video gratuito Wan richiede anche il controllo del provider. Nessun controllo automatico o manuale garantisce di rilevare tutte le violazioni. Consulta la <a href="/aup/">politica di utilizzo accettabile</a>.</p>
+        <p id="content-safety-fr" lang="fr"><strong>Français :</strong> Les prompts sont examinés par le service de sécurité des contenus de Waffo avant toute réservation de quota gratuit ou de crédit payant et tout envoi au fournisseur IA. Seul le verdict allow permet de continuer ; block, review ou une vérification indisponible arrêtent la demande sans débit de génération. Les journaux indiquent l'heure, la langue de l'interface, les catégories signalées et la décision, sans le texte du prompt. Les contrôles du fournisseur varient selon le modèle ; la vidéo gratuite Wan demande aussi son contrôle de sécurité. Les contrôles automatiques et l'examen des signalements ne garantissent pas la détection de toute violation. Consultez la <a href="/aup/">politique d'utilisation acceptable</a>.</p>
+        <p id="content-safety-nl" lang="nl"><strong>Nederlands:</strong> Prompts worden door de inhoudsveiligheidsdienst van Waffo gecontroleerd voordat een gratis tegoed of betaald credit wordt gereserveerd en voordat een verzoek naar de AI-provider gaat. Alleen allow gaat door; block, review of een onbeschikbare controle stopt het verzoek zonder generatiedebet. Auditlogs bevatten tijdstip, interfacetaal, gemelde categorieën en besluit, zonder prompttekst. Providercontroles verschillen per model; de gratis Wan-videoroute vraagt ook de veiligheidscontrole van de provider aan. Automatische controles en handmatige beoordeling van meldingen kunnen niet elke overtreding ontdekken. Zie het <a href="/aup/">beleid voor aanvaardbaar gebruik</a>.</p>
         <p>
           Li Dong manually reviews content-safety reports sent to the address below.
           Depending on the available job record or logs, the provider response, and what
@@ -256,7 +263,7 @@ export default function TermsPage() {
         applicable law and the refund policy.
       </p>
 
-      <h2>14. Mandatory consumer rights and disputes</h2>
+      <h2 id="consumer-rights">14. Mandatory consumer rights and disputes</h2>
       <p>
         These Terms operate alongside the mandatory consumer laws that apply to you and
         to us. Nothing here takes away a mandatory right to bring a claim, seek a remedy,
@@ -283,7 +290,7 @@ export default function TermsPage() {
         include passwords, card details, API keys, or other secrets in your message.
       </p>
 
-      <p><strong>Li Dong · https://www.ovanto.ai/ · Version 1.1</strong></p>
+      <p><strong>Li Dong · https://www.ovanto.ai/ · Version 1.2</strong></p>
     </LegalPage>
   );
 }

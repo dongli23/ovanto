@@ -28,6 +28,7 @@ export type PageDefinition = {
     | "fr"
     | "frGenerate"
     | "frEdit"
+    | "frRetouch"
     | "nl"
     | "enVideo"
     | "enEdit"
@@ -85,7 +86,7 @@ export const PAGE_CONTENT: Record<PageDefinition["key"], PageDefinition> = {
     locale: "en",
     path: "/",
     url: ABSOLUTE_ROUTES.en,
-    title: "Free AI Image Generator, No Sign Up — Create in Seconds | Ovanto",
+    title: "Free AI Image Generator, No Sign Up | Ovanto",
     description:
       "Generate AI images right in your browser — no sign-up, no login, no credit card. Type a prompt and get your image in seconds. Free to try.",
     h1: "Free AI Image Generator — No Sign Up, No Login",
@@ -333,7 +334,10 @@ export const PAGE_CONTENT: Record<PageDefinition["key"], PageDefinition> = {
     ],
     examples: examples.fr,
     trustPoints: ["Gratuit : 3 images/jour", "Sans inscription", "Prompt → Image"],
-    extraLinks: [{ href: "/fr/modifier-photo-ia/", label: "Modifier photo IA" }],
+    extraLinks: [
+      { href: "/fr/modifier-photo-ia/", label: "Modifier photo IA" },
+      { href: "/fr/retouche-photo-ia/", label: "Retoucher la qualité d'une photo avec l'IA" },
+    ],
     toolKind: "image",
     isVideo: false,
   },
@@ -397,7 +401,77 @@ export const PAGE_CONTENT: Record<PageDefinition["key"], PageDefinition> = {
     ],
     examples: examples.fr,
     trustPoints: ["Gratuit : 1 modification/jour", "Sans inscription", "Avant / Après"],
-    extraLinks: [{ href: "/fr/photo-ia-gratuit/", label: "Photo IA gratuit" }],
+    extraLinks: [
+      { href: "/fr/photo-ia-gratuit/", label: "Photo IA gratuit" },
+      { href: "/fr/retouche-photo-ia/", label: "Retoucher la qualité d'une photo avec l'IA" },
+    ],
+    toolKind: "edit",
+    isVideo: false,
+  },
+  frRetouch: {
+    key: "frRetouch",
+    locale: "fr",
+    path: "/fr/retouche-photo-ia/",
+    url: ABSOLUTE_ROUTES.frRetouch,
+    title: "Retouche Photo IA — Améliorez Vos Photos | Ovanto",
+    description:
+      "Retouchez vos photos avec l'IA : améliorez la lumière, les couleurs et les détails en ligne, sans inscription. Préparez une image plus nette tout en gardant le sujet naturel.",
+    h1: "Retouche Photo IA : Améliorez Vos Photos",
+    valueLine: "Améliorez la lumière, les couleurs et les détails d'une photo directement en ligne.",
+    h2s: [
+      "Améliorer une Photo avec l'IA en 3 Étapes",
+      "Retoucher la Lumière, les Couleurs et les Détails",
+      "Préparer une Photo Plus Naturelle et Plus Lisible",
+      "Questions Fréquentes",
+    ],
+    sectionLeads: [
+      "Téléversez une photo, décrivez l'amélioration souhaitée et vérifiez le résultat avant de télécharger le fichier. Indiquez les éléments qui doivent rester reconnaissables, puis précisez la lumière, les couleurs ou les détails à affiner. Une consigne ciblée aide à conserver l'intention de la photo tout en préparant une version plus agréable à regarder. Comparez l'original et le résultat avec attention avant de garder le fichier pour une présentation, une maquette ou un projet personnel.",
+      "Une retouche d'amélioration peut équilibrer une lumière trop dure, clarifier les couleurs ou rendre certains détails plus lisibles. Décrivez l'intensité recherchée et ce qui doit rester naturel : le teint, les textures, les volumes et l'ambiance générale. Cette page concerne l'amélioration d'une photo existante. Si vous voulez changer le contenu, le décor ou un objet, utilisez plutôt la page de modification de photo IA.",
+      "Décrivez d'abord le point qui gêne la lecture de l'image : lumière irrégulière, couleurs ternes, contraste faible ou détail difficile à distinguer. Ajoutez ensuite la finition souhaitée, comme un rendu naturel, des tons plus équilibrés ou une netteté discrète. Une demande précise permet de comparer plus facilement la photo source et la version retouchée, sans demander une transformation complète de la scène.",
+    ],
+    sectionDetails: [
+      [
+        "Commencez par nommer le sujet et l'amélioration attendue. Une demande comme équilibrer la lumière et conserver les traits du visage donne une direction plus nette qu'une demande générale de rendre la photo meilleure.",
+        "Observez le résultat avant d'ajouter d'autres changements. Ajustez une seule priorité à la fois, par exemple la température des couleurs ou le niveau de contraste, afin de comprendre ce qui améliore réellement l'image.",
+      ],
+      [
+        "Pour une lumière plus régulière, indiquez la source principale, l'intensité et les zones qui doivent rester douces. Pour les couleurs, décrivez une balance naturelle plutôt qu'un changement complet de style.",
+        "Les détails fins demandent une consigne mesurée. Mentionnez les textures et les contours à préserver, puis vérifiez que la photo reste fidèle au sujet original après la retouche.",
+      ],
+      [
+        "Un portrait gagne souvent à conserver l'expression, le teint et les textures de peau. Une scène produit bénéficie d'une lumière équilibrée et de matières reconnaissables. Un paysage peut demander des couleurs plus lisibles sans perdre son atmosphère.",
+        "Ces trois directions de prompt aident à définir une amélioration précise. Comparez chaque résultat avec la photo source, puis gardez la version qui correspond le mieux à votre intention.",
+      ],
+    ],
+    faq: [
+      {
+        question: "Comment retoucher une photo avec l'IA ?",
+        answer:
+          "Téléversez une photo, décrivez l'amélioration souhaitée pour la lumière, les couleurs ou les détails, puis comparez le résultat avec l'original avant de télécharger la version finale.",
+      },
+      {
+        question: "Quelle différence avec la modification de photo IA ?",
+        answer:
+          "La retouche améliore la qualité et la lisibilité d'une photo existante tout en conservant son sujet. Pour changer le décor, un objet ou le contenu de la scène, utilisez la page Modifier Photo IA.",
+      },
+      {
+        question: "Puis-je améliorer une photo sans inscription ?",
+        answer:
+          "Oui. Vous pouvez téléverser une image de 10 Mo maximum, demander une amélioration et créer 1 modification par jour et par IP sans inscription.",
+      },
+    ],
+    steps: ["Décrivez l'amélioration", "Comparez", "Téléchargez"],
+    useCases: [
+      "Équilibrez la lumière d'un portrait en indiquant ce qui doit rester naturel : expression, teint, volumes et textures. Une correction discrète aide à préserver le caractère de la photo.",
+      "Rendez une photo produit plus lisible avec des couleurs mieux équilibrées et des détails plus nets. Décrivez la matière, les reflets et le niveau de contraste qui doivent rester crédibles.",
+      "Clarifiez un paysage en décrivant les couleurs, la lumière et l'atmosphère à conserver. Une amélioration ciblée peut rendre les formes plus lisibles sans changer le lieu représenté.",
+    ],
+    examples: examples.fr,
+    trustPoints: ["Gratuit : 1 retouche/jour", "Sans inscription", "Avant / Après"],
+    extraLinks: [
+      { href: "/fr/modifier-photo-ia/", label: "Modifier le contenu d'une photo avec l'IA" },
+      { href: "/fr/photo-ia-gratuit/", label: "Générateur de photos IA gratuit" },
+    ],
     toolKind: "edit",
     isVideo: false,
   },

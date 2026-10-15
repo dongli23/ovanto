@@ -14,8 +14,8 @@ export const metadata: Metadata = {
 
 export default function PrivacyPage() {
   return (
-    <LegalPage title="Privacy Policy" date="9 October 2026" dateTime="2026-10-09">
-      <p><strong>Version 1.1 · Updated and effective 9 October 2026</strong></p>
+    <LegalPage title="Privacy Policy" date="15 October 2026" dateTime="2026-10-15">
+      <p><strong>Version 1.2 · Updated and effective 15 October 2026</strong></p>
 
       <p>
         This Privacy Policy explains how Li Dong, an individual operator of Ovanto
@@ -115,6 +115,7 @@ export default function PrivacyPage() {
       <ul>
         <li><strong>Hosting and storage:</strong> Vercel hosts the application and Upstash stores operational records such as jobs, quotas, reservations, and security hashes.</li>
         <li><strong>Safety and verification:</strong> Cloudflare Turnstile verifies that a request is not automated abuse.</li>
+        <li><strong>Prompt screening:</strong> Waffo Pancake receives the prompt text for a content-safety decision before generation is submitted to an AI provider. This is a safety-processing purpose separate from payment processing. Ovanto's screening audit logs contain the time, interface language, reported categories and allow/review/block decision, not the prompt text. These security records are subject to the retention criteria below. The official Scan Prompt service describes its check as stateless and prompt text as not stored by that service; Waffo's privacy policy governs its own processing.</li>
         <li><strong>AI providers:</strong> Replicate and fal receive prompts, settings, and an uploaded image where needed to provide the requested generation or edit. Their processing is also subject to their own terms and privacy policies.</li>
         <li><strong>Payment:</strong> Waffo Pancake acts as the merchant of record or reseller for a checkout presented through Waffo.</li>
         <li><strong>Email:</strong> Resend sends login, activation, and other transactional email.</li>
@@ -236,7 +237,7 @@ export default function PrivacyPage() {
         Please do not include payment card details or other secrets in email.
       </p>
 
-      <p><strong>Li Dong · https://www.ovanto.ai/ · Version 1.1</strong></p>
+      <p><strong>Li Dong · https://www.ovanto.ai/ · Version 1.2</strong></p>
     </LegalPage>
   );
 }

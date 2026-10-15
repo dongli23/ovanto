@@ -22,8 +22,8 @@ const inspirationImages = [
   "/examples/botanical.svg",
 ] as const;
 
-export function HomePlatform({ locale, toolKind }: { locale: Locale; toolKind: ToolKind }) {
-  const copy = getToolPlatformCopy(locale, toolKind, WORKSPACE_COPY[locale].platform);
+export function HomePlatform({ locale, toolKind, variant }: { locale: Locale; toolKind: ToolKind; variant?: "frRetouch" }) {
+  const copy = getToolPlatformCopy(locale, toolKind, WORKSPACE_COPY[locale].platform, variant);
   const imageHref = `${toolRoute(locale, "image")}#image-workbench`;
   const workbenchHref = `${toolRoute(locale, toolKind)}#${toolKind}-workbench`;
   const modelName = toolKind === "image" ? "Flux Schnell" : toolKind === "video" ? "Wan 2.5 · Kling 2.5 Turbo Pro" : "Flux Kontext Dev";

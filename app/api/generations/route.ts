@@ -10,6 +10,7 @@ import { getOwnedValidatedAsset } from "../../../lib/generation/asset";
 import { inputHash, recordGenerationAudit, releaseReservation, reserveGeneration, updateJob } from "../../../lib/generation/store";
 import { parseGenerateInput } from "../../../lib/generation/validation";
 import { verifyTurnstile } from "../../../lib/generation/turnstile";
+import { assertPromptSafe, resolveContentSafetyLocale } from "../../../lib/generation/content-safety";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -28,6 +29,7 @@ export async function POST(request: Request) {
     // idempotency key is consumed only by the atomic Redis script below.
     await verifyTurnstile(input.turnstileToken, identity.ip);
     assertFreeRegion(identity.country);
+    await assertPromptSafe(input.prompt, resolveContentSafetyLocale(request));
     const reservation = await reserveGeneration(redis, {
       id: randomUUID(),
       kind: input.kind,

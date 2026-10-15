@@ -60,12 +60,19 @@ const sitemapResponse = await fetch(new URL("/sitemap.xml", base));
 assert.equal(sitemapResponse.status, 200);
 const sitemap = await sitemapResponse.text();
 const sitemapUrls = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1]);
-assert.equal(sitemapUrls.length, 15, "sitemap must contain exactly 15 canonical URLs");
+assert.equal(PUBLIC_HTML_ROUTES.length, 17, "public registry must contain exactly 17 canonical URLs");
+assert.equal(sitemapUrls.length, PUBLIC_HTML_ROUTES.length, "sitemap must contain every canonical public URL");
 assert.equal(new Set(sitemapUrls).size, sitemapUrls.length, "sitemap must not contain duplicate URLs");
 for (const pathname of PUBLIC_HTML_ROUTES) assert.ok(sitemapUrls.includes(canonicalUrl(pathname)), `sitemap ${pathname}`);
 assert.ok(!sitemapUrls.includes(canonicalUrl("/nl/afbeeldingen-maken-met-ai/")), "legacy Dutch image route must not be in sitemap");
 result.sitemapUrlCount = sitemapUrls.length;
 result.sitemapComplete = true;
+
+for (const pathname of ["/fr/retouche-photo-ia/", "/aup/"]) {
+  const response = await fetch(new URL(pathname, base), { redirect: "error", signal: AbortSignal.timeout(30_000) });
+  assert.equal(response.status, 200, pathname);
+  result.pages.push({ route: pathname, status: response.status, consistent: true });
+}
 const catalogResponse = await fetch(new URL("/api/waffo/catalog", base));
 assert.equal(catalogResponse.status, 200);
 const catalog = await catalogResponse.json();

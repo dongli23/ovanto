@@ -50,6 +50,7 @@ export function LegalPage({
           <a href="mailto:hello@ovanto.ai">Support: hello@ovanto.ai</a>
           <a href="/pricing/">Pricing</a>
           <a href="/terms/#content-safety">Content safety</a>
+          <a href="/aup/">Acceptable use</a>
           <a href="/terms/">Terms</a>
           <a href="/privacy/">Privacy</a>
         </nav>

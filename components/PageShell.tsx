@@ -11,7 +11,8 @@ const languageLinks = [
   { key: "nl", label: "Nederlands" },
 ] as const;
 
-function languageHref(locale: Locale, currentToolKind: ToolKind): string {
+function languageHref(locale: Locale, currentToolKind: ToolKind, page?: PageDefinition): string {
+  if (page?.key === "frRetouch" && locale === "fr") return page.path;
   return toolRoute(locale, currentToolKind);
 }
 
@@ -82,10 +83,14 @@ function SectionCopy({ page, index }: { page: PageDefinition; index: number }) {
 function ToolsLinks({ page }: { page: PageDefinition }) {
   const copy = WORKSPACE_COPY[page.locale].toolsLinks;
   const links = [
-    { href: toolRoute(page.locale, "image"), label: copy.image },
-    { href: toolRoute(page.locale, "edit"), label: copy.edit },
-    { href: toolRoute(page.locale, "video"), label: copy.video },
+    { kind: "image" as const, href: toolRoute(page.locale, "image"), label: copy.image },
+    { kind: "edit" as const, href: toolRoute(page.locale, "edit"), label: copy.edit },
+    { kind: "video" as const, href: toolRoute(page.locale, "video"), label: copy.video },
   ];
+  const contextLinks = [
+    ...links.filter((link) => link.kind !== page.toolKind),
+    ...(page.extraLinks ?? []).map((link) => ({ kind: null, ...link })),
+  ].filter((link, index, all) => all.findIndex((candidate) => candidate.href === link.href) === index);
 
   return (
     <section className="tools-section" aria-label={copy.label}>
@@ -98,9 +103,9 @@ function ToolsLinks({ page }: { page: PageDefinition }) {
           </span>
         ))}.
       </p>
-      {page.extraLinks && page.extraLinks.length > 0 ? (
+      {contextLinks.length > 0 ? (
         <nav className="context-links" aria-label={copy.relatedAria}>
-          {page.extraLinks.map((link) => (
+          {contextLinks.map((link) => (
             <a className="context-link" href={link.href} key={link.href}>{link.label}</a>
           ))}
         </nav>
@@ -131,7 +136,7 @@ export function PageShell({ page }: { page: PageDefinition }) {
         <nav className="language-nav" aria-label={copy.header.languageNavAria}>
           {languageLinks.map((link) => (
             <a
-              href={languageHref(link.key, page.toolKind)}
+              href={languageHref(link.key, page.toolKind, page)}
               key={link.key}
               hrefLang={link.key}
               aria-current={page.locale === link.key ? "page" : undefined}
@@ -167,7 +172,7 @@ export function PageShell({ page }: { page: PageDefinition }) {
           </div>
         </section>
 
-        <HomePlatform locale={page.locale} toolKind={page.toolKind} />
+        <HomePlatform locale={page.locale} toolKind={page.toolKind} variant={page.key === "frRetouch" ? "frRetouch" : undefined} />
         <ToolsLinks page={page} />
 
         <div className="content-wrap">
@@ -182,7 +187,7 @@ export function PageShell({ page }: { page: PageDefinition }) {
           <div><a className="logo-mark" href={ROUTES[page.locale]} aria-label={copy.header.logoAria}><span className="logo-dot" aria-hidden="true" />Ovanto</a><p>{footer.description}</p></div>
           <nav aria-label={footer.toolsHeading}><h3>{footer.toolsHeading}</h3><a href={`${toolRoute(page.locale, "image")}#image-workbench`}>{footer.image}</a><a href={toolRoute(page.locale, "video")}>{footer.video}</a><a href={toolRoute(page.locale, "edit")}>{footer.edit}</a></nav>
           <nav aria-label={footer.resourcesHeading}><h3>{footer.resourcesHeading}</h3><a href="#inspiration">{footer.inspiration}</a><a href="#how-it-works">{footer.howItWorks}</a><a href="#faq">{footer.faq}</a></nav>
-          <nav aria-label={footer.languageHeading}><h3>{footer.languageHeading}</h3>{languageLinks.map(link => <a href={languageHref(link.key, page.toolKind)} hrefLang={link.key} key={link.key}>{link.label}</a>)}</nav>
+          <nav aria-label={footer.languageHeading}><h3>{footer.languageHeading}</h3>{languageLinks.map(link => <a href={languageHref(link.key, page.toolKind, page)} hrefLang={link.key} key={link.key}>{link.label}</a>)}</nav>
         </div>
         <div className="footer-row">
           <span>© {new Date().getFullYear()} Ovanto.ai</span>
@@ -192,10 +197,11 @@ export function PageShell({ page }: { page: PageDefinition }) {
             <a href="/terms/#content-safety">{footer.contentSafety}</a>
             <a href="/terms/">{footer.terms}</a>
             <a href="/privacy/">{footer.privacy}</a>
+            <a href="/aup/">{footer.aup}</a>
           </nav>
           <nav className="footer-links" aria-label={footer.languagePagesAria}>
             {languageLinks.map((link) => (
-              <a href={languageHref(link.key, page.toolKind)} hrefLang={link.key} key={link.key}>
+                <a href={languageHref(link.key, page.toolKind, page)} hrefLang={link.key} key={link.key}>
                 {link.label}
               </a>
             ))}

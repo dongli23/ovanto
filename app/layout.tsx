@@ -43,7 +43,7 @@ export default async function RootLayout({
           <link rel="canonical" href={canonicalUrl(page.path)} />
           <link rel="alternate" hrefLang="en" href={canonicalUrl(toolRoute("en", page.toolKind))} />
           <link rel="alternate" hrefLang="it" href={canonicalUrl(toolRoute("it", page.toolKind))} />
-          <link rel="alternate" hrefLang="fr" href={canonicalUrl(toolRoute("fr", page.toolKind))} />
+          <link rel="alternate" hrefLang="fr" href={canonicalUrl(page.locale === "fr" ? page.path : toolRoute("fr", page.toolKind))} />
           <link rel="alternate" hrefLang="nl" href={canonicalUrl(toolRoute("nl", page.toolKind))} />
           <link rel="alternate" hrefLang="x-default" href={canonicalUrl(toolRoute("en", page.toolKind))} />
           <meta property="og:url" content={canonicalUrl(page.path)} />
