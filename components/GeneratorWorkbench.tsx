@@ -17,12 +17,14 @@ export function GeneratorWorkbench({
   valueLine,
   mode,
   turnstileSiteKey,
+  activeModeHref,
 }: {
   locale: Locale;
   title: string;
   valueLine: string;
   mode: GeneratorMode;
   turnstileSiteKey?: string;
+  activeModeHref?: string;
 }) {
   const localized = WORKSPACE_COPY[locale].workbench;
 
@@ -32,7 +34,11 @@ export function GeneratorWorkbench({
         {(Object.keys(localized.modes) as GeneratorMode[]).map((nextMode) => (
           <a
             className={`workbench-mode${nextMode === mode ? " is-active" : ""}`}
-            href={routeForMode(locale, nextMode)}
+            href={
+              nextMode === mode && activeModeHref
+                ? activeModeHref
+                : routeForMode(locale, nextMode)
+            }
             key={nextMode}
             aria-current={nextMode === mode ? "page" : undefined}
           >

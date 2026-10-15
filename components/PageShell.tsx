@@ -71,10 +71,22 @@ function SectionCopy({ page, index }: { page: PageDefinition; index: number }) {
     );
   }
 
+  const retouchLead = page.sectionLeads[1];
+  const retouchLinkText = "page de modification de photo IA";
+  const retouchLeadParts = retouchLead.split(retouchLinkText);
+
   return (
     <section className="content-section" aria-labelledby={`${page.key}-section-${index}`}>
       <h2 id={`${page.key}-section-${index}`}>{heading}</h2>
-      <p>{page.sectionLeads[1]}</p>
+      {page.key === "frRetouch" && retouchLeadParts.length === 2 ? (
+        <p>
+          {retouchLeadParts[0]}
+          <a href="/fr/modifier-photo-ia/">{retouchLinkText}</a>
+          {retouchLeadParts[1]}
+        </p>
+      ) : (
+        <p>{retouchLead}</p>
+      )}
       {page.sectionDetails[1].map((paragraph, paragraphIndex) => <p key={paragraphIndex}>{paragraph}</p>)}
     </section>
   );
@@ -168,6 +180,7 @@ export function PageShell({ page }: { page: PageDefinition }) {
               valueLine={page.valueLine}
               mode={page.toolKind}
               turnstileSiteKey={turnstileSiteKey}
+              activeModeHref={page.key === "frRetouch" ? "/fr/retouche-photo-ia/#edit-workbench" : undefined}
             />
           </div>
         </section>

@@ -270,6 +270,7 @@ export const PAGE_CONTENT: Record<PageDefinition["key"], PageDefinition> = {
     extraLinks: [
       { href: "/fr/photo-ia-gratuit/", label: "Photo IA gratuit" },
       { href: "/fr/modifier-photo-ia/", label: "Modifier photo IA" },
+      { href: "/fr/retouche-photo-ia/", label: "Retoucher la qualité d'une photo avec l'IA" },
     ],
     toolKind: "video",
     isVideo: true,
