@@ -2059,3 +2059,139 @@ summary:focus-visible { outline: var(--ovanto-focus); outline-offset: 4px; }
     flex: 1 1 auto;
   }
 }
+
+/* ==========================================================================
+   Mobile header fix (OVANTO_SHIPANY_UI_PHASE1_MOBILE_HEADER_FIX_V1)
+   Desktop (>=768px) untouched: .mobile-nav hidden, existing navs intact.
+   ========================================================================== */
+.mobile-nav {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .site-shell > .site-header {
+    align-items: center;
+    flex-wrap: nowrap;
+    gap: 10px;
+    padding: 6px 8px 6px 14px;
+  }
+
+  .site-header .product-nav,
+  .site-header .language-nav {
+    display: none;
+  }
+
+  .mobile-nav {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: auto;
+  }
+
+  .mobile-nav-lang {
+    border: 1px solid var(--ovanto-line);
+    border-radius: 999px;
+    padding: 5px 11px;
+    background: var(--ovanto-soft);
+    color: var(--ovanto-ink);
+    font-size: 0.75rem;
+    font-weight: 800;
+    white-space: nowrap;
+  }
+
+  .mobile-menu {
+    position: relative;
+  }
+
+  .mobile-menu > summary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--ovanto-line);
+    border-radius: 12px;
+    background: var(--ovanto-surface);
+    color: var(--ovanto-ink);
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .mobile-menu > summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .mobile-menu-icon {
+    width: 18px;
+    height: 18px;
+  }
+
+  .mobile-menu-icon-close {
+    display: none;
+  }
+
+  .mobile-menu[open] .mobile-menu-icon-open {
+    display: none;
+  }
+
+  .mobile-menu[open] .mobile-menu-icon-close {
+    display: block;
+  }
+
+  .mobile-menu-panel {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    z-index: 60;
+    display: grid;
+    gap: 4px;
+    min-width: 220px;
+    border: 1px solid var(--ovanto-line);
+    border-radius: var(--ovanto-radius-md);
+    padding: 10px;
+    background: var(--ovanto-surface);
+    box-shadow: var(--ovanto-shadow-lg);
+  }
+
+  .mobile-menu-products,
+  .mobile-menu-languages {
+    display: grid;
+    gap: 2px;
+  }
+
+  .mobile-menu-panel a {
+    display: flex;
+    align-items: center;
+    min-height: 40px;
+    border-radius: var(--ovanto-radius-sm);
+    padding: 8px 12px;
+    font-size: 0.85rem;
+    font-weight: 700;
+  }
+
+  .mobile-menu-products a {
+    color: var(--ovanto-ink);
+  }
+
+  .mobile-menu-languages {
+    margin-top: 6px;
+    border-top: 1px solid var(--ovanto-line);
+    padding-top: 8px;
+  }
+
+  .mobile-menu-languages a {
+    color: var(--ovanto-muted);
+  }
+
+  .mobile-menu-languages a[aria-current="page"] {
+    background: var(--ovanto-mint);
+    color: var(--ovanto-ink);
+    font-weight: 800;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .mobile-menu-panel a:hover {
+      background: var(--ovanto-soft);
+    }
+  }
+}

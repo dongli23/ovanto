@@ -157,6 +157,43 @@ export function PageShell({ page }: { page: PageDefinition }) {
             </a>
           ))}
         </nav>
+        {/* Mobile-only compact nav (<768px). Zero-dependency native details/summary. */}
+        <div className="mobile-nav">
+          <span className="mobile-nav-lang" aria-hidden="true">
+            {languageLinks.find((link) => link.key === page.locale)?.label}
+          </span>
+          <details className="mobile-menu">
+            <summary aria-label={copy.header.productNavAria}>
+              <svg className="mobile-menu-icon mobile-menu-icon-open" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                <path d="M3 5.5h14M3 10h14M3 14.5h14" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
+              </svg>
+              <svg className="mobile-menu-icon mobile-menu-icon-close" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                <path d="m5 5 10 10M15 5 5 15" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
+              </svg>
+            </summary>
+            <div className="mobile-menu-panel">
+              <nav className="mobile-menu-products" aria-label={copy.header.productNavAria}>
+                <a href={`${toolRoute(page.locale, "image")}#image-workbench`}>{copy.header.image}</a>
+                <a href={toolRoute(page.locale, "video")}>{copy.header.video}</a>
+                <a href={toolRoute(page.locale, "edit")}>{copy.header.edit}</a>
+                <a href="#ai-tools">{copy.header.tools}</a>
+                <a href="/pricing/">{copy.header.pricing}</a>
+              </nav>
+              <nav className="mobile-menu-languages" aria-label={copy.header.languageNavAria}>
+                {languageLinks.map((link) => (
+                  <a
+                    href={languageHref(link.key, page.toolKind, page)}
+                    key={link.key}
+                    hrefLang={link.key}
+                    aria-current={page.locale === link.key ? "page" : undefined}
+                  >
+                    {link.label}
+                  </a>
+                ))}
+              </nav>
+            </div>
+          </details>
+        </div>
       </header>
 
       <main>
