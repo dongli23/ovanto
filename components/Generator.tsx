@@ -1053,6 +1053,36 @@ export function Generator({
   const promptDescription = error ? `${kind}-status ${kind}-error` : `${kind}-status`;
   const resultImageAlt = isEdit ? localized.editAlt : localized.imageAlt;
 
+  // Presentation-only toolbar (UI Phase 1): read-only model/setting chips,
+  // real quota/credits label, and the existing submit button contract.
+  const composerToolbar = (
+    <div className="composer-toolbar">
+      <fieldset className="workbench-settings" aria-label={localized.settingsLabel}>
+        <legend>{localized.settingsLabel}</legend>
+        {settingItems.map((setting) => (
+          <div className="workbench-setting" key={setting.label}>
+            <span>{setting.label}</span>
+            <strong>{setting.value}</strong>
+          </div>
+        ))}
+      </fieldset>
+      <div className="generate-row">
+        <span className="quota-label" aria-live="polite">{quotaLabel}</span>
+        {quotaError ? (
+          <button type="button" className="retry-button" onClick={handleRetry} disabled={status === "loading"}>
+            {localized.retry}
+          </button>
+        ) : null}
+        <button type="submit" className="generate-button" disabled={generateDisabled}>
+          <span>{status === "loading" ? localized.generating : actionLabel ?? localized.generate}</span>
+          <svg className="generate-arrow" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M3 8h9M8.5 3.5 13 8l-4.5 4.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  );
+
   const renderMedia = (media: GenerationResult, className = "generated-media") => media.mediaType === "video" ? (
     <video
       className={className}
@@ -1112,6 +1142,29 @@ export function Generator({
                     </figure>
                   ) : null}
                 </div>
+                <div className="composer composer-edit">
+                  <div className="prompt-field">
+                    <label className="prompt-label" htmlFor={`${kind}-prompt`}>
+                      {localized.promptLabel}
+                    </label>
+                    <textarea
+                      ref={promptRef}
+                      id={`${kind}-prompt`}
+                      className="prompt-input"
+                      placeholder={localized.placeholders[kind]}
+                      value={prompt}
+                      onChange={(event) => setPrompt(event.target.value)}
+                      maxLength={2000}
+                      disabled={status === "loading"}
+                      aria-invalid={Boolean(error)}
+                      aria-describedby={promptDescription}
+                    />
+                  </div>
+                  {composerToolbar}
+                </div>
+              </div>
+            ) : (
+              <div className="composer">
                 <div className="prompt-field">
                   <label className="prompt-label" htmlFor={`${kind}-prompt`}>
                     {localized.promptLabel}
@@ -1123,52 +1176,15 @@ export function Generator({
                     placeholder={localized.placeholders[kind]}
                     value={prompt}
                     onChange={(event) => setPrompt(event.target.value)}
-                    maxLength={2000}
+                    maxLength={kind === "video" ? 1500 : 2000}
                     disabled={status === "loading"}
                     aria-invalid={Boolean(error)}
                     aria-describedby={promptDescription}
                   />
                 </div>
-              </div>
-            ) : (
-              <div className="prompt-field">
-                <label className="prompt-label" htmlFor={`${kind}-prompt`}>
-                  {localized.promptLabel}
-                </label>
-                <textarea
-                  ref={promptRef}
-                  id={`${kind}-prompt`}
-                  className="prompt-input"
-                  placeholder={localized.placeholders[kind]}
-                  value={prompt}
-                  onChange={(event) => setPrompt(event.target.value)}
-                  maxLength={kind === "video" ? 1500 : 2000}
-                  disabled={status === "loading"}
-                  aria-invalid={Boolean(error)}
-                  aria-describedby={promptDescription}
-                />
+                {composerToolbar}
               </div>
             )}
-            <fieldset className="workbench-settings" aria-label={localized.settingsLabel}>
-              <legend>{localized.settingsLabel}</legend>
-              {settingItems.map((setting) => (
-                <div className="workbench-setting" key={setting.label}>
-                  <span>{setting.label}</span>
-                  <strong>{setting.value}</strong>
-                </div>
-              ))}
-            </fieldset>
-            <div className="generate-row">
-              <button type="submit" className="generate-button" disabled={generateDisabled}>
-                {status === "loading" ? localized.generating : actionLabel ?? localized.generate}
-              </button>
-              <span className="quota-label" aria-live="polite">{quotaLabel}</span>
-              {quotaError ? (
-                <button type="button" className="retry-button" onClick={handleRetry} disabled={status === "loading"}>
-                  {localized.retry}
-                </button>
-              ) : null}
-            </div>
           </form>
         </div>
         <div className="workbench-preview">
@@ -1247,6 +1263,9 @@ export function Generator({
                 }}
                 disabled={status === "loading"}
               >
+                <svg className="prompt-example-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                  <path d="M8 1.5 9.6 6.4 14.5 8 9.6 9.6 8 14.5 6.4 9.6 1.5 8 6.4 6.4Z" stroke="currentColor" strokeWidth="1.3" strokeLinejoin="round" />
+                </svg>
                 <span>{example.label}</span>
                 <small>{example.prompt}</small>
               </button>
