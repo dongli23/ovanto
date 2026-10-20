@@ -1,0 +1,191 @@
+{
+  "checkedAt": "2026-10-20T15:51:41.187Z",
+  "baselineCommit": "9843baa10b3400285897a9fdae7af1437f49ea06",
+  "existingTdk": [
+    {
+      "key": "en",
+      "before": {
+        "title": "Free AI Image Generator, No Sign Up | Ovanto",
+        "description": "Generate AI images right in your browser — no sign-up, no login, no credit card. Type a prompt and get your image in seconds. Free to try.",
+        "h1": "Free AI Image Generator — No Sign Up, No Login"
+      },
+      "after": {
+        "title": "Free AI Image Generator, No Sign Up | Ovanto",
+        "description": "Generate AI images right in your browser — no sign-up, no login, no credit card. Type a prompt and get your image in seconds. Free to try.",
+        "h1": "Free AI Image Generator — No Sign Up, No Login"
+      },
+      "unchanged": true
+    },
+    {
+      "key": "it",
+      "before": {
+        "title": "Generatore Video AI Gratis Senza Registrazione — Crea Subito | Ovanto",
+        "description": "Genera video con l'AI gratis e senza registrazione. Scrivi il prompt, premi genera e scarica il tuo video in pochi secondi. Nessun account richiesto.",
+        "h1": "Generatore Video AI Gratis Senza Registrazione"
+      },
+      "after": {
+        "title": "Generatore Video AI Gratis Senza Registrazione — Crea Subito | Ovanto",
+        "description": "Genera video con l'AI gratis e senza registrazione. Scrivi il prompt, premi genera e scarica il tuo video in pochi secondi. Nessun account richiesto.",
+        "h1": "Generatore Video AI Gratis Senza Registrazione"
+      },
+      "unchanged": true
+    },
+    {
+      "key": "fr",
+      "before": {
+        "title": "Générateur de Vidéo IA Gratuit Sans Inscription — Créez Maintenant | Ovanto",
+        "description": "Générez des vidéos avec l'IA gratuitement et sans inscription. Écrivez votre prompt, lancez la génération et téléchargez votre vidéo en quelques secondes.",
+        "h1": "Générateur de Vidéo IA Gratuit Sans Inscription"
+      },
+      "after": {
+        "title": "Générateur de Vidéo IA Gratuit Sans Inscription — Créez Maintenant | Ovanto",
+        "description": "Générez des vidéos avec l'IA gratuitement et sans inscription. Écrivez votre prompt, lancez la génération et téléchargez votre vidéo en quelques secondes.",
+        "h1": "Générateur de Vidéo IA Gratuit Sans Inscription"
+      },
+      "unchanged": true
+    },
+    {
+      "key": "frGenerate",
+      "before": {
+        "title": "Photo IA Gratuit — Générez Vos Images en Ligne | Ovanto",
+        "description": "Photo IA gratuit : décrivez votre idée et générez une image en ligne, sans inscription. Idéal pour avatars, visuels produits et illustrations.",
+        "h1": "Photo IA Gratuit : Générez Vos Images en Ligne"
+      },
+      "after": {
+        "title": "Photo IA Gratuit — Générez Vos Images en Ligne | Ovanto",
+        "description": "Photo IA gratuit : décrivez votre idée et générez une image en ligne, sans inscription. Idéal pour avatars, visuels produits et illustrations.",
+        "h1": "Photo IA Gratuit : Générez Vos Images en Ligne"
+      },
+      "unchanged": true
+    },
+    {
+      "key": "frEdit",
+      "before": {
+        "title": "Modifier Photo IA — Retouche et Édition en Ligne | Ovanto",
+        "description": "Modifiez vos photos avec l'IA : retirez l'arrière-plan, changez le style, améliorez la lumière et retouchez vos portraits en ligne, sans inscription.",
+        "h1": "Modifier Photo IA en Ligne"
+      },
+      "after": {
+        "title": "Modifier Photo IA — Retouche et Édition en Ligne | Ovanto",
+        "description": "Modifiez vos photos avec l'IA : retirez l'arrière-plan, changez le style, améliorez la lumière et retouchez vos portraits en ligne, sans inscription.",
+        "h1": "Modifier Photo IA en Ligne"
+      },
+      "unchanged": true
+    },
+    {
+      "key": "frRetouch",
+      "before": {
+        "title": "Retouche Photo IA — Améliorez Vos Photos | Ovanto",
+        "description": "Retouchez vos photos avec l'IA : améliorez la lumière, les couleurs et les détails en ligne, sans inscription. Préparez une image plus nette tout en gardant le sujet naturel.",
+        "h1": "Retouche Photo IA : Améliorez Vos Photos"
+      },
+      "after": {
+        "title": "Retouche Photo IA — Améliorez Vos Photos | Ovanto",
+        "description": "Retouchez vos photos avec l'IA : améliorez la lumière, les couleurs et les détails en ligne, sans inscription. Préparez une image plus nette tout en gardant le sujet naturel.",
+        "h1": "Retouche Photo IA : Améliorez Vos Photos"
+      },
+      "unchanged": true
+    },
+    {
+      "key": "nl",
+      "before": {
+        "title": "AI Afbeelding Maken Gratis — Zonder Account | Ovanto",
+        "description": "Maak gratis een AI afbeelding zonder account. Typ je prompt, genereer en download je afbeelding binnen enkele seconden. Geen registratie nodig.",
+        "h1": "AI Afbeelding Maken Gratis"
+      },
+      "after": {
+        "title": "AI Afbeelding Maken Gratis — Zonder Account | Ovanto",
+        "description": "Maak gratis een AI afbeelding zonder account. Typ je prompt, genereer en download je afbeelding binnen enkele seconden. Geen registratie nodig.",
+        "h1": "AI Afbeelding Maken Gratis"
+      },
+      "unchanged": true
+    },
+    {
+      "key": "enVideo",
+      "before": {
+        "title": "Free AI Video Generator, No Sign Up — Create Short Videos | Ovanto",
+        "description": "Create a short AI video in your browser without signing up. Describe the subject and movement, generate a 5-second clip, and download the result.",
+        "h1": "Free AI Video Generator — No Sign Up"
+      },
+      "after": {
+        "title": "Free AI Video Generator, No Sign Up — Create Short Videos | Ovanto",
+        "description": "Create a short AI video in your browser without signing up. Describe the subject and movement, generate a 5-second clip, and download the result.",
+        "h1": "Free AI Video Generator — No Sign Up"
+      },
+      "unchanged": true
+    },
+    {
+      "key": "enEdit",
+      "before": {
+        "title": "AI Photo Editor Online, No Sign Up — Edit Photos Free | Ovanto",
+        "description": "Edit a photo with AI online without signing up. Upload an image, describe the change, review the result, and download the finished file.",
+        "h1": "AI Photo Editor Online — No Sign Up"
+      },
+      "after": {
+        "title": "AI Photo Editor Online, No Sign Up — Edit Photos Free | Ovanto",
+        "description": "Edit a photo with AI online without signing up. Upload an image, describe the change, review the result, and download the finished file.",
+        "h1": "AI Photo Editor Online — No Sign Up"
+      },
+      "unchanged": true
+    },
+    {
+      "key": "itImage",
+      "before": {
+        "title": "Generatore di Immagini AI Gratis Senza Registrazione | Ovanto",
+        "description": "Crea immagini con l'intelligenza artificiale gratis e senza registrazione. Scrivi il prompt, genera l'immagine e scarica il risultato online.",
+        "h1": "Generatore di Immagini AI Gratis Senza Registrazione"
+      },
+      "after": {
+        "title": "Generatore di Immagini AI Gratis Senza Registrazione | Ovanto",
+        "description": "Crea immagini con l'intelligenza artificiale gratis e senza registrazione. Scrivi il prompt, genera l'immagine e scarica il risultato online.",
+        "h1": "Generatore di Immagini AI Gratis Senza Registrazione"
+      },
+      "unchanged": true
+    },
+    {
+      "key": "itEdit",
+      "before": {
+        "title": "Modifica Foto con AI Online Gratis — Senza Registrazione | Ovanto",
+        "description": "Modifica le tue foto con l'intelligenza artificiale senza registrazione. Carica un'immagine, descrivi il cambiamento, controlla il risultato e scaricalo.",
+        "h1": "Modifica Foto con AI Online — Senza Registrazione"
+      },
+      "after": {
+        "title": "Modifica Foto con AI Online Gratis — Senza Registrazione | Ovanto",
+        "description": "Modifica le tue foto con l'intelligenza artificiale senza registrazione. Carica un'immagine, descrivi il cambiamento, controlla il risultato e scaricalo.",
+        "h1": "Modifica Foto con AI Online — Senza Registrazione"
+      },
+      "unchanged": true
+    },
+    {
+      "key": "nlVideo",
+      "before": {
+        "title": "AI Video Maken Gratis Zonder Registratie | Ovanto",
+        "description": "Maak gratis een korte AI-video zonder registratie. Beschrijf onderwerp en beweging, genereer een clip van 5 seconden en download het resultaat.",
+        "h1": "AI Video Maken Gratis Zonder Registratie"
+      },
+      "after": {
+        "title": "AI Video Maken Gratis Zonder Registratie | Ovanto",
+        "description": "Maak gratis een korte AI-video zonder registratie. Beschrijf onderwerp en beweging, genereer een clip van 5 seconden en download het resultaat.",
+        "h1": "AI Video Maken Gratis Zonder Registratie"
+      },
+      "unchanged": true
+    },
+    {
+      "key": "nlEdit",
+      "before": {
+        "title": "Foto Bewerken met AI Online — Zonder Registratie | Ovanto",
+        "description": "Bewerk een foto online met AI zonder registratie. Upload een afbeelding, beschrijf de wijziging, bekijk het resultaat en download het bestand.",
+        "h1": "Foto Bewerken met AI Online — Zonder Registratie"
+      },
+      "after": {
+        "title": "Foto Bewerken met AI Online — Zonder Registratie | Ovanto",
+        "description": "Bewerk een foto online met AI zonder registratie. Upload een afbeelding, beschrijf de wijziging, bekijk het resultaat en download het bestand.",
+        "h1": "Foto Bewerken met AI Online — Zonder Registratie"
+      },
+      "unchanged": true
+    }
+  ],
+  "nlEditContentUnchangedExceptRequestedBacklink": true,
+  "apiFilesChanged": [],
+  "newGenerationCreated": false
+}

@@ -1,0 +1,1116 @@
+{
+  "checkedAt": "2026-10-20T15:59:28.142Z",
+  "origin": "https://www.ovanto.ai",
+  "source": "production",
+  "methodPolicy": "GET only",
+  "cookiesSent": false,
+  "apiRequests": 0,
+  "generationRequests": 0,
+  "requestedPaths": [
+    "/fr/retouche-photo-gratuite/",
+    "/nl/ai-foto-bewerken-gratis/",
+    "/fr/",
+    "/fr/retouche-photo-ia/",
+    "/nl/",
+    "/nl/foto-bewerken-ai/",
+    "/fr/retouche-photo-gratuite",
+    "/nl/ai-foto-bewerken-gratis",
+    "/sitemap.xml"
+  ],
+  "pages": {
+    "fr": {
+      "status": 200,
+      "error": null,
+      "contentType": "text/html; charset=utf-8",
+      "htmlLength": 79041,
+      "bodyComplete": true,
+      "title": "Retouche Photo Gratuite — Sans Inscription | Ovanto",
+      "titleLength": 51,
+      "h1": "Retouche Photo Gratuite en Ligne",
+      "description": "Retouchez une photo gratuitement en ligne, sans inscription : téléversez un fichier, utilisez votre quota quotidien et téléchargez le résultat.",
+      "canonical": "https://www.ovanto.ai/fr/retouche-photo-gratuite/",
+      "htmlLang": "fr",
+      "alternateRaw": [
+        "<link rel=\"alternate\" hrefLang=\"fr\" href=\"https://www.ovanto.ai/fr/retouche-photo-gratuite/\"/>",
+        "<link rel=\"alternate\" hrefLang=\"nl\" href=\"https://www.ovanto.ai/nl/ai-foto-bewerken-gratis/\"/>",
+        "<link rel=\"alternate\" hrefLang=\"x-default\" href=\"https://www.ovanto.ai/fr/retouche-photo-gratuite/\"/>"
+      ],
+      "alternates": {
+        "fr": "https://www.ovanto.ai/fr/retouche-photo-gratuite/",
+        "nl": "https://www.ovanto.ai/nl/ai-foto-bewerken-gratis/",
+        "x-default": "https://www.ovanto.ai/fr/retouche-photo-gratuite/"
+      },
+      "jsonLd": [
+        {
+          "raw": "<script type=\"application/ld+json\">{\"@context\":\"https://schema.org\",\"@type\":\"WebApplication\",\"name\":\"Retouche Photo Gratuite en Ligne\",\"url\":\"https://www.ovanto.ai/fr/retouche-photo-gratuite/\",\"applicationCategory\":\"MultimediaApplication\",\"operatingSystem\":\"Web\",\"browserRequirements\":\"Requires a modern web browser\",\"isAccessibleForFree\":true,\"description\":\"Retouchez une photo gratuitement en ligne, sans inscription : téléversez un fichier, utilisez votre quota quotidien et téléchargez le résultat.\",\"inLanguage\":\"fr\"}</script>",
+          "parsed": {
+            "@context": "https://schema.org",
+            "@type": "WebApplication",
+            "name": "Retouche Photo Gratuite en Ligne",
+            "url": "https://www.ovanto.ai/fr/retouche-photo-gratuite/",
+            "applicationCategory": "MultimediaApplication",
+            "operatingSystem": "Web",
+            "browserRequirements": "Requires a modern web browser",
+            "isAccessibleForFree": true,
+            "description": "Retouchez une photo gratuitement en ligne, sans inscription : téléversez un fichier, utilisez votre quota quotidien et téléchargez le résultat.",
+            "inLanguage": "fr"
+          }
+        },
+        {
+          "raw": "<script type=\"application/ld+json\">{\"@context\":\"https://schema.org\",\"@type\":\"FAQPage\",\"url\":\"https://www.ovanto.ai/fr/retouche-photo-gratuite/\",\"mainEntity\":[{\"@type\":\"Question\",\"name\":\"La retouche photo est-elle vraiment gratuite ?\",\"acceptedAnswer\":{\"@type\":\"Answer\",\"text\":\"Oui. Vous pouvez effectuer 1 retouche par jour et par IP sans inscription. Le quota se réinitialise à 00:00 UTC.\"}},{\"@type\":\"Question\",\"name\":\"Faut-il créer un compte pour retoucher une photo ?\",\"acceptedAnswer\":{\"@type\":\"Answer\",\"text\":\"Non. Téléversez une image JPEG, PNG, GIF ou WEBP de 10 Mo maximum, décrivez la retouche, puis comparez et téléchargez le résultat sans créer de compte.\"}},{\"@type\":\"Question\",\"name\":\"Quels fichiers et quelles limites s'appliquent ?\",\"acceptedAnswer\":{\"@type\":\"Answer\",\"text\":\"Les fichiers JPEG, PNG, GIF et WEBP jusqu'à 10 Mo sont acceptés. Le quota gratuit commun aux parcours de retouche est limité à 1 retouche par jour et par IP ; les retouches illimitées et par lots ne sont pas incluses.\"}}]}</script>",
+          "parsed": {
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "url": "https://www.ovanto.ai/fr/retouche-photo-gratuite/",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "La retouche photo est-elle vraiment gratuite ?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Oui. Vous pouvez effectuer 1 retouche par jour et par IP sans inscription. Le quota se réinitialise à 00:00 UTC."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Faut-il créer un compte pour retoucher une photo ?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Non. Téléversez une image JPEG, PNG, GIF ou WEBP de 10 Mo maximum, décrivez la retouche, puis comparez et téléchargez le résultat sans créer de compte."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Quels fichiers et quelles limites s'appliquent ?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Les fichiers JPEG, PNG, GIF et WEBP jusqu'à 10 Mo sont acceptés. Le quota gratuit commun aux parcours de retouche est limité à 1 retouche par jour et par IP ; les retouches illimitées et par lots ne sont pas incluses."
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "faqComparison": {
+        "page": "fr",
+        "pageFaq": [
+          {
+            "question": "La retouche photo est-elle vraiment gratuite ?",
+            "answer": "Oui. Vous pouvez effectuer 1 retouche par jour et par IP sans inscription. Le quota se réinitialise à 00:00 UTC."
+          },
+          {
+            "question": "Faut-il créer un compte pour retoucher une photo ?",
+            "answer": "Non. Téléversez une image JPEG, PNG, GIF ou WEBP de 10 Mo maximum, décrivez la retouche, puis comparez et téléchargez le résultat sans créer de compte."
+          },
+          {
+            "question": "Quels fichiers et quelles limites s'appliquent ?",
+            "answer": "Les fichiers JPEG, PNG, GIF et WEBP jusqu'à 10 Mo sont acceptés. Le quota gratuit commun aux parcours de retouche est limité à 1 retouche par jour et par IP ; les retouches illimitées et par lots ne sont pas incluses."
+          }
+        ],
+        "jsonLdFaq": [
+          {
+            "question": "La retouche photo est-elle vraiment gratuite ?",
+            "answer": "Oui. Vous pouvez effectuer 1 retouche par jour et par IP sans inscription. Le quota se réinitialise à 00:00 UTC."
+          },
+          {
+            "question": "Faut-il créer un compte pour retoucher une photo ?",
+            "answer": "Non. Téléversez une image JPEG, PNG, GIF ou WEBP de 10 Mo maximum, décrivez la retouche, puis comparez et téléchargez le résultat sans créer de compte."
+          },
+          {
+            "question": "Quels fichiers et quelles limites s'appliquent ?",
+            "answer": "Les fichiers JPEG, PNG, GIF et WEBP jusqu'à 10 Mo sont acceptés. Le quota gratuit commun aux parcours de retouche est limité à 1 retouche par jour et par IP ; les retouches illimitées et par lots ne sont pas incluses."
+          }
+        ],
+        "identical": true
+      },
+      "toolsSummary": [
+        {
+          "raw": "<a href=\"/fr/photo-ia-gratuit/\">créer une image avec l&#x27;IA</a>",
+          "href": "/fr/photo-ia-gratuit/",
+          "text": "créer une image avec l'IA"
+        },
+        {
+          "raw": "<a href=\"/fr/modifier-photo-ia/\">retoucher une photo avec l&#x27;IA</a>",
+          "href": "/fr/modifier-photo-ia/",
+          "text": "retoucher une photo avec l'IA"
+        },
+        {
+          "raw": "<a href=\"/fr/\">créer une vidéo avec l&#x27;IA</a>",
+          "href": "/fr/",
+          "text": "créer une vidéo avec l'IA"
+        }
+      ],
+      "contextLinks": [
+        {
+          "raw": "<a class=\"context-link\" href=\"/fr/photo-ia-gratuit/\">créer une image avec l&#x27;IA</a>",
+          "href": "/fr/photo-ia-gratuit/",
+          "text": "créer une image avec l'IA"
+        },
+        {
+          "raw": "<a class=\"context-link\" href=\"/fr/\">créer une vidéo avec l&#x27;IA</a>",
+          "href": "/fr/",
+          "text": "créer une vidéo avec l'IA"
+        },
+        {
+          "raw": "<a class=\"context-link\" href=\"/fr/retouche-photo-ia/\">retouche photo IA</a>",
+          "href": "/fr/retouche-photo-ia/",
+          "text": "retouche photo IA"
+        }
+      ],
+      "frenchContextPhrase": {
+        "raw": "<a class=\"context-link\" href=\"/fr/retouche-photo-ia/\">retouche photo IA</a>",
+        "href": "/fr/retouche-photo-ia/",
+        "text": "retouche photo IA"
+      },
+      "ctaAnchors": [
+        {
+          "raw": "<a href=\"/fr/retouche-photo-gratuite/#edit-workbench\">Ouvrir l&#x27;espace de retouche<!-- --> <span aria-hidden=\"true\">→</span></a>",
+          "href": "/fr/retouche-photo-gratuite/#edit-workbench",
+          "text": "Ouvrir l'espace de retouche →"
+        },
+        {
+          "raw": "<a href=\"/fr/retouche-photo-gratuite/#edit-workbench\">Essayer une retouche gratuite<!-- --> <span aria-hidden=\"true\">→</span></a>",
+          "href": "/fr/retouche-photo-gratuite/#edit-workbench",
+          "text": "Essayer une retouche gratuite →"
+        },
+        {
+          "raw": "<a href=\"/fr/retouche-photo-gratuite/#edit-workbench\">Commencer une retouche<!-- --> <span aria-hidden=\"true\">→</span></a>",
+          "href": "/fr/retouche-photo-gratuite/#edit-workbench",
+          "text": "Commencer une retouche →"
+        }
+      ],
+      "activeModeAnchors": [
+        {
+          "raw": "<a class=\"workbench-mode is-active\" href=\"/fr/retouche-photo-gratuite/#edit-workbench\" aria-current=\"page\">Retouche</a>",
+          "href": "/fr/retouche-photo-gratuite/#edit-workbench",
+          "text": "Retouche"
+        }
+      ],
+      "editWorkbenchTag": "<div class=\"tool-wrap\" id=\"edit-workbench\">",
+      "bareRedirect": {
+        "status": 308,
+        "location": "/fr/retouche-photo-gratuite/",
+        "trailingResponseReused": true
+      }
+    },
+    "nl": {
+      "status": 200,
+      "error": null,
+      "contentType": "text/html; charset=utf-8",
+      "htmlLength": 77183,
+      "bodyComplete": true,
+      "title": "AI Foto Bewerken Gratis — Zonder Registratie | Ovanto",
+      "titleLength": 53,
+      "h1": "AI Foto Bewerken Gratis",
+      "description": "Bewerk gratis een foto met AI zonder registratie. Upload een bestand, gebruik je dagelijkse gratis bewerking en download het resultaat online.",
+      "canonical": "https://www.ovanto.ai/nl/ai-foto-bewerken-gratis/",
+      "htmlLang": "nl",
+      "alternateRaw": [
+        "<link rel=\"alternate\" hrefLang=\"fr\" href=\"https://www.ovanto.ai/fr/retouche-photo-gratuite/\"/>",
+        "<link rel=\"alternate\" hrefLang=\"nl\" href=\"https://www.ovanto.ai/nl/ai-foto-bewerken-gratis/\"/>",
+        "<link rel=\"alternate\" hrefLang=\"x-default\" href=\"https://www.ovanto.ai/fr/retouche-photo-gratuite/\"/>"
+      ],
+      "alternates": {
+        "fr": "https://www.ovanto.ai/fr/retouche-photo-gratuite/",
+        "nl": "https://www.ovanto.ai/nl/ai-foto-bewerken-gratis/",
+        "x-default": "https://www.ovanto.ai/fr/retouche-photo-gratuite/"
+      },
+      "jsonLd": [
+        {
+          "raw": "<script type=\"application/ld+json\">{\"@context\":\"https://schema.org\",\"@type\":\"WebApplication\",\"name\":\"AI Foto Bewerken Gratis\",\"url\":\"https://www.ovanto.ai/nl/ai-foto-bewerken-gratis/\",\"applicationCategory\":\"MultimediaApplication\",\"operatingSystem\":\"Web\",\"browserRequirements\":\"Requires a modern web browser\",\"isAccessibleForFree\":true,\"description\":\"Bewerk gratis een foto met AI zonder registratie. Upload een bestand, gebruik je dagelijkse gratis bewerking en download het resultaat online.\",\"inLanguage\":\"nl\"}</script>",
+          "parsed": {
+            "@context": "https://schema.org",
+            "@type": "WebApplication",
+            "name": "AI Foto Bewerken Gratis",
+            "url": "https://www.ovanto.ai/nl/ai-foto-bewerken-gratis/",
+            "applicationCategory": "MultimediaApplication",
+            "operatingSystem": "Web",
+            "browserRequirements": "Requires a modern web browser",
+            "isAccessibleForFree": true,
+            "description": "Bewerk gratis een foto met AI zonder registratie. Upload een bestand, gebruik je dagelijkse gratis bewerking en download het resultaat online.",
+            "inLanguage": "nl"
+          }
+        },
+        {
+          "raw": "<script type=\"application/ld+json\">{\"@context\":\"https://schema.org\",\"@type\":\"FAQPage\",\"url\":\"https://www.ovanto.ai/nl/ai-foto-bewerken-gratis/\",\"mainEntity\":[{\"@type\":\"Question\",\"name\":\"Kan ik gratis een foto bewerken met AI?\",\"acceptedAnswer\":{\"@type\":\"Answer\",\"text\":\"Ja. Je kunt zonder account 1 foto per dag per IP bewerken. Het gratis quotum wordt om 00:00 UTC vernieuwd.\"}},{\"@type\":\"Question\",\"name\":\"Heb ik registratie nodig om een foto te bewerken?\",\"acceptedAnswer\":{\"@type\":\"Answer\",\"text\":\"Nee. Upload een JPEG-, PNG-, GIF- of WEBP-afbeelding van maximaal 10 MB, beschrijf de bewerking en bekijk en download het resultaat zonder account.\"}},{\"@type\":\"Question\",\"name\":\"Welke bestanden en beperkingen gelden er?\",\"acceptedAnswer\":{\"@type\":\"Answer\",\"text\":\"JPEG-, PNG-, GIF- en WEBP-bestanden tot 10 MB worden ondersteund. Het gedeelde gratis quotum voor bewerkingsroutes is 1 bewerking per dag per IP; onbeperkt en batchmatig bewerken is niet inbegrepen.\"}}]}</script>",
+          "parsed": {
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "url": "https://www.ovanto.ai/nl/ai-foto-bewerken-gratis/",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "Kan ik gratis een foto bewerken met AI?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Ja. Je kunt zonder account 1 foto per dag per IP bewerken. Het gratis quotum wordt om 00:00 UTC vernieuwd."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Heb ik registratie nodig om een foto te bewerken?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Nee. Upload een JPEG-, PNG-, GIF- of WEBP-afbeelding van maximaal 10 MB, beschrijf de bewerking en bekijk en download het resultaat zonder account."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Welke bestanden en beperkingen gelden er?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "JPEG-, PNG-, GIF- en WEBP-bestanden tot 10 MB worden ondersteund. Het gedeelde gratis quotum voor bewerkingsroutes is 1 bewerking per dag per IP; onbeperkt en batchmatig bewerken is niet inbegrepen."
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "faqComparison": {
+        "page": "nl",
+        "pageFaq": [
+          {
+            "question": "Kan ik gratis een foto bewerken met AI?",
+            "answer": "Ja. Je kunt zonder account 1 foto per dag per IP bewerken. Het gratis quotum wordt om 00:00 UTC vernieuwd."
+          },
+          {
+            "question": "Heb ik registratie nodig om een foto te bewerken?",
+            "answer": "Nee. Upload een JPEG-, PNG-, GIF- of WEBP-afbeelding van maximaal 10 MB, beschrijf de bewerking en bekijk en download het resultaat zonder account."
+          },
+          {
+            "question": "Welke bestanden en beperkingen gelden er?",
+            "answer": "JPEG-, PNG-, GIF- en WEBP-bestanden tot 10 MB worden ondersteund. Het gedeelde gratis quotum voor bewerkingsroutes is 1 bewerking per dag per IP; onbeperkt en batchmatig bewerken is niet inbegrepen."
+          }
+        ],
+        "jsonLdFaq": [
+          {
+            "question": "Kan ik gratis een foto bewerken met AI?",
+            "answer": "Ja. Je kunt zonder account 1 foto per dag per IP bewerken. Het gratis quotum wordt om 00:00 UTC vernieuwd."
+          },
+          {
+            "question": "Heb ik registratie nodig om een foto te bewerken?",
+            "answer": "Nee. Upload een JPEG-, PNG-, GIF- of WEBP-afbeelding van maximaal 10 MB, beschrijf de bewerking en bekijk en download het resultaat zonder account."
+          },
+          {
+            "question": "Welke bestanden en beperkingen gelden er?",
+            "answer": "JPEG-, PNG-, GIF- en WEBP-bestanden tot 10 MB worden ondersteund. Het gedeelde gratis quotum voor bewerkingsroutes is 1 bewerking per dag per IP; onbeperkt en batchmatig bewerken is niet inbegrepen."
+          }
+        ],
+        "identical": true
+      },
+      "toolsSummary": [
+        {
+          "raw": "<a href=\"/nl/\">maak een AI-afbeelding</a>",
+          "href": "/nl/",
+          "text": "maak een AI-afbeelding"
+        },
+        {
+          "raw": "<a href=\"/nl/foto-bewerken-ai/\">bewerk een foto met AI</a>",
+          "href": "/nl/foto-bewerken-ai/",
+          "text": "bewerk een foto met AI"
+        },
+        {
+          "raw": "<a href=\"/nl/ai-video-maken/\">maak een AI-video</a>",
+          "href": "/nl/ai-video-maken/",
+          "text": "maak een AI-video"
+        }
+      ],
+      "contextLinks": [
+        {
+          "raw": "<a class=\"context-link\" href=\"/nl/\">maak een AI-afbeelding</a>",
+          "href": "/nl/",
+          "text": "maak een AI-afbeelding"
+        },
+        {
+          "raw": "<a class=\"context-link\" href=\"/nl/ai-video-maken/\">maak een AI-video</a>",
+          "href": "/nl/ai-video-maken/",
+          "text": "maak een AI-video"
+        },
+        {
+          "raw": "<a class=\"context-link\" href=\"/nl/foto-bewerken-ai/\">foto bewerken met AI</a>",
+          "href": "/nl/foto-bewerken-ai/",
+          "text": "foto bewerken met AI"
+        }
+      ],
+      "frenchContextPhrase": null,
+      "ctaAnchors": [
+        {
+          "raw": "<a href=\"/nl/ai-foto-bewerken-gratis/#edit-workbench\">Open de fotobewerker<!-- --> <span aria-hidden=\"true\">→</span></a>",
+          "href": "/nl/ai-foto-bewerken-gratis/#edit-workbench",
+          "text": "Open de fotobewerker →"
+        },
+        {
+          "raw": "<a href=\"/nl/ai-foto-bewerken-gratis/#edit-workbench\">Probeer gratis fotobewerking<!-- --> <span aria-hidden=\"true\">→</span></a>",
+          "href": "/nl/ai-foto-bewerken-gratis/#edit-workbench",
+          "text": "Probeer gratis fotobewerking →"
+        },
+        {
+          "raw": "<a href=\"/nl/ai-foto-bewerken-gratis/#edit-workbench\">Start een bewerking<!-- --> <span aria-hidden=\"true\">→</span></a>",
+          "href": "/nl/ai-foto-bewerken-gratis/#edit-workbench",
+          "text": "Start een bewerking →"
+        }
+      ],
+      "activeModeAnchors": [
+        {
+          "raw": "<a class=\"workbench-mode is-active\" href=\"/nl/ai-foto-bewerken-gratis/#edit-workbench\" aria-current=\"page\">Bewerken</a>",
+          "href": "/nl/ai-foto-bewerken-gratis/#edit-workbench",
+          "text": "Bewerken"
+        }
+      ],
+      "editWorkbenchTag": "<div class=\"tool-wrap\" id=\"edit-workbench\">",
+      "bareRedirect": {
+        "status": 308,
+        "location": "/nl/ai-foto-bewerken-gratis/",
+        "trailingResponseReused": true
+      }
+    }
+  },
+  "sourceIncomingLinks": {
+    "frHome": {
+      "sourcePath": "/fr/",
+      "targetPath": "/fr/retouche-photo-gratuite/",
+      "status": 200,
+      "links": [
+        {
+          "raw": "<a class=\"context-link\" href=\"/fr/retouche-photo-gratuite/\">Retouche photo gratuite</a>",
+          "href": "/fr/retouche-photo-gratuite/",
+          "text": "Retouche photo gratuite"
+        }
+      ],
+      "count": 1
+    },
+    "frAiRetouch": {
+      "sourcePath": "/fr/retouche-photo-ia/",
+      "targetPath": "/fr/retouche-photo-gratuite/",
+      "status": 200,
+      "links": [
+        {
+          "raw": "<a class=\"context-link\" href=\"/fr/retouche-photo-gratuite/\">Retouche photo gratuite</a>",
+          "href": "/fr/retouche-photo-gratuite/",
+          "text": "Retouche photo gratuite"
+        }
+      ],
+      "count": 1
+    },
+    "nlHome": {
+      "sourcePath": "/nl/",
+      "targetPath": "/nl/ai-foto-bewerken-gratis/",
+      "status": 200,
+      "links": [
+        {
+          "raw": "<a class=\"context-link\" href=\"/nl/ai-foto-bewerken-gratis/\">AI foto bewerken gratis</a>",
+          "href": "/nl/ai-foto-bewerken-gratis/",
+          "text": "AI foto bewerken gratis"
+        }
+      ],
+      "count": 1
+    },
+    "nlEdit": {
+      "sourcePath": "/nl/foto-bewerken-ai/",
+      "targetPath": "/nl/ai-foto-bewerken-gratis/",
+      "status": 200,
+      "links": [
+        {
+          "raw": "<a class=\"context-link\" href=\"/nl/ai-foto-bewerken-gratis/\">AI foto bewerken gratis</a>",
+          "href": "/nl/ai-foto-bewerken-gratis/",
+          "text": "AI foto bewerken gratis"
+        }
+      ],
+      "count": 1
+    }
+  },
+  "sitemap": {
+    "status": 200,
+    "contentType": "application/xml",
+    "count": 19,
+    "locs": [
+      "https://www.ovanto.ai/",
+      "https://www.ovanto.ai/aup/",
+      "https://www.ovanto.ai/edit/",
+      "https://www.ovanto.ai/fr/",
+      "https://www.ovanto.ai/fr/modifier-photo-ia/",
+      "https://www.ovanto.ai/fr/photo-ia-gratuit/",
+      "https://www.ovanto.ai/fr/retouche-photo-gratuite/",
+      "https://www.ovanto.ai/fr/retouche-photo-ia/",
+      "https://www.ovanto.ai/it/",
+      "https://www.ovanto.ai/it/immagini-ai/",
+      "https://www.ovanto.ai/it/modifica-foto-ai/",
+      "https://www.ovanto.ai/nl/",
+      "https://www.ovanto.ai/nl/ai-foto-bewerken-gratis/",
+      "https://www.ovanto.ai/nl/ai-video-maken/",
+      "https://www.ovanto.ai/nl/foto-bewerken-ai/",
+      "https://www.ovanto.ai/pricing/",
+      "https://www.ovanto.ai/privacy/",
+      "https://www.ovanto.ai/terms/",
+      "https://www.ovanto.ai/video/"
+    ],
+    "newLocs": [
+      "<loc>https://www.ovanto.ai/fr/retouche-photo-gratuite/</loc>",
+      "<loc>https://www.ovanto.ai/nl/ai-foto-bewerken-gratis/</loc>"
+    ],
+    "rawNewLocs": [
+      "<loc>https://www.ovanto.ai/fr/retouche-photo-gratuite/</loc>",
+      "<loc>https://www.ovanto.ai/nl/ai-foto-bewerken-gratis/</loc>"
+    ]
+  },
+  "sharedValidation": {
+    "verifiedBy": "primary agent",
+    "tests": "npm test: 167/167 PASS",
+    "typecheck": "PASS",
+    "build": "PASS",
+    "frozenScopeEvidence": "docs/validation/free-edit-pages/scope.json"
+  },
+  "checks": [
+    {
+      "name": "fr: HTTP 200",
+      "pass": true,
+      "status": 200
+    },
+    {
+      "name": "fr: Title",
+      "pass": true,
+      "actual": "Retouche Photo Gratuite — Sans Inscription | Ovanto",
+      "expected": "Retouche Photo Gratuite — Sans Inscription | Ovanto",
+      "length": 51
+    },
+    {
+      "name": "fr: H1",
+      "pass": true,
+      "actual": "Retouche Photo Gratuite en Ligne",
+      "expected": "Retouche Photo Gratuite en Ligne"
+    },
+    {
+      "name": "fr: html lang",
+      "pass": true,
+      "actual": "fr",
+      "expected": "fr"
+    },
+    {
+      "name": "fr: self canonical",
+      "pass": true,
+      "actual": "https://www.ovanto.ai/fr/retouche-photo-gratuite/",
+      "expected": "https://www.ovanto.ai/fr/retouche-photo-gratuite/"
+    },
+    {
+      "name": "fr: exactly three reciprocal hreflang links",
+      "pass": true,
+      "actual": {
+        "fr": "https://www.ovanto.ai/fr/retouche-photo-gratuite/",
+        "nl": "https://www.ovanto.ai/nl/ai-foto-bewerken-gratis/",
+        "x-default": "https://www.ovanto.ai/fr/retouche-photo-gratuite/"
+      },
+      "expected": {
+        "fr": "https://www.ovanto.ai/fr/retouche-photo-gratuite/",
+        "nl": "https://www.ovanto.ai/nl/ai-foto-bewerken-gratis/",
+        "x-default": "https://www.ovanto.ai/fr/retouche-photo-gratuite/"
+      }
+    },
+    {
+      "name": "fr: hreflang excludes /edit/",
+      "pass": true,
+      "raw": [
+        "<link rel=\"alternate\" hrefLang=\"fr\" href=\"https://www.ovanto.ai/fr/retouche-photo-gratuite/\"/>",
+        "<link rel=\"alternate\" hrefLang=\"nl\" href=\"https://www.ovanto.ai/nl/ai-foto-bewerken-gratis/\"/>",
+        "<link rel=\"alternate\" hrefLang=\"x-default\" href=\"https://www.ovanto.ai/fr/retouche-photo-gratuite/\"/>"
+      ]
+    },
+    {
+      "name": "fr: tools-summary has exactly three same-locale links",
+      "pass": true,
+      "actual": [
+        {
+          "raw": "<a href=\"/fr/photo-ia-gratuit/\">créer une image avec l&#x27;IA</a>",
+          "href": "/fr/photo-ia-gratuit/",
+          "text": "créer une image avec l'IA"
+        },
+        {
+          "raw": "<a href=\"/fr/modifier-photo-ia/\">retoucher une photo avec l&#x27;IA</a>",
+          "href": "/fr/modifier-photo-ia/",
+          "text": "retoucher une photo avec l'IA"
+        },
+        {
+          "raw": "<a href=\"/fr/\">créer une vidéo avec l&#x27;IA</a>",
+          "href": "/fr/",
+          "text": "créer une vidéo avec l'IA"
+        }
+      ],
+      "expected": [
+        "/fr/photo-ia-gratuit/",
+        "/fr/modifier-photo-ia/",
+        "/fr/"
+      ]
+    },
+    {
+      "name": "fr: context-links has exactly three same-locale links",
+      "pass": true,
+      "actual": [
+        {
+          "raw": "<a class=\"context-link\" href=\"/fr/photo-ia-gratuit/\">créer une image avec l&#x27;IA</a>",
+          "href": "/fr/photo-ia-gratuit/",
+          "text": "créer une image avec l'IA"
+        },
+        {
+          "raw": "<a class=\"context-link\" href=\"/fr/\">créer une vidéo avec l&#x27;IA</a>",
+          "href": "/fr/",
+          "text": "créer une vidéo avec l'IA"
+        },
+        {
+          "raw": "<a class=\"context-link\" href=\"/fr/retouche-photo-ia/\">retouche photo IA</a>",
+          "href": "/fr/retouche-photo-ia/",
+          "text": "retouche photo IA"
+        }
+      ],
+      "expected": [
+        "/fr/photo-ia-gratuit/",
+        "/fr/",
+        "/fr/retouche-photo-ia/"
+      ]
+    },
+    {
+      "name": "fr: context retouch anchor uses complete phrase",
+      "pass": true,
+      "actual": [
+        {
+          "raw": "<a class=\"context-link\" href=\"/fr/photo-ia-gratuit/\">créer une image avec l&#x27;IA</a>",
+          "href": "/fr/photo-ia-gratuit/",
+          "text": "créer une image avec l'IA"
+        },
+        {
+          "raw": "<a class=\"context-link\" href=\"/fr/\">créer une vidéo avec l&#x27;IA</a>",
+          "href": "/fr/",
+          "text": "créer une vidéo avec l'IA"
+        },
+        {
+          "raw": "<a class=\"context-link\" href=\"/fr/retouche-photo-ia/\">retouche photo IA</a>",
+          "href": "/fr/retouche-photo-ia/",
+          "text": "retouche photo IA"
+        }
+      ]
+    },
+    {
+      "name": "fr: WebApplication JSON-LD",
+      "pass": true,
+      "parsed": {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Retouche Photo Gratuite en Ligne",
+        "url": "https://www.ovanto.ai/fr/retouche-photo-gratuite/",
+        "applicationCategory": "MultimediaApplication",
+        "operatingSystem": "Web",
+        "browserRequirements": "Requires a modern web browser",
+        "isAccessibleForFree": true,
+        "description": "Retouchez une photo gratuitement en ligne, sans inscription : téléversez un fichier, utilisez votre quota quotidien et téléchargez le résultat.",
+        "inLanguage": "fr"
+      }
+    },
+    {
+      "name": "fr: WebApplication fields match page",
+      "pass": true,
+      "actual": {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Retouche Photo Gratuite en Ligne",
+        "url": "https://www.ovanto.ai/fr/retouche-photo-gratuite/",
+        "applicationCategory": "MultimediaApplication",
+        "operatingSystem": "Web",
+        "browserRequirements": "Requires a modern web browser",
+        "isAccessibleForFree": true,
+        "description": "Retouchez une photo gratuitement en ligne, sans inscription : téléversez un fichier, utilisez votre quota quotidien et téléchargez le résultat.",
+        "inLanguage": "fr"
+      },
+      "expected": {
+        "url": "https://www.ovanto.ai/fr/retouche-photo-gratuite/",
+        "name": "Retouche Photo Gratuite en Ligne",
+        "description": "Retouchez une photo gratuitement en ligne, sans inscription : téléversez un fichier, utilisez votre quota quotidien et téléchargez le résultat.",
+        "inLanguage": "fr"
+      }
+    },
+    {
+      "name": "fr: exactly two JSON-LD scripts",
+      "pass": true,
+      "actualCount": 2
+    },
+    {
+      "name": "fr: FAQPage JSON-LD",
+      "pass": true,
+      "parsed": {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "url": "https://www.ovanto.ai/fr/retouche-photo-gratuite/",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "La retouche photo est-elle vraiment gratuite ?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Oui. Vous pouvez effectuer 1 retouche par jour et par IP sans inscription. Le quota se réinitialise à 00:00 UTC."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Faut-il créer un compte pour retoucher une photo ?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Non. Téléversez une image JPEG, PNG, GIF ou WEBP de 10 Mo maximum, décrivez la retouche, puis comparez et téléchargez le résultat sans créer de compte."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Quels fichiers et quelles limites s'appliquent ?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Les fichiers JPEG, PNG, GIF et WEBP jusqu'à 10 Mo sont acceptés. Le quota gratuit commun aux parcours de retouche est limité à 1 retouche par jour et par IP ; les retouches illimitées et par lots ne sont pas incluses."
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "fr: FAQPage URL is self-referential",
+      "pass": true,
+      "actual": "https://www.ovanto.ai/fr/retouche-photo-gratuite/",
+      "expected": "https://www.ovanto.ai/fr/retouche-photo-gratuite/"
+    },
+    {
+      "name": "fr: rendered FAQ matches FAQPage JSON-LD",
+      "pass": true,
+      "comparison": {
+        "page": "fr",
+        "pageFaq": [
+          {
+            "question": "La retouche photo est-elle vraiment gratuite ?",
+            "answer": "Oui. Vous pouvez effectuer 1 retouche par jour et par IP sans inscription. Le quota se réinitialise à 00:00 UTC."
+          },
+          {
+            "question": "Faut-il créer un compte pour retoucher une photo ?",
+            "answer": "Non. Téléversez une image JPEG, PNG, GIF ou WEBP de 10 Mo maximum, décrivez la retouche, puis comparez et téléchargez le résultat sans créer de compte."
+          },
+          {
+            "question": "Quels fichiers et quelles limites s'appliquent ?",
+            "answer": "Les fichiers JPEG, PNG, GIF et WEBP jusqu'à 10 Mo sont acceptés. Le quota gratuit commun aux parcours de retouche est limité à 1 retouche par jour et par IP ; les retouches illimitées et par lots ne sont pas incluses."
+          }
+        ],
+        "jsonLdFaq": [
+          {
+            "question": "La retouche photo est-elle vraiment gratuite ?",
+            "answer": "Oui. Vous pouvez effectuer 1 retouche par jour et par IP sans inscription. Le quota se réinitialise à 00:00 UTC."
+          },
+          {
+            "question": "Faut-il créer un compte pour retoucher une photo ?",
+            "answer": "Non. Téléversez une image JPEG, PNG, GIF ou WEBP de 10 Mo maximum, décrivez la retouche, puis comparez et téléchargez le résultat sans créer de compte."
+          },
+          {
+            "question": "Quels fichiers et quelles limites s'appliquent ?",
+            "answer": "Les fichiers JPEG, PNG, GIF et WEBP jusqu'à 10 Mo sont acceptés. Le quota gratuit commun aux parcours de retouche est limité à 1 retouche par jour et par IP ; les retouches illimitées et par lots ne sont pas incluses."
+          }
+        ],
+        "identical": true
+      }
+    },
+    {
+      "name": "fr: main CTA anchors point to own workbench",
+      "pass": true,
+      "expected": "/fr/retouche-photo-gratuite/#edit-workbench",
+      "anchors": [
+        {
+          "raw": "<a href=\"/fr/retouche-photo-gratuite/#edit-workbench\">Ouvrir l&#x27;espace de retouche<!-- --> <span aria-hidden=\"true\">→</span></a>",
+          "href": "/fr/retouche-photo-gratuite/#edit-workbench",
+          "text": "Ouvrir l'espace de retouche →"
+        },
+        {
+          "raw": "<a href=\"/fr/retouche-photo-gratuite/#edit-workbench\">Essayer une retouche gratuite<!-- --> <span aria-hidden=\"true\">→</span></a>",
+          "href": "/fr/retouche-photo-gratuite/#edit-workbench",
+          "text": "Essayer une retouche gratuite →"
+        },
+        {
+          "raw": "<a href=\"/fr/retouche-photo-gratuite/#edit-workbench\">Commencer une retouche<!-- --> <span aria-hidden=\"true\">→</span></a>",
+          "href": "/fr/retouche-photo-gratuite/#edit-workbench",
+          "text": "Commencer une retouche →"
+        }
+      ]
+    },
+    {
+      "name": "fr: edit-workbench id exists",
+      "pass": true,
+      "tag": "<div class=\"tool-wrap\" id=\"edit-workbench\">"
+    },
+    {
+      "name": "fr: active mode is self-referential",
+      "pass": true,
+      "activeModes": [
+        {
+          "raw": "<a class=\"workbench-mode is-active\" href=\"/fr/retouche-photo-gratuite/#edit-workbench\" aria-current=\"page\">Retouche</a>",
+          "href": "/fr/retouche-photo-gratuite/#edit-workbench",
+          "text": "Retouche"
+        }
+      ],
+      "expected": "/fr/retouche-photo-gratuite/#edit-workbench"
+    },
+    {
+      "name": "nl: HTTP 200",
+      "pass": true,
+      "status": 200
+    },
+    {
+      "name": "nl: Title",
+      "pass": true,
+      "actual": "AI Foto Bewerken Gratis — Zonder Registratie | Ovanto",
+      "expected": "AI Foto Bewerken Gratis — Zonder Registratie | Ovanto",
+      "length": 53
+    },
+    {
+      "name": "nl: H1",
+      "pass": true,
+      "actual": "AI Foto Bewerken Gratis",
+      "expected": "AI Foto Bewerken Gratis"
+    },
+    {
+      "name": "nl: html lang",
+      "pass": true,
+      "actual": "nl",
+      "expected": "nl"
+    },
+    {
+      "name": "nl: self canonical",
+      "pass": true,
+      "actual": "https://www.ovanto.ai/nl/ai-foto-bewerken-gratis/",
+      "expected": "https://www.ovanto.ai/nl/ai-foto-bewerken-gratis/"
+    },
+    {
+      "name": "nl: exactly three reciprocal hreflang links",
+      "pass": true,
+      "actual": {
+        "fr": "https://www.ovanto.ai/fr/retouche-photo-gratuite/",
+        "nl": "https://www.ovanto.ai/nl/ai-foto-bewerken-gratis/",
+        "x-default": "https://www.ovanto.ai/fr/retouche-photo-gratuite/"
+      },
+      "expected": {
+        "fr": "https://www.ovanto.ai/fr/retouche-photo-gratuite/",
+        "nl": "https://www.ovanto.ai/nl/ai-foto-bewerken-gratis/",
+        "x-default": "https://www.ovanto.ai/fr/retouche-photo-gratuite/"
+      }
+    },
+    {
+      "name": "nl: hreflang excludes /edit/",
+      "pass": true,
+      "raw": [
+        "<link rel=\"alternate\" hrefLang=\"fr\" href=\"https://www.ovanto.ai/fr/retouche-photo-gratuite/\"/>",
+        "<link rel=\"alternate\" hrefLang=\"nl\" href=\"https://www.ovanto.ai/nl/ai-foto-bewerken-gratis/\"/>",
+        "<link rel=\"alternate\" hrefLang=\"x-default\" href=\"https://www.ovanto.ai/fr/retouche-photo-gratuite/\"/>"
+      ]
+    },
+    {
+      "name": "nl: tools-summary has exactly three same-locale links",
+      "pass": true,
+      "actual": [
+        {
+          "raw": "<a href=\"/nl/\">maak een AI-afbeelding</a>",
+          "href": "/nl/",
+          "text": "maak een AI-afbeelding"
+        },
+        {
+          "raw": "<a href=\"/nl/foto-bewerken-ai/\">bewerk een foto met AI</a>",
+          "href": "/nl/foto-bewerken-ai/",
+          "text": "bewerk een foto met AI"
+        },
+        {
+          "raw": "<a href=\"/nl/ai-video-maken/\">maak een AI-video</a>",
+          "href": "/nl/ai-video-maken/",
+          "text": "maak een AI-video"
+        }
+      ],
+      "expected": [
+        "/nl/",
+        "/nl/ai-video-maken/",
+        "/nl/foto-bewerken-ai/"
+      ]
+    },
+    {
+      "name": "nl: context-links has exactly three same-locale links",
+      "pass": true,
+      "actual": [
+        {
+          "raw": "<a class=\"context-link\" href=\"/nl/\">maak een AI-afbeelding</a>",
+          "href": "/nl/",
+          "text": "maak een AI-afbeelding"
+        },
+        {
+          "raw": "<a class=\"context-link\" href=\"/nl/ai-video-maken/\">maak een AI-video</a>",
+          "href": "/nl/ai-video-maken/",
+          "text": "maak een AI-video"
+        },
+        {
+          "raw": "<a class=\"context-link\" href=\"/nl/foto-bewerken-ai/\">foto bewerken met AI</a>",
+          "href": "/nl/foto-bewerken-ai/",
+          "text": "foto bewerken met AI"
+        }
+      ],
+      "expected": [
+        "/nl/",
+        "/nl/ai-video-maken/",
+        "/nl/foto-bewerken-ai/"
+      ]
+    },
+    {
+      "name": "nl: WebApplication JSON-LD",
+      "pass": true,
+      "parsed": {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "AI Foto Bewerken Gratis",
+        "url": "https://www.ovanto.ai/nl/ai-foto-bewerken-gratis/",
+        "applicationCategory": "MultimediaApplication",
+        "operatingSystem": "Web",
+        "browserRequirements": "Requires a modern web browser",
+        "isAccessibleForFree": true,
+        "description": "Bewerk gratis een foto met AI zonder registratie. Upload een bestand, gebruik je dagelijkse gratis bewerking en download het resultaat online.",
+        "inLanguage": "nl"
+      }
+    },
+    {
+      "name": "nl: WebApplication fields match page",
+      "pass": true,
+      "actual": {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "AI Foto Bewerken Gratis",
+        "url": "https://www.ovanto.ai/nl/ai-foto-bewerken-gratis/",
+        "applicationCategory": "MultimediaApplication",
+        "operatingSystem": "Web",
+        "browserRequirements": "Requires a modern web browser",
+        "isAccessibleForFree": true,
+        "description": "Bewerk gratis een foto met AI zonder registratie. Upload een bestand, gebruik je dagelijkse gratis bewerking en download het resultaat online.",
+        "inLanguage": "nl"
+      },
+      "expected": {
+        "url": "https://www.ovanto.ai/nl/ai-foto-bewerken-gratis/",
+        "name": "AI Foto Bewerken Gratis",
+        "description": "Bewerk gratis een foto met AI zonder registratie. Upload een bestand, gebruik je dagelijkse gratis bewerking en download het resultaat online.",
+        "inLanguage": "nl"
+      }
+    },
+    {
+      "name": "nl: exactly two JSON-LD scripts",
+      "pass": true,
+      "actualCount": 2
+    },
+    {
+      "name": "nl: FAQPage JSON-LD",
+      "pass": true,
+      "parsed": {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "url": "https://www.ovanto.ai/nl/ai-foto-bewerken-gratis/",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Kan ik gratis een foto bewerken met AI?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Ja. Je kunt zonder account 1 foto per dag per IP bewerken. Het gratis quotum wordt om 00:00 UTC vernieuwd."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Heb ik registratie nodig om een foto te bewerken?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Nee. Upload een JPEG-, PNG-, GIF- of WEBP-afbeelding van maximaal 10 MB, beschrijf de bewerking en bekijk en download het resultaat zonder account."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Welke bestanden en beperkingen gelden er?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "JPEG-, PNG-, GIF- en WEBP-bestanden tot 10 MB worden ondersteund. Het gedeelde gratis quotum voor bewerkingsroutes is 1 bewerking per dag per IP; onbeperkt en batchmatig bewerken is niet inbegrepen."
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "nl: FAQPage URL is self-referential",
+      "pass": true,
+      "actual": "https://www.ovanto.ai/nl/ai-foto-bewerken-gratis/",
+      "expected": "https://www.ovanto.ai/nl/ai-foto-bewerken-gratis/"
+    },
+    {
+      "name": "nl: rendered FAQ matches FAQPage JSON-LD",
+      "pass": true,
+      "comparison": {
+        "page": "nl",
+        "pageFaq": [
+          {
+            "question": "Kan ik gratis een foto bewerken met AI?",
+            "answer": "Ja. Je kunt zonder account 1 foto per dag per IP bewerken. Het gratis quotum wordt om 00:00 UTC vernieuwd."
+          },
+          {
+            "question": "Heb ik registratie nodig om een foto te bewerken?",
+            "answer": "Nee. Upload een JPEG-, PNG-, GIF- of WEBP-afbeelding van maximaal 10 MB, beschrijf de bewerking en bekijk en download het resultaat zonder account."
+          },
+          {
+            "question": "Welke bestanden en beperkingen gelden er?",
+            "answer": "JPEG-, PNG-, GIF- en WEBP-bestanden tot 10 MB worden ondersteund. Het gedeelde gratis quotum voor bewerkingsroutes is 1 bewerking per dag per IP; onbeperkt en batchmatig bewerken is niet inbegrepen."
+          }
+        ],
+        "jsonLdFaq": [
+          {
+            "question": "Kan ik gratis een foto bewerken met AI?",
+            "answer": "Ja. Je kunt zonder account 1 foto per dag per IP bewerken. Het gratis quotum wordt om 00:00 UTC vernieuwd."
+          },
+          {
+            "question": "Heb ik registratie nodig om een foto te bewerken?",
+            "answer": "Nee. Upload een JPEG-, PNG-, GIF- of WEBP-afbeelding van maximaal 10 MB, beschrijf de bewerking en bekijk en download het resultaat zonder account."
+          },
+          {
+            "question": "Welke bestanden en beperkingen gelden er?",
+            "answer": "JPEG-, PNG-, GIF- en WEBP-bestanden tot 10 MB worden ondersteund. Het gedeelde gratis quotum voor bewerkingsroutes is 1 bewerking per dag per IP; onbeperkt en batchmatig bewerken is niet inbegrepen."
+          }
+        ],
+        "identical": true
+      }
+    },
+    {
+      "name": "nl: main CTA anchors point to own workbench",
+      "pass": true,
+      "expected": "/nl/ai-foto-bewerken-gratis/#edit-workbench",
+      "anchors": [
+        {
+          "raw": "<a href=\"/nl/ai-foto-bewerken-gratis/#edit-workbench\">Open de fotobewerker<!-- --> <span aria-hidden=\"true\">→</span></a>",
+          "href": "/nl/ai-foto-bewerken-gratis/#edit-workbench",
+          "text": "Open de fotobewerker →"
+        },
+        {
+          "raw": "<a href=\"/nl/ai-foto-bewerken-gratis/#edit-workbench\">Probeer gratis fotobewerking<!-- --> <span aria-hidden=\"true\">→</span></a>",
+          "href": "/nl/ai-foto-bewerken-gratis/#edit-workbench",
+          "text": "Probeer gratis fotobewerking →"
+        },
+        {
+          "raw": "<a href=\"/nl/ai-foto-bewerken-gratis/#edit-workbench\">Start een bewerking<!-- --> <span aria-hidden=\"true\">→</span></a>",
+          "href": "/nl/ai-foto-bewerken-gratis/#edit-workbench",
+          "text": "Start een bewerking →"
+        }
+      ]
+    },
+    {
+      "name": "nl: edit-workbench id exists",
+      "pass": true,
+      "tag": "<div class=\"tool-wrap\" id=\"edit-workbench\">"
+    },
+    {
+      "name": "nl: active mode is self-referential",
+      "pass": true,
+      "activeModes": [
+        {
+          "raw": "<a class=\"workbench-mode is-active\" href=\"/nl/ai-foto-bewerken-gratis/#edit-workbench\" aria-current=\"page\">Bewerken</a>",
+          "href": "/nl/ai-foto-bewerken-gratis/#edit-workbench",
+          "text": "Bewerken"
+        }
+      ],
+      "expected": "/nl/ai-foto-bewerken-gratis/#edit-workbench"
+    },
+    {
+      "name": "frHome: exactly one incoming context link",
+      "pass": true,
+      "source": "/fr/",
+      "target": "/fr/retouche-photo-gratuite/",
+      "links": [
+        {
+          "raw": "<a class=\"context-link\" href=\"/fr/retouche-photo-gratuite/\">Retouche photo gratuite</a>",
+          "href": "/fr/retouche-photo-gratuite/",
+          "text": "Retouche photo gratuite"
+        }
+      ]
+    },
+    {
+      "name": "frAiRetouch: exactly one incoming context link",
+      "pass": true,
+      "source": "/fr/retouche-photo-ia/",
+      "target": "/fr/retouche-photo-gratuite/",
+      "links": [
+        {
+          "raw": "<a class=\"context-link\" href=\"/fr/retouche-photo-gratuite/\">Retouche photo gratuite</a>",
+          "href": "/fr/retouche-photo-gratuite/",
+          "text": "Retouche photo gratuite"
+        }
+      ]
+    },
+    {
+      "name": "nlHome: exactly one incoming context link",
+      "pass": true,
+      "source": "/nl/",
+      "target": "/nl/ai-foto-bewerken-gratis/",
+      "links": [
+        {
+          "raw": "<a class=\"context-link\" href=\"/nl/ai-foto-bewerken-gratis/\">AI foto bewerken gratis</a>",
+          "href": "/nl/ai-foto-bewerken-gratis/",
+          "text": "AI foto bewerken gratis"
+        }
+      ]
+    },
+    {
+      "name": "nlEdit: exactly one incoming context link",
+      "pass": true,
+      "source": "/nl/foto-bewerken-ai/",
+      "target": "/nl/ai-foto-bewerken-gratis/",
+      "links": [
+        {
+          "raw": "<a class=\"context-link\" href=\"/nl/ai-foto-bewerken-gratis/\">AI foto bewerken gratis</a>",
+          "href": "/nl/ai-foto-bewerken-gratis/",
+          "text": "AI foto bewerken gratis"
+        }
+      ]
+    },
+    {
+      "name": "fr: bare path redirects once to canonical path",
+      "pass": true,
+      "status": 308,
+      "location": "/fr/retouche-photo-gratuite/",
+      "trailingResponseReused": true
+    },
+    {
+      "name": "nl: bare path redirects once to canonical path",
+      "pass": true,
+      "status": 308,
+      "location": "/nl/ai-foto-bewerken-gratis/",
+      "trailingResponseReused": true
+    },
+    {
+      "name": "sitemap contains exactly 19 canonical URLs",
+      "pass": true,
+      "status": 200,
+      "actualCount": 19,
+      "expectedCount": 19
+    },
+    {
+      "name": "sitemap contains both new canonical locs",
+      "pass": true,
+      "rawNewLocs": [
+        "<loc>https://www.ovanto.ai/fr/retouche-photo-gratuite/</loc>",
+        "<loc>https://www.ovanto.ai/nl/ai-foto-bewerken-gratis/</loc>"
+      ],
+      "expected": [
+        "https://www.ovanto.ai/fr/retouche-photo-gratuite/",
+        "https://www.ovanto.ai/nl/ai-foto-bewerken-gratis/"
+      ]
+    },
+    {
+      "name": "GET-only request policy was respected",
+      "pass": true,
+      "requestedPaths": [
+        "/fr/retouche-photo-gratuite/",
+        "/nl/ai-foto-bewerken-gratis/",
+        "/fr/",
+        "/fr/retouche-photo-ia/",
+        "/nl/",
+        "/nl/foto-bewerken-ai/",
+        "/fr/retouche-photo-gratuite",
+        "/nl/ai-foto-bewerken-gratis",
+        "/sitemap.xml"
+      ]
+    }
+  ],
+  "pass": true,
+  "failures": []
+}

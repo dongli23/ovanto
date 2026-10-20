@@ -1,0 +1,20 @@
+{
+  "checkedAt": "2026-10-20T15:59:28.142Z",
+  "commit": "bca08183b54325ef8fb6a5a0003e5034a83f15e4",
+  "deploymentId": "dpl_FR185Lia1p6ZcH72b3vYoDnhVxM8",
+  "deploymentUrl": "https://ovanto-4op6wutsy-donglis-projects.vercel.app",
+  "productionUrl": "https://www.ovanto.ai",
+  "state": "READY",
+  "target": "production",
+  "checks": 46,
+  "failedChecks": 0,
+  "tests": {
+    "passed": 167,
+    "failed": 0
+  },
+  "typecheck": "PASS",
+  "localBuild": "PASS",
+  "productionBuild": "PASS",
+  "productionGenerationRequests": 0,
+  "apiFilesChanged": []
+}
