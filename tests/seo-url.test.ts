@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { PAGE_CONTENT } from "../lib/content";
-import { PUBLIC_HTML_ROUTES, canonicalPath, canonicalUrl, ROUTES, SITE_URL, SUPPORTED_LOCALES, TOOL_ROUTES, toolRoute, type ToolKind } from "../lib/site";
+import { freeEditAlternates, isFreeEditPagePath, PUBLIC_HTML_ROUTES, canonicalPath, canonicalUrl, ROUTES, SITE_URL, SUPPORTED_LOCALES, TOOL_ROUTES, toolRoute, type ToolKind } from "../lib/site";
 import sitemap from "../app/sitemap";
 import { assertCheckoutReturnPath, CHECKOUT_RETURN_PATHS } from "../lib/payments/config";
 import { proxy } from "../proxy";
@@ -30,7 +30,7 @@ test("every TOOL_ROUTES HTML path is the canonical trailing-slash form", () => {
 });
 
 test("PUBLIC_HTML_ROUTES is the complete canonical public page set", () => {
-  assert.equal(PUBLIC_HTML_ROUTES.length, 17, "expected 17 public HTML routes");
+  assert.equal(PUBLIC_HTML_ROUTES.length, 19, "expected 19 public HTML routes");
   for (const pathname of PUBLIC_HTML_ROUTES) {
     assert.equal(pathname, canonicalPath(pathname), `${pathname} not canonical`);
     assert.ok(pathname === "/" || pathname.endsWith("/"), `${pathname} missing trailing slash`);
@@ -38,9 +38,21 @@ test("PUBLIC_HTML_ROUTES is the complete canonical public page set", () => {
   }
   assert.ok(!PUBLIC_HTML_ROUTES.includes(ROUTES.nlGenerate), "legacy Dutch image route must not be canonical");
   // Contains the public legal pages.
-  for (const required of ["/fr/retouche-photo-ia/", "/aup/", "/pricing/", "/terms/", "/privacy/"]) {
+  for (const required of ["/fr/retouche-photo-ia/", "/fr/retouche-photo-gratuite/", "/nl/ai-foto-bewerken-gratis/", "/aup/", "/pricing/", "/terms/", "/privacy/"]) {
     assert.ok(PUBLIC_HTML_ROUTES.includes(required), `missing ${required}`);
   }
+});
+
+test("free-edit landing pages use one French/Dutch alternate group", () => {
+  assert.equal(isFreeEditPagePath(ROUTES.frFreeEdit), true);
+  assert.equal(isFreeEditPagePath(ROUTES.nlFreeEdit), true);
+  assert.equal(isFreeEditPagePath("/edit/"), false);
+  assert.deepEqual(freeEditAlternates(), [
+    { hrefLang: "fr", href: canonicalUrl(ROUTES.frFreeEdit) },
+    { hrefLang: "nl", href: canonicalUrl(ROUTES.nlFreeEdit) },
+    { hrefLang: "x-default", href: canonicalUrl(ROUTES.frFreeEdit) },
+  ]);
+  assert.equal(freeEditAlternates().some(({ href }) => href.endsWith("/edit/")), false);
 });
 
 test("French retouch page has the required five-alternate route map", () => {

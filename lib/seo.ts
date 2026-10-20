@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import type { PageDefinition } from "./content";
-import { SITE_URL } from "./site";
+import { isFreeEditPagePath, SITE_URL } from "./site";
 
 const OG_IMAGE_PATH = "/opengraph-image";
 
@@ -49,15 +49,17 @@ export function faqJsonLd(page: PageDefinition) {
 }
 
 export function webApplicationJsonLd(page: PageDefinition) {
+  const isFreeEditPage = isFreeEditPagePath(page.path);
   return {
     "@context": "https://schema.org",
     "@type": "WebApplication",
-    name: "Ovanto",
+    name: isFreeEditPage ? page.h1 : "Ovanto",
     url: page.url,
     applicationCategory: "MultimediaApplication",
     operatingSystem: "Web",
     browserRequirements: "Requires a modern web browser",
     isAccessibleForFree: true,
     description: page.description,
+    ...(isFreeEditPage ? { inLanguage: page.locale } : {}),
   };
 }

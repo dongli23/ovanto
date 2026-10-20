@@ -14,8 +14,10 @@ export const ROUTES = {
   frGenerate: "/fr/photo-ia-gratuit/",
   frEdit: "/fr/modifier-photo-ia/",
   frRetouch: "/fr/retouche-photo-ia/",
+  frFreeEdit: "/fr/retouche-photo-gratuite/",
   /** Legacy Dutch image landing page. Kept only so proxy can redirect it. */
   nlGenerate: "/nl/afbeeldingen-maken-met-ai/",
+  nlFreeEdit: "/nl/ai-foto-bewerken-gratis/",
 } as const;
 
 export function canonicalPath(pathname: string): string {
@@ -42,7 +44,9 @@ export const ABSOLUTE_ROUTES = {
   frGenerate: canonicalUrl(ROUTES.frGenerate),
   frEdit: canonicalUrl(ROUTES.frEdit),
   frRetouch: canonicalUrl(ROUTES.frRetouch),
+  frFreeEdit: canonicalUrl(ROUTES.frFreeEdit),
   nlGenerate: canonicalUrl(ROUTES.nlGenerate),
+  nlFreeEdit: canonicalUrl(ROUTES.nlFreeEdit),
 } as const;
 
 export const SUPPORTED_LOCALES = ["en", "it", "fr", "nl"] as const;
@@ -77,6 +81,21 @@ export function toolRoute(locale: Locale, toolKind: ToolKind): string {
   return TOOL_ROUTES[locale][toolKind];
 }
 
+/** The two free-edit landing pages form a dedicated French/Dutch alternate group. */
+export function isFreeEditPagePath(pathname: string): boolean {
+  const normalized = canonicalPath(pathname);
+  return normalized === ROUTES.frFreeEdit || normalized === ROUTES.nlFreeEdit;
+}
+
+/** The free-edit alternate group intentionally omits English and Italian. */
+export function freeEditAlternates() {
+  return [
+    { hrefLang: "fr", href: canonicalUrl(ROUTES.frFreeEdit) },
+    { hrefLang: "nl", href: canonicalUrl(ROUTES.nlFreeEdit) },
+    { hrefLang: "x-default", href: canonicalUrl(ROUTES.frFreeEdit) },
+  ] as const;
+}
+
 /**
  * The complete, deduplicated set of canonical public HTML paths.
  * sitemap.ts and proxy.ts both consume this so the canonical set never drifts.
@@ -85,6 +104,8 @@ export const PUBLIC_HTML_ROUTES = Array.from(
   new Set([
     ...Object.values(TOOL_ROUTES).flatMap((localeRoutes) => Object.values(localeRoutes)),
     ROUTES.frRetouch,
+    ROUTES.frFreeEdit,
+    ROUTES.nlFreeEdit,
     "/aup/",
     "/pricing/",
     "/terms/",

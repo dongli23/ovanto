@@ -3,7 +3,7 @@ import { headers } from "next/headers";
 import localFont from "next/font/local";
 import "./globals.css";
 import { PAGE_CONTENT, type PageDefinition } from "../lib/content";
-import { canonicalPath, canonicalUrl, isLocale, SITE_URL, toolRoute } from "../lib/site";
+import { canonicalPath, canonicalUrl, freeEditAlternates, isFreeEditPagePath, isLocale, SITE_URL, toolRoute } from "../lib/site";
 
 const manrope = localFont({
   src: "./fonts/ManropeLatin.woff2",
@@ -41,11 +41,18 @@ export default async function RootLayout({
       {page ? (
         <head>
           <link rel="canonical" href={canonicalUrl(page.path)} />
-          <link rel="alternate" hrefLang="en" href={canonicalUrl(toolRoute("en", page.toolKind))} />
-          <link rel="alternate" hrefLang="it" href={canonicalUrl(toolRoute("it", page.toolKind))} />
-          <link rel="alternate" hrefLang="fr" href={canonicalUrl(page.locale === "fr" ? page.path : toolRoute("fr", page.toolKind))} />
-          <link rel="alternate" hrefLang="nl" href={canonicalUrl(toolRoute("nl", page.toolKind))} />
-          <link rel="alternate" hrefLang="x-default" href={canonicalUrl(toolRoute("en", page.toolKind))} />
+          {(isFreeEditPagePath(page.path)
+            ? freeEditAlternates()
+            : [
+                { hrefLang: "en", href: canonicalUrl(toolRoute("en", page.toolKind)) },
+                { hrefLang: "it", href: canonicalUrl(toolRoute("it", page.toolKind)) },
+                { hrefLang: "fr", href: canonicalUrl(page.locale === "fr" ? page.path : toolRoute("fr", page.toolKind)) },
+                { hrefLang: "nl", href: canonicalUrl(toolRoute("nl", page.toolKind)) },
+                { hrefLang: "x-default", href: canonicalUrl(toolRoute("en", page.toolKind)) },
+              ]
+          ).map(({ hrefLang, href }) => (
+            <link key={hrefLang} rel="alternate" hrefLang={hrefLang} href={href} />
+          ))}
           <meta property="og:url" content={canonicalUrl(page.path)} />
         </head>
       ) : null}

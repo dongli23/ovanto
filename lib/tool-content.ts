@@ -420,6 +420,7 @@ export const TOOL_CONTENT: Record<ToolPageKey, PageDefinition> = {
     extraLinks: [
       { href: ROUTES.nl, label: "Gratis AI-afbeelding maken" },
       { href: ROUTES.nlVideo, label: "AI-video maken" },
+      { href: "/nl/ai-foto-bewerken-gratis/", label: "AI foto bewerken gratis" },
     ],
     toolKind: "edit",
     isVideo: false,

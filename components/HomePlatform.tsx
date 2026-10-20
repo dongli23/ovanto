@@ -22,17 +22,27 @@ const inspirationImages = [
   "/examples/botanical.svg",
 ] as const;
 
-export function HomePlatform({ locale, toolKind, variant }: { locale: Locale; toolKind: ToolKind; variant?: "frRetouch" }) {
+export function HomePlatform({
+  locale,
+  toolKind,
+  variant,
+  workbenchHrefOverride,
+}: {
+  locale: Locale;
+  toolKind: ToolKind;
+  variant?: "frRetouch" | "freeEdit";
+  workbenchHrefOverride?: string;
+}) {
   const copy = getToolPlatformCopy(locale, toolKind, WORKSPACE_COPY[locale].platform, variant);
   const imageHref = `${toolRoute(locale, "image")}#image-workbench`;
-  const workbenchHref = variant === "frRetouch" ? "/fr/retouche-photo-ia/#edit-workbench" : `${toolRoute(locale, toolKind)}#${toolKind}-workbench`;
+  const workbenchHref = workbenchHrefOverride ?? (variant === "frRetouch" ? "/fr/retouche-photo-ia/#edit-workbench" : `${toolRoute(locale, toolKind)}#${toolKind}-workbench`);
   const modelName = toolKind === "image" ? "Flux Schnell" : toolKind === "video" ? "Wan 2.5 · Kling 2.5 Turbo Pro" : "Flux Kontext Dev";
   const modelMonogram = toolKind === "image" ? "F" : toolKind === "video" ? "V" : "K";
 
   return <div className="platform-sections">
     <section id="ai-tools" className="platform-section" aria-label={copy.aria.tools}>
       <SectionHeading eyebrow={copy.tools.eyebrow} title={copy.tools.title} description={copy.tools.description} />
-      <div className="platform-tool-grid">{copy.tools.cards.map((tool) => <a className="platform-tool" href={tool.kind === "image" ? imageHref : toolRoute(locale, tool.kind)} key={tool.kind}>
+      <div className="platform-tool-grid">{copy.tools.cards.map((tool) => <a className="platform-tool" href={tool.kind === "image" ? imageHref : tool.kind === "edit" && workbenchHrefOverride ? workbenchHrefOverride : toolRoute(locale, tool.kind)} key={tool.kind}>
         <div className="platform-tool-image"><Image src={toolImages[tool.kind]} width={960} height={720} alt={tool.title} sizes="(max-width: 760px) 100vw, 33vw" loading="lazy" /><span>{copy.tools.explore} <span aria-hidden="true">↗</span></span></div>
         <div className="platform-tool-copy"><h3>{tool.title}</h3><p>{tool.description}</p><small>{tool.note}</small></div>
       </a>)}</div>

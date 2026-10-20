@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { existsSync } from "node:fs";
 import { PAGE_CONTENT } from "../lib/content";
-import { ROUTES, SUPPORTED_LOCALES, TOOL_ROUTES, canonicalPath, canonicalUrl, localeFromPath, toolRoute, type ToolKind } from "../lib/site";
+import { freeEditAlternates, isFreeEditPagePath, ROUTES, SUPPORTED_LOCALES, TOOL_ROUTES, canonicalPath, canonicalUrl, localeFromPath, toolRoute, type ToolKind } from "../lib/site";
 import sitemap from "../app/sitemap";
 import { assertCheckoutReturnPath } from "../lib/payments/config";
 
@@ -59,6 +59,17 @@ test("French retouch landing page keeps a distinct improvement intent", () => {
       "x-default": "/edit/",
     },
   );
+});
+
+test("French and Dutch free-edit landing pages share a reciprocal alternate group", () => {
+  assert.equal(isFreeEditPagePath(ROUTES.frFreeEdit), true);
+  assert.equal(isFreeEditPagePath(ROUTES.nlFreeEdit), true);
+  assert.deepEqual(freeEditAlternates(), [
+    { hrefLang: "fr", href: canonicalUrl(ROUTES.frFreeEdit) },
+    { hrefLang: "nl", href: canonicalUrl(ROUTES.nlFreeEdit) },
+    { hrefLang: "x-default", href: canonicalUrl(ROUTES.frFreeEdit) },
+  ]);
+  assert.equal(freeEditAlternates().some(({ href }) => href.includes("/edit/")), false);
 });
 
 test("sitemap includes every tool page without duplicate canonical URLs", () => {

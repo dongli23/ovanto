@@ -2,6 +2,7 @@ import type { Locale, ToolKind } from "./site";
 import type { HomePlatformCopy, PlatformInspirationCopy } from "./workspace-copy";
 
 type ToolPlatformOverride = {
+  tools?: Partial<HomePlatformCopy["tools"]>;
   models?: Partial<HomePlatformCopy["models"]>;
   inspiration?: Partial<HomePlatformCopy["inspiration"]>;
   benefits?: Partial<HomePlatformCopy["benefits"]>;
@@ -138,6 +139,144 @@ const frRetouchOverride: ToolPlatformOverride = {
     workflowCta: "Commencer une retouche",
     workflowAlt: "Référence conceptuelle pour améliorer la lumière et les couleurs d'une photo",
     workflowCaption: "Référence conceptuelle · une direction d'amélioration, pas un résultat garanti",
+  },
+};
+
+const frFreeEditInspiration: readonly PlatformInspirationCopy[] = [
+  { name: "Lumière plus douce", detail: "Une photo plus lisible au quotidien", alt: "Référence conceptuelle pour une photo à la lumière plus douce" },
+  { name: "Couleurs équilibrées", detail: "Des tons naturels et mieux définis", alt: "Référence conceptuelle pour équilibrer les couleurs d'une photo" },
+  { name: "Détails plus clairs", detail: "Contours et textures faciles à vérifier", alt: "Référence conceptuelle pour clarifier les détails d'une photo" },
+  { name: "Portrait naturel", detail: "Traits et expression à préserver", alt: "Référence conceptuelle pour améliorer un portrait naturel" },
+  { name: "Photo produit", detail: "Matières et lumière plus lisibles", alt: "Référence conceptuelle pour améliorer une photo produit" },
+  { name: "Paysage fidèle", detail: "Une ambiance conservée avec soin", alt: "Référence conceptuelle pour améliorer un paysage sans changer sa scène" },
+];
+
+const nlFreeEditInspiration: readonly PlatformInspirationCopy[] = [
+  { name: "Zachter licht", detail: "Een foto die rustiger leest", alt: "Conceptreferentie voor een foto met zachter licht" },
+  { name: "Natuurlijke kleuren", detail: "Een evenwichtige kleurbalans", alt: "Conceptreferentie voor natuurlijke kleuren in een foto" },
+  { name: "Duidelijke details", detail: "Randen en texturen beter zichtbaar", alt: "Conceptreferentie voor duidelijkere details in een foto" },
+  { name: "Natuurlijk portret", detail: "Gezicht en expressie herkenbaar", alt: "Conceptreferentie voor een natuurlijk verbeterd portret" },
+  { name: "Productfoto", detail: "Materiaal en licht beter leesbaar", alt: "Conceptreferentie voor een verbeterde productfoto" },
+  { name: "Landschap behouden", detail: "De sfeer blijft herkenbaar", alt: "Conceptreferentie voor een verbeterd landschap zonder nieuwe scène" },
+];
+
+const frFreeEditOverride: ToolPlatformOverride = {
+  tools: {
+    eyebrow: "Outils Ovanto",
+    title: "Une retouche gratuite, dans un parcours simple.",
+    description: "Importez une photo, décrivez une amélioration précise et vérifiez le résultat avant de le garder.",
+    cards: [
+      { kind: "image", title: "Générateur d'images", description: "Créez une image à partir d'une idée.", note: "3 images gratuites par jour" },
+      { kind: "video", title: "Vidéo IA", description: "Créez une courte vidéo à partir d'une idée.", note: "1 vidéo gratuite par jour" },
+      { kind: "edit", title: "Retouche photo gratuite", description: "Importez une photo et préparez une amélioration ciblée.", note: "1 retouche par jour et par IP" },
+    ],
+    note: "Chaque parcours a ses propres limites. La retouche gratuite accepte une photo jusqu'à 10 Mo, sans inscription.",
+  },
+  models: {
+    eyebrow: "Fonctionnement technique",
+    title: "Une retouche gratuite, avec des limites claires.",
+    description: "Flux Kontext Dev intervient comme méthode technique pour guider une retouche sur la photo importée. Le résultat peut modifier certains détails : vérifiez toujours l'image avant de la télécharger.",
+    modelDescription: "Flux Kontext Dev guide la lumière, les couleurs ou les détails selon votre instruction.",
+    details: "1 retouche gratuite par jour et par IP · renouvellement à 00:00 UTC · photo jusqu'à 10 Mo",
+    cta: "Ouvrir l'espace de retouche",
+  },
+  inspiration: {
+    title: "Choisissez l'amélioration qui compte.",
+    description: "Six références pour préciser la lumière, les couleurs ou les détails d'une photo. Elles montrent des directions possibles, pas des résultats garantis.",
+    items: frFreeEditInspiration,
+  },
+  benefits: {
+    title: "Les conditions restent visibles avant la retouche.",
+    items: [
+      { title: "1 retouche par jour", text: "La retouche gratuite est limitée à 1 utilisation par jour et par IP, avec un renouvellement à 00:00 UTC." },
+      { title: "Sans inscription", text: "Importez une photo et commencez dans le navigateur sans créer de compte." },
+      { title: "Photo jusqu'à 10 Mo", text: "Utilisez une image JPEG, PNG, GIF ou WEBP de 10 Mo maximum." },
+      { title: "Une demande ciblée", text: "Décrivez la lumière, les couleurs ou les détails à améliorer au lieu de demander un éditeur manuel général." },
+      { title: "Vérifiez avant de garder", text: "Comparez le résultat avec la photo source : une retouche guidée peut modifier certains détails." },
+      { title: "Des limites simples", text: "Le parcours traite une photo à la fois et ne promet ni retouches illimitées, ni traitement en lot, ni restauration sans perte." },
+    ],
+  },
+  process: {
+    title: "De la photo à une amélioration gratuite, en trois étapes.",
+    steps: [
+      { title: "Importer", text: "Choisissez une photo compatible de 10 Mo maximum, sans inscription." },
+      { title: "Décrire", text: "Indiquez une priorité : lumière, couleurs, détails ou élément à préserver." },
+      { title: "Vérifier", text: "Comparez le résultat avec l'original avant de le télécharger." },
+    ],
+  },
+  features: {
+    promptTitle: "Une demande pour une retouche ciblée.",
+    promptDescription: "Précisez l'amélioration souhaitée et ce qui doit rester reconnaissable. Une instruction courte aide à garder le contrôle sur un résultat qui peut tout de même modifier certains détails.",
+    promptCta: "Essayer une retouche gratuite",
+    promptPreviewLabel: "Demande de retouche · exemple",
+    promptText: "Adoucissez la lumière, équilibrez les couleurs et gardez les traits naturels",
+    promptTags: ["Lumière", "Couleurs", "Préserver"],
+    promptNote: "Une photo importée de 10 Mo maximum est nécessaire avant la génération.",
+    workflowTitle: "Comparez avant de télécharger.",
+    workflowDescription: "Le résultat reste dans le même espace pour vous permettre de vérifier les traits, les textures et les couleurs. La limite gratuite est de 1 retouche par jour et par IP.",
+    workflowCta: "Commencer une retouche",
+    workflowAlt: "Référence conceptuelle pour améliorer une photo sans changer son intention",
+    workflowCaption: "Référence conceptuelle · une direction d'amélioration, pas un résultat garanti",
+  },
+};
+
+const nlFreeEditOverride: ToolPlatformOverride = {
+  tools: {
+    eyebrow: "Ovanto-tools",
+    title: "Gratis een foto verbeteren, stap voor stap.",
+    description: "Upload een foto, beschrijf één gerichte verbetering en controleer het resultaat voordat je het bewaart.",
+    cards: [
+      { kind: "image", title: "Afbeeldingengenerator", description: "Maak een afbeelding vanuit een idee.", note: "3 gratis afbeeldingen per dag" },
+      { kind: "video", title: "AI-video", description: "Maak een korte video vanuit een idee.", note: "1 gratis video per dag" },
+      { kind: "edit", title: "Gratis foto bewerken", description: "Upload een foto en beschrijf een gerichte verbetering.", note: "1 bewerking per dag en per IP" },
+    ],
+    note: "Elke workflow heeft eigen grenzen. Gratis fotobewerking accepteert één foto tot 10 MB, zonder registratie.",
+  },
+  models: {
+    eyebrow: "Technische werking",
+    title: "Gratis bewerken, met duidelijke grenzen.",
+    description: "Flux Kontext Dev is de technische methode achter de tekstgestuurde verbetering van je geüploade foto. Het resultaat kan details wijzigen: controleer de afbeelding altijd voordat je downloadt.",
+    modelDescription: "Flux Kontext Dev volgt je instructie voor licht, kleur of details.",
+    details: "1 gratis bewerking per dag en per IP · vernieuwing om 00:00 UTC · foto tot 10 MB",
+    cta: "Open de fotobewerker",
+  },
+  inspiration: {
+    title: "Kies de verbetering die telt.",
+    description: "Zes referenties om licht, kleuren of details van een foto te beschrijven. Ze tonen mogelijke richtingen, geen gegarandeerde resultaten.",
+    items: nlFreeEditInspiration,
+  },
+  benefits: {
+    title: "De voorwaarden blijven zichtbaar voordat je bewerkt.",
+    items: [
+      { title: "1 bewerking per dag", text: "Gratis bewerken is beperkt tot 1 gebruik per dag en per IP en wordt om 00:00 UTC vernieuwd." },
+      { title: "Geen registratie", text: "Upload een foto en begin in de browser zonder een account te maken." },
+      { title: "Foto tot 10 MB", text: "Gebruik een JPEG-, PNG-, GIF- of WEBP-afbeelding van maximaal 10 MB." },
+      { title: "Gerichte opdracht", text: "Beschrijf licht, kleuren of details die beter mogen worden in plaats van een algemene handmatige editor te verwachten." },
+      { title: "Controleer eerst", text: "Vergelijk het resultaat met de bronfoto: een tekstgestuurde bewerking kan details veranderen." },
+      { title: "Eenvoudige grenzen", text: "De workflow verwerkt één foto per keer en belooft geen onbeperkte bewerkingen, batchverwerking of verliesvrije restauratie." },
+    ],
+  },
+  process: {
+    title: "Van foto naar gratis verbetering in drie stappen.",
+    steps: [
+      { title: "Uploaden", text: "Kies een compatibele foto van maximaal 10 MB, zonder registratie." },
+      { title: "Beschrijven", text: "Noem één prioriteit: licht, kleuren, details of wat hetzelfde moet blijven." },
+      { title: "Controleren", text: "Vergelijk het resultaat met het origineel voordat je downloadt." },
+    ],
+  },
+  features: {
+    promptTitle: "Een opdracht voor gerichte verbetering.",
+    promptDescription: "Beschrijf de verbetering en wat herkenbaar moet blijven. Een korte instructie helpt je het resultaat te beoordelen, ook wanneer sommige details kunnen veranderen.",
+    promptCta: "Probeer gratis fotobewerking",
+    promptPreviewLabel: "Bewerkingsopdracht · voorbeeld",
+    promptText: "Maak het licht zachter, breng de kleuren in balans en behoud de natuurlijke gelaatstrekken",
+    promptTags: ["Licht", "Kleuren", "Behouden"],
+    promptNote: "Upload eerst een foto van maximaal 10 MB voordat je genereert.",
+    workflowTitle: "Vergelijk voordat je downloadt.",
+    workflowDescription: "Het resultaat blijft in dezelfde werkruimte zodat je gezicht, texturen en kleuren kunt controleren. De gratis limiet is 1 bewerking per dag en per IP.",
+    workflowCta: "Start een bewerking",
+    workflowAlt: "Conceptreferentie voor een fotoverbetering die de bedoeling van de foto behoudt",
+    workflowCaption: "Conceptreferentie · een verbeteringsrichting, geen gegarandeerd resultaat",
   },
 };
 
@@ -536,15 +675,18 @@ const overrides: Record<Locale, Record<NonImageToolKind, ToolPlatformOverride>> 
   },
 };
 
-export function getToolPlatformCopy(locale: Locale, toolKind: ToolKind, base: HomePlatformCopy, variant?: "frRetouch"): HomePlatformCopy {
+export function getToolPlatformCopy(locale: Locale, toolKind: ToolKind, base: HomePlatformCopy, variant?: "frRetouch" | "freeEdit"): HomePlatformCopy {
   if (toolKind === "image") return base;
   const override = variant === "frRetouch" && locale === "fr" && toolKind === "edit"
     ? frRetouchOverride
-    : overrides[locale][toolKind];
+    : variant === "freeEdit" && toolKind === "edit"
+      ? locale === "fr" ? frFreeEditOverride : locale === "nl" ? nlFreeEditOverride : undefined
+      : overrides[locale][toolKind];
   if (!override) return base;
 
   return {
     ...base,
+    tools: { ...base.tools, ...override.tools },
     models: { ...base.models, ...override.models },
     inspiration: { ...base.inspiration, ...override.inspiration },
     benefits: { ...base.benefits, ...override.benefits },

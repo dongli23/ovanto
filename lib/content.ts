@@ -29,13 +29,15 @@ export type PageDefinition = {
     | "frGenerate"
     | "frEdit"
     | "frRetouch"
+    | "frFreeEdit"
     | "nl"
     | "enVideo"
     | "enEdit"
     | "itImage"
     | "itEdit"
     | "nlVideo"
-    | "nlEdit";
+    | "nlEdit"
+    | "nlFreeEdit";
   locale: Locale;
   path: string;
   url: string;
@@ -271,6 +273,7 @@ export const PAGE_CONTENT: Record<PageDefinition["key"], PageDefinition> = {
       { href: "/fr/photo-ia-gratuit/", label: "Photo IA gratuit" },
       { href: "/fr/modifier-photo-ia/", label: "Modifier photo IA" },
       { href: "/fr/retouche-photo-ia/", label: "Retoucher la qualité d'une photo avec l'IA" },
+      { href: "/fr/retouche-photo-gratuite/", label: "Retouche photo gratuite" },
     ],
     toolKind: "video",
     isVideo: true,
@@ -472,7 +475,72 @@ export const PAGE_CONTENT: Record<PageDefinition["key"], PageDefinition> = {
     extraLinks: [
       { href: "/fr/modifier-photo-ia/", label: "Modifier le contenu d'une photo avec l'IA" },
       { href: "/fr/photo-ia-gratuit/", label: "Générateur de photos IA gratuit" },
+      { href: "/fr/retouche-photo-gratuite/", label: "Retouche photo gratuite" },
     ],
+    toolKind: "edit",
+    isVideo: false,
+  },
+  frFreeEdit: {
+    key: "frFreeEdit",
+    locale: "fr",
+    path: "/fr/retouche-photo-gratuite/",
+    url: ABSOLUTE_ROUTES.frFreeEdit,
+    title: "Retouche Photo Gratuite — Sans Inscription | Ovanto",
+    description:
+      "Retouchez une photo gratuitement en ligne, sans inscription : téléversez un fichier, utilisez votre quota quotidien et téléchargez le résultat.",
+    h1: "Retouche Photo Gratuite en Ligne",
+    valueLine: "Préparez une retouche gratuite directement dans votre navigateur, sans créer de compte.",
+    h2s: [
+      "Retoucher une Photo Gratuite en 3 Étapes",
+      "Une Retouche Gratuite Sans Inscription",
+      "Ce Que Vous Pouvez Faire avec Votre Retouche Gratuite",
+      "Questions Fréquentes sur la Retouche Photo Gratuite",
+    ],
+    sectionLeads: [
+      "Téléversez une photo, décrivez la retouche souhaitée et regardez le résultat avant de le télécharger. Vous pouvez demander une amélioration ciblée de la lumière, des couleurs ou de certains détails, puis comparer la version préparée avec l'original. Le parcours reste court pour vous aider à vérifier l'image avant de garder le fichier.",
+      "La retouche photo est accessible sans inscription et comprend 1 modification gratuite par jour et par IP. Ce quota est commun aux parcours gratuits de retouche, y compris la page de retouche photo IA, et ne donne pas une modification séparée à chaque entrée. Il se réinitialise à 00:00 UTC. Les fichiers JPEG, PNG, GIF et WEBP jusqu'à 10 Mo sont acceptés. Le service prépare une retouche guidée ; il ne remplace pas un éditeur manuel complet et ne comprend ni traitement illimité ni traitement par lots.",
+      "La formule gratuite convient à une correction précise : équilibrer une lumière, rendre des couleurs plus lisibles ou clarifier un détail qui attire l'attention. Décrivez ce qui doit rester naturel et ce que vous souhaitez ajuster, puis contrôlez les contours, les textures et les proportions avant de télécharger. Une seule intention claire par essai facilite la comparaison.",
+    ],
+    sectionDetails: [
+      [
+        "Commencez par le sujet de la photo et le résultat attendu. Une demande comme équilibrer la lumière d'un portrait et conserver ses traits donne une direction plus utile qu'une liste de changements sans priorité.",
+        "Après le traitement, comparez la photo source et la nouvelle version. Si un détail mérite une autre direction, attendez le prochain quota quotidien plutôt que de demander plusieurs modifications dans la même requête.",
+      ],
+      [
+        "Aucun profil n'est nécessaire pour essayer le parcours. Le quota est partagé par IP et se renouvelle à 00:00 UTC ; une nouvelle journée permet donc de préparer une autre retouche gratuite.",
+        "La limite quotidienne aide à garder une demande précise. Pour un travail par lots, une retouche manuelle détaillée ou un résultat sans aucune variation, prévoyez une vérification et une édition complémentaire dans votre outil habituel.",
+      ],
+      [
+        "Pour un portrait, indiquez la lumière, le contraste et les traits à préserver. Pour une photo de produit, décrivez la matière, les reflets et la couleur à équilibrer. Pour un paysage, précisez l'atmosphère et les détails qui doivent rester reconnaissables.",
+        "Le résultat dépend de la photo fournie et de la précision de votre consigne. Vérifiez toujours le rendu final avant de le partager ou de l'utiliser dans une présentation.",
+      ],
+    ],
+    faq: [
+      {
+        question: "La retouche photo est-elle vraiment gratuite ?",
+        answer:
+          "Oui. Vous pouvez effectuer 1 retouche par jour et par IP sans inscription. Le quota se réinitialise à 00:00 UTC.",
+      },
+      {
+        question: "Faut-il créer un compte pour retoucher une photo ?",
+        answer:
+          "Non. Téléversez une image JPEG, PNG, GIF ou WEBP de 10 Mo maximum, décrivez la retouche, puis comparez et téléchargez le résultat sans créer de compte.",
+      },
+      {
+        question: "Quels fichiers et quelles limites s'appliquent ?",
+        answer:
+          "Les fichiers JPEG, PNG, GIF et WEBP jusqu'à 10 Mo sont acceptés. Le quota gratuit commun aux parcours de retouche est limité à 1 retouche par jour et par IP ; les retouches illimitées et par lots ne sont pas incluses.",
+      },
+    ],
+    steps: ["Téléversez une photo", "Décrivez la retouche", "Comparez et téléchargez"],
+    useCases: [
+      "Équilibrez la lumière d'un portrait en indiquant les traits, l'expression et les textures qui doivent rester naturels. Une correction ciblée peut rendre le visage plus lisible sans changer le sujet.",
+      "Rendez une photo de produit plus claire en décrivant la couleur, la matière, les reflets et le contraste souhaité. Vérifiez les contours avant d'utiliser le résultat dans une fiche ou une présentation.",
+      "Clarifiez une scène ou un paysage en précisant l'atmosphère, la lumière et les détails à conserver. Une consigne courte aide à garder le lieu reconnaissable pendant la retouche.",
+    ],
+    examples: examples.fr,
+    trustPoints: ["Gratuit : 1 retouche/jour/IP", "Sans inscription", "10 Mo · JPEG/PNG/GIF/WEBP"],
+    extraLinks: [{ href: "/fr/retouche-photo-ia/", label: "retouche photo IA" }],
     toolKind: "edit",
     isVideo: false,
   },
@@ -536,8 +604,72 @@ export const PAGE_CONTENT: Record<PageDefinition["key"], PageDefinition> = {
     ],
     examples: examples.nl,
     trustPoints: ["Gratis: 3 afbeeldingen per dag", "Geen registratie", "Prompt → Afbeelding"],
-    extraLinks: [],
+    extraLinks: [{ href: "/nl/ai-foto-bewerken-gratis/", label: "AI foto bewerken gratis" }],
     toolKind: "image",
+    isVideo: false,
+  },
+  nlFreeEdit: {
+    key: "nlFreeEdit",
+    locale: "nl",
+    path: "/nl/ai-foto-bewerken-gratis/",
+    url: ABSOLUTE_ROUTES.nlFreeEdit,
+    title: "AI Foto Bewerken Gratis — Zonder Registratie | Ovanto",
+    description:
+      "Bewerk gratis een foto met AI zonder registratie. Upload een bestand, gebruik je dagelijkse gratis bewerking en download het resultaat online.",
+    h1: "AI Foto Bewerken Gratis",
+    valueLine: "Bereid één gerichte gratis fotobewerking voor zonder een account te maken.",
+    h2s: [
+      "Een Foto Gratis Bewerken met AI in 3 Stappen",
+      "Gratis Bewerken Zonder Registratie",
+      "Wat Je met een Gratis Bewerking Kunt Doen",
+      "Veelgestelde Vragen over AI Foto Bewerken",
+    ],
+    sectionLeads: [
+      "Upload een foto, beschrijf de gewenste bewerking en bekijk het resultaat voordat je het downloadt. Vraag bijvoorbeeld om een gerichte verbetering van licht, kleur of een zichtbaar detail en vergelijk de nieuwe versie met het origineel. Zo blijft de gratis route overzichtelijk van bestand tot controle.",
+      "Je hebt geen registratie nodig en krijgt 1 gratis bewerking per dag per IP. Dit quotum is gedeeld door de gratis bewerkingsroutes, inclusief de AI-fotobewerkingspagina, en geeft niet voor elke ingang een aparte bewerking. Het quotum vernieuwt om 00:00 UTC. JPEG-, PNG-, GIF- en WEBP-bestanden tot 10 MB worden ondersteund. De dienst bereidt één gerichte bewerking voor; onbeperkt, batchmatig of volledig handmatig bewerken hoort niet bij het gratis aanbod.",
+      "De gratis bewerking is geschikt voor een duidelijke correctie: licht gelijkmatiger maken, kleuren leesbaarder maken of een detail beter laten uitkomen. Beschrijf wat herkenbaar moet blijven en welke kleine aanpassing je wilt, controleer daarna randen, texturen en verhoudingen voordat je het bestand gebruikt.",
+    ],
+    sectionDetails: [
+      [
+        "Begin met het onderwerp en de gewenste uitkomst. Een zin als maak het portret lichter maar behoud de huid en gezichtsuitdrukking geeft meer richting dan een lange lijst zonder prioriteit.",
+        "Vergelijk het resultaat daarna met de oorspronkelijke foto. Als een ander detail belangrijker blijkt, kun je na de volgende dagelijkse vernieuwing een nieuwe gerichte poging voorbereiden.",
+      ],
+      [
+        "Je hoeft geen profiel aan te maken om de route te proberen. Het dagquotum is gekoppeld aan het IP-adres en vernieuwt om 00:00 UTC, zodat een nieuwe dag weer ruimte geeft voor één gratis bewerking.",
+        "De dagelijkse limiet helpt om één duidelijke vraag per poging te formuleren. Voor veel bestanden, een uitgebreide handmatige workflow of onbeperkte varianten heb je aanvullende bewerking buiten dit gratis aanbod nodig.",
+      ],
+      [
+        "Beschrijf bij een portret de belichting, het contrast en de kenmerken die natuurlijk moeten blijven. Noem bij een product de kleur, het materiaal en de reflecties. Geef bij een landschap aan welke sfeer en herkenbare details behouden moeten blijven.",
+        "De kwaliteit van het resultaat hangt af van de bronfoto en je instructie. Controleer altijd de uiteindelijke afbeelding voordat je haar deelt of in een presentatie gebruikt.",
+      ],
+    ],
+    faq: [
+      {
+        question: "Kan ik gratis een foto bewerken met AI?",
+        answer:
+          "Ja. Je kunt zonder account 1 foto per dag per IP bewerken. Het gratis quotum wordt om 00:00 UTC vernieuwd.",
+      },
+      {
+        question: "Heb ik registratie nodig om een foto te bewerken?",
+        answer:
+          "Nee. Upload een JPEG-, PNG-, GIF- of WEBP-afbeelding van maximaal 10 MB, beschrijf de bewerking en bekijk en download het resultaat zonder account.",
+      },
+      {
+        question: "Welke bestanden en beperkingen gelden er?",
+        answer:
+          "JPEG-, PNG-, GIF- en WEBP-bestanden tot 10 MB worden ondersteund. Het gedeelde gratis quotum voor bewerkingsroutes is 1 bewerking per dag per IP; onbeperkt en batchmatig bewerken is niet inbegrepen.",
+      },
+    ],
+    steps: ["Upload een foto", "Beschrijf de bewerking", "Vergelijk en download"],
+    useCases: [
+      "Maak een portret beter leesbaar door licht en contrast te beschrijven en de uitdrukking en huidtextuur te behouden. Een gerichte vraag helpt het onderwerp herkenbaar te houden.",
+      "Laat een productfoto duidelijker uitkomen door kleur, materiaal, reflecties en gewenst contrast te noemen. Controleer de randen voordat je het resultaat in een producttekst of presentatie gebruikt.",
+      "Verhelder een landschap of scène door licht, sfeer en herkenbare details te benoemen. Een korte instructie kan de foto leesbaarder maken zonder de plaats of het onderwerp te vervangen.",
+    ],
+    examples: examples.nl,
+    trustPoints: ["Gratis: 1 bewerking/dag/IP", "Geen registratie", "10 MB · JPEG/PNG/GIF/WEBP"],
+    extraLinks: [{ href: "/nl/foto-bewerken-ai/", label: "foto bewerken met AI" }],
+    toolKind: "edit",
     isVideo: false,
   },
   ...TOOL_CONTENT,
