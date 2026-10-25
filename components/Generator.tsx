@@ -567,6 +567,31 @@ export function Generator({
     setPromptState(nextPrompt);
   }, []);
 
+  const applyExamplePrompt = useCallback((examplePrompt: string) => {
+    if (status === "loading") return false;
+    setError(null);
+    setDownloadError(null);
+    setStatus("idle");
+    setPrompt(examplePrompt);
+    window.requestAnimationFrame(() => promptRef.current?.focus({ preventScroll: true }));
+    return true;
+  }, [setPrompt, status]);
+
+  useEffect(() => {
+    if (locale !== "en" || kind !== "image") return;
+    const receiveGalleryPrompt = (event: Event) => {
+      const detail: unknown = (event as CustomEvent).detail;
+      if (!detail || typeof detail !== "object") return;
+      const selection = detail as { prompt?: unknown; kind?: unknown };
+      if (selection.kind !== "image" || typeof selection.prompt !== "string") return;
+      if (applyExamplePrompt(selection.prompt)) {
+        promptRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+    };
+    window.addEventListener("ovanto:gallery-prompt", receiveGalleryPrompt);
+    return () => window.removeEventListener("ovanto:gallery-prompt", receiveGalleryPrompt);
+  }, [applyExamplePrompt, kind, locale]);
+
   useEffect(() => {
     if (promptRestoreAttemptedRef.current) return;
     promptRestoreAttemptedRef.current = true;
@@ -1252,15 +1277,7 @@ export function Generator({
                 type="button"
                 className="prompt-example"
                 key={`${example.label}-${example.prompt}`}
-                onClick={() => {
-                  if (status !== "loading") {
-                    setError(null);
-                    setDownloadError(null);
-                    setStatus("idle");
-                  }
-                  setPrompt(example.prompt);
-                  window.requestAnimationFrame(() => promptRef.current?.focus({ preventScroll: true }));
-                }}
+                onClick={() => { applyExamplePrompt(example.prompt); }}
                 disabled={status === "loading"}
               >
                 <svg className="prompt-example-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">

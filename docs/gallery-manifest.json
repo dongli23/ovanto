@@ -3,7 +3,7 @@
     "id": "image-01",
     "group": "image",
     "files": [
-      "public/gallery/image/image-01.webp"
+      "public/gallery/image/pet-portrait-window.webp"
     ],
     "prompt": "A gentle portrait of a fictional rescue dog beside a sleepy cat in soft window light, soft side lighting, centered square composition, tactile editorial detail, natural color; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
     "model": "black-forest-labs/flux-schnell",
@@ -15,7 +15,10 @@
     "generatedAt": "2026-10-25T01:13:55.235Z",
     "costUsd": 0.003,
     "costBasis": "estimated_provider_cost_no_invoice",
-    "requestId": "as9n39qkf9rzw0d1e2fbp5y8x8"
+    "requestId": "as9n39qkf9rzw0d1e2fbp5y8x8",
+    "displaySelected": true,
+    "displayAlt": "A brown-and-white dog beside a sleeping ginger cat in window light.",
+    "displayCaption": "Pet portrait · warm window light"
   },
   {
     "id": "image-02",
@@ -33,13 +36,14 @@
     "generatedAt": "2026-10-25T01:13:59.617Z",
     "costUsd": 0.003,
     "costBasis": "estimated_provider_cost_no_invoice",
-    "requestId": "80f4r90hxxrzt0d1e2fv1bv4pr"
+    "requestId": "80f4r90hxxrzt0d1e2fv1bv4pr",
+    "displaySelected": false
   },
   {
     "id": "image-03",
     "group": "image",
     "files": [
-      "public/gallery/image/image-03.webp"
+      "public/gallery/image/ceramic-cup-morning.webp"
     ],
     "prompt": "A sculptural ceramic cup and folded linen on a quiet sunlit table, soft side lighting, centered square composition, tactile editorial detail, natural color; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
     "model": "black-forest-labs/flux-schnell",
@@ -51,7 +55,10 @@
     "generatedAt": "2026-10-25T01:14:06.572Z",
     "costUsd": 0.003,
     "costBasis": "estimated_provider_cost_no_invoice",
-    "requestId": "3v6t6a132srzr0d1e2frj4hqzm"
+    "requestId": "3v6t6a132srzr0d1e2frj4hqzm",
+    "displaySelected": true,
+    "displayAlt": "A sculptural ceramic cup and folded linen on a quiet sunlit table.",
+    "displayCaption": "Product still life · morning light"
   },
   {
     "id": "image-04",
@@ -69,13 +76,14 @@
     "generatedAt": "2026-10-25T01:14:13.951Z",
     "costUsd": 0.003,
     "costBasis": "estimated_provider_cost_no_invoice",
-    "requestId": "g4g56p1y89rzy0d1e2fsxh5kv8"
+    "requestId": "g4g56p1y89rzy0d1e2fsxh5kv8",
+    "displaySelected": false
   },
   {
     "id": "image-05",
     "group": "image",
     "files": [
-      "public/gallery/image/image-05.webp"
+      "public/gallery/image/coffee-shop-morning.webp"
     ],
     "prompt": "A calm European coffee shop interior with warm morning light and empty tables, soft side lighting, centered square composition, tactile editorial detail, natural color; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
     "model": "black-forest-labs/flux-schnell",
@@ -87,7 +95,10 @@
     "generatedAt": "2026-10-25T01:14:21.434Z",
     "costUsd": 0.003,
     "costBasis": "estimated_provider_cost_no_invoice",
-    "requestId": "y62pwj2v1drzw0d1e2ft9313ew"
+    "requestId": "y62pwj2v1drzw0d1e2ft9313ew",
+    "displaySelected": true,
+    "displayAlt": "A warm European coffee shop interior with empty tables and morning light.",
+    "displayCaption": "Interior space · warm morning light"
   },
   {
     "id": "image-06",
@@ -105,7 +116,8 @@
     "generatedAt": "2026-10-25T01:14:29.376Z",
     "costUsd": 0.003,
     "costBasis": "estimated_provider_cost_no_invoice",
-    "requestId": "dehtpcvr99rzr0d1e2fv0wd7t0"
+    "requestId": "dehtpcvr99rzr0d1e2fv0wd7t0",
+    "displaySelected": false
   },
   {
     "id": "image-07",
@@ -123,13 +135,14 @@
     "generatedAt": "2026-10-25T01:14:36.863Z",
     "costUsd": 0.003,
     "costBasis": "estimated_provider_cost_no_invoice",
-    "requestId": "q4z7rj4q91rzw0d1e2fr8zac3m"
+    "requestId": "q4z7rj4q91rzw0d1e2fr8zac3m",
+    "displaySelected": false
   },
   {
     "id": "image-08",
     "group": "image",
     "files": [
-      "public/gallery/image/image-08.webp"
+      "public/gallery/image/fruit-tart-daylight.webp"
     ],
     "prompt": "A close-up of a rustic fruit tart with fresh berries on a handmade plate, cool window rim light, balanced off-center composition, tactile editorial detail, natural color; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
     "model": "black-forest-labs/flux-schnell",
@@ -141,7 +154,10 @@
     "generatedAt": "2026-10-25T01:14:44.280Z",
     "costUsd": 0.003,
     "costBasis": "estimated_provider_cost_no_invoice",
-    "requestId": "mqb1tznmhxrzy0d1e2frqcdjx8"
+    "requestId": "mqb1tznmhxrzy0d1e2frqcdjx8",
+    "displaySelected": true,
+    "displayAlt": "A rustic fruit tart with berries on a handmade plate in close view.",
+    "displayCaption": "Food close-up · fresh daylight"
   },
   {
     "id": "image-09",
@@ -159,13 +175,14 @@
     "generatedAt": "2026-10-25T01:14:51.870Z",
     "costUsd": 0.003,
     "costBasis": "estimated_provider_cost_no_invoice",
-    "requestId": "t328nbehfsrzr0d1e2fvvydycw"
+    "requestId": "t328nbehfsrzr0d1e2fvvydycw",
+    "displaySelected": false
   },
   {
     "id": "image-10",
     "group": "image",
     "files": [
-      "public/gallery/image/image-10.webp"
+      "public/gallery/image/alpine-lake-dawn.webp"
     ],
     "prompt": "Misty alpine hills and a clear lake at dawn, wide cinematic landscape, cool window rim light, balanced off-center composition, tactile editorial detail, natural color; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
     "model": "black-forest-labs/flux-schnell",
@@ -177,13 +194,16 @@
     "generatedAt": "2026-10-25T01:14:57.519Z",
     "costUsd": 0.003,
     "costBasis": "estimated_provider_cost_no_invoice",
-    "requestId": "crex227h45rzt0d1e2fta6kdfm"
+    "requestId": "crex227h45rzt0d1e2fta6kdfm",
+    "displaySelected": true,
+    "displayAlt": "Misty alpine hills and a clear lake at dawn.",
+    "displayCaption": "Landscape · misty dawn"
   },
   {
     "id": "image-11",
     "group": "image",
     "files": [
-      "public/gallery/image/image-11.webp"
+      "public/gallery/image/stone-courtyard-afternoon.webp"
     ],
     "prompt": "A contemporary stone courtyard with arches, plants, and long afternoon shadows, soft side lighting, centered square composition, tactile editorial detail, natural color; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
     "model": "black-forest-labs/flux-schnell",
@@ -195,7 +215,10 @@
     "generatedAt": "2026-10-25T01:15:06.443Z",
     "costUsd": 0.003,
     "costBasis": "estimated_provider_cost_no_invoice",
-    "requestId": "5zjbvzr56xrzy0d1e2gbf7dbjc"
+    "requestId": "5zjbvzr56xrzy0d1e2gbf7dbjc",
+    "displaySelected": true,
+    "displayAlt": "A contemporary stone courtyard with arches, plants and long shadows.",
+    "displayCaption": "Architecture · afternoon shadows"
   },
   {
     "id": "image-12",
@@ -213,7 +236,8 @@
     "generatedAt": "2026-10-25T01:15:14.231Z",
     "costUsd": 0.003,
     "costBasis": "estimated_provider_cost_no_invoice",
-    "requestId": "s8gpct982xrzw0d1e2gb1tc9h4"
+    "requestId": "s8gpct982xrzw0d1e2gb1tc9h4",
+    "displaySelected": false
   },
   {
     "id": "image-13",
@@ -231,13 +255,14 @@
     "generatedAt": "2026-10-25T01:15:22.625Z",
     "costUsd": 0.003,
     "costBasis": "estimated_provider_cost_no_invoice",
-    "requestId": "kfp83aj6gdrzt0d1e2g9dpyygr"
+    "requestId": "kfp83aj6gdrzt0d1e2g9dpyygr",
+    "displaySelected": false
   },
   {
     "id": "image-14",
     "group": "image",
     "files": [
-      "public/gallery/image/image-14.webp"
+      "public/gallery/image/woven-backpack-studio.webp"
     ],
     "prompt": "A neutral studio product photograph of a woven travel backpack with no markings, cool window rim light, balanced off-center composition, tactile editorial detail, natural color; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
     "model": "black-forest-labs/flux-schnell",
@@ -249,13 +274,16 @@
     "generatedAt": "2026-10-25T01:15:30.079Z",
     "costUsd": 0.003,
     "costBasis": "estimated_provider_cost_no_invoice",
-    "requestId": "m4e0e3k799rzy0d1e2g9jp9bec"
+    "requestId": "m4e0e3k799rzy0d1e2g9jp9bec",
+    "displaySelected": true,
+    "displayAlt": "A woven travel backpack photographed against a neutral studio background.",
+    "displayCaption": "E-commerce product · neutral studio"
   },
   {
     "id": "image-15",
     "group": "image",
     "files": [
-      "public/gallery/image/image-15.webp"
+      "public/gallery/image/bicycle-flat-sun.webp"
     ],
     "prompt": "A flat geometric illustration of a bicycle, leaves, and a bright sun, soft side lighting, centered square composition, tactile editorial detail, natural color; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
     "model": "black-forest-labs/flux-schnell",
@@ -267,7 +295,10 @@
     "generatedAt": "2026-10-25T01:15:34.323Z",
     "costUsd": 0.003,
     "costBasis": "estimated_provider_cost_no_invoice",
-    "requestId": "1cy3fvc4e5rzw0d1e2gaf5qmcr"
+    "requestId": "1cy3fvc4e5rzw0d1e2gaf5qmcr",
+    "displaySelected": true,
+    "displayAlt": "A flat geometric bicycle illustration with leaves and a bright sun.",
+    "displayCaption": "Flat illustration · bright geometric color"
   },
   {
     "id": "image-16",
@@ -285,13 +316,14 @@
     "generatedAt": "2026-10-25T01:15:42.144Z",
     "costUsd": 0.003,
     "costBasis": "estimated_provider_cost_no_invoice",
-    "requestId": "9m8rne4n11rzy0d1e2gb1nxg9c"
+    "requestId": "9m8rne4n11rzy0d1e2gb1nxg9c",
+    "displaySelected": false
   },
   {
     "id": "image-17",
     "group": "image",
     "files": [
-      "public/gallery/image/image-17.webp"
+      "public/gallery/image/glass-terrarium-softlight.webp"
     ],
     "prompt": "A small translucent glass terrarium rendered in polished 3D on a plain pedestal, soft side lighting, centered square composition, tactile editorial detail, natural color; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
     "model": "black-forest-labs/flux-schnell",
@@ -303,7 +335,10 @@
     "generatedAt": "2026-10-25T01:15:49.439Z",
     "costUsd": 0.003,
     "costBasis": "estimated_provider_cost_no_invoice",
-    "requestId": "1gct4ynkn5rzy0d1e2ga6a3sgg"
+    "requestId": "1gct4ynkn5rzy0d1e2ga6a3sgg",
+    "displaySelected": true,
+    "displayAlt": "A translucent glass terrarium displayed on a plain pedestal in soft light.",
+    "displayCaption": "3D rendered object · soft studio light"
   },
   {
     "id": "image-18",
@@ -321,7 +356,8 @@
     "generatedAt": "2026-10-25T01:15:57.332Z",
     "costUsd": 0.003,
     "costBasis": "estimated_provider_cost_no_invoice",
-    "requestId": "hhfnxa6g45rzw0d1e2g9f9ww1m"
+    "requestId": "hhfnxa6g45rzw0d1e2g9f9ww1m",
+    "displaySelected": false
   },
   {
     "id": "image-19",
@@ -339,13 +375,14 @@
     "generatedAt": "2026-10-25T01:16:04.950Z",
     "costUsd": 0.003,
     "costBasis": "estimated_provider_cost_no_invoice",
-    "requestId": "7q69kp7g7xrzt0d1e2g92c2bsw"
+    "requestId": "7q69kp7g7xrzt0d1e2g92c2bsw",
+    "displaySelected": false
   },
   {
     "id": "image-20",
     "group": "image",
     "files": [
-      "public/gallery/image/image-20.webp"
+      "public/gallery/image/anonymous-street-backview.webp"
     ],
     "prompt": "A fictional person seen from behind in a wool coat on a quiet street, vintage film grain, cool window rim light, balanced off-center composition, tactile editorial detail, natural color; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
     "model": "black-forest-labs/flux-schnell",
@@ -358,6 +395,9 @@
     "costUsd": 0.003,
     "costBasis": "estimated_provider_cost_no_invoice",
     "requestId": "48qt5nrcm9rzw0d1e2gt7s2qcg",
+    "displaySelected": true,
+    "displayAlt": "A person in a wool coat seen from behind in bright daylight.",
+    "displayCaption": "Vintage film portrait · quiet street",
     "postprocessing": {
       "crop": {
         "left": 512,
@@ -385,13 +425,14 @@
     "generatedAt": "2026-10-25T01:16:21.640Z",
     "costUsd": 0.003,
     "costBasis": "estimated_provider_cost_no_invoice",
-    "requestId": "06yzs59b9drzw0d1e2gsfne05g"
+    "requestId": "06yzs59b9drzw0d1e2gsfne05g",
+    "displaySelected": false
   },
   {
     "id": "image-22",
     "group": "image",
     "files": [
-      "public/gallery/image/image-22.webp"
+      "public/gallery/image/autumn-forest-overcast.webp"
     ],
     "prompt": "An autumn forest path with amber leaves, distant hills, and soft overcast light, cool window rim light, balanced off-center composition, tactile editorial detail, natural color; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
     "model": "black-forest-labs/flux-schnell",
@@ -403,13 +444,16 @@
     "generatedAt": "2026-10-25T01:16:29.127Z",
     "costUsd": 0.003,
     "costBasis": "estimated_provider_cost_no_invoice",
-    "requestId": "n95mx3tdtxrzy0d1e2gv58rsqc"
+    "requestId": "n95mx3tdtxrzy0d1e2gv58rsqc",
+    "displaySelected": true,
+    "displayAlt": "An autumn forest path with amber leaves and distant hills.",
+    "displayCaption": "Seasonal landscape · autumn forest"
   },
   {
     "id": "image-23",
     "group": "image",
     "files": [
-      "public/gallery/image/image-23.webp"
+      "public/gallery/image/mineral-pigment-macro.webp"
     ],
     "prompt": "An abstract macro texture of layered mineral pigments in teal, ochre, and cream, soft side lighting, centered square composition, tactile editorial detail, natural color; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
     "model": "black-forest-labs/flux-schnell",
@@ -421,7 +465,10 @@
     "generatedAt": "2026-10-25T01:16:38.978Z",
     "costUsd": 0.003,
     "costBasis": "estimated_provider_cost_no_invoice",
-    "requestId": "3cz8vrbb7srzt0d1e2gtbaxspg"
+    "requestId": "3cz8vrbb7srzt0d1e2gtbaxspg",
+    "displaySelected": true,
+    "displayAlt": "A macro mineral texture with layered teal, ochre and cream pigments.",
+    "displayCaption": "Abstract texture · layered mineral color"
   },
   {
     "id": "image-24",
@@ -439,7 +486,8 @@
     "generatedAt": "2026-10-25T01:16:46.968Z",
     "costUsd": 0.003,
     "costBasis": "estimated_provider_cost_no_invoice",
-    "requestId": "jxh71xchj9rzr0d1e2gsagt58m"
+    "requestId": "jxh71xchj9rzr0d1e2gsagt58m",
+    "displaySelected": false
   },
   {
     "id": "edit-01-before",
