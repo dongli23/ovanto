@@ -1,0 +1,968 @@
+[
+  {
+    "id": "image-01",
+    "group": "image",
+    "files": [
+      "public/gallery/image/image-01.webp"
+    ],
+    "prompt": "A gentle portrait of a fictional rescue dog beside a sleepy cat in soft window light, soft side lighting, centered square composition, tactile editorial detail, natural color; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "model": "black-forest-labs/flux-schnell",
+    "slug": "black-forest-labs/flux-schnell",
+    "provider": "replicate",
+    "width": 1024,
+    "height": 1024,
+    "bytes": 40248,
+    "generatedAt": "2026-10-25T01:13:55.235Z",
+    "costUsd": 0.003,
+    "costBasis": "estimated_provider_cost_no_invoice",
+    "requestId": "as9n39qkf9rzw0d1e2fbp5y8x8"
+  },
+  {
+    "id": "image-02",
+    "group": "image",
+    "files": [
+      "public/gallery/image/image-02.webp"
+    ],
+    "prompt": "A gentle portrait of a fictional rescue dog beside a sleepy cat in soft window light, cool window rim light, balanced off-center composition, tactile editorial detail, natural color; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "model": "black-forest-labs/flux-schnell",
+    "slug": "black-forest-labs/flux-schnell",
+    "provider": "replicate",
+    "width": 1024,
+    "height": 1024,
+    "bytes": 44798,
+    "generatedAt": "2026-10-25T01:13:59.617Z",
+    "costUsd": 0.003,
+    "costBasis": "estimated_provider_cost_no_invoice",
+    "requestId": "80f4r90hxxrzt0d1e2fv1bv4pr"
+  },
+  {
+    "id": "image-03",
+    "group": "image",
+    "files": [
+      "public/gallery/image/image-03.webp"
+    ],
+    "prompt": "A sculptural ceramic cup and folded linen on a quiet sunlit table, soft side lighting, centered square composition, tactile editorial detail, natural color; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "model": "black-forest-labs/flux-schnell",
+    "slug": "black-forest-labs/flux-schnell",
+    "provider": "replicate",
+    "width": 1024,
+    "height": 1024,
+    "bytes": 32512,
+    "generatedAt": "2026-10-25T01:14:06.572Z",
+    "costUsd": 0.003,
+    "costBasis": "estimated_provider_cost_no_invoice",
+    "requestId": "3v6t6a132srzr0d1e2frj4hqzm"
+  },
+  {
+    "id": "image-04",
+    "group": "image",
+    "files": [
+      "public/gallery/image/image-04.webp"
+    ],
+    "prompt": "A sculptural ceramic cup and folded linen on a quiet sunlit table, cool window rim light, balanced off-center composition, tactile editorial detail, natural color; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "model": "black-forest-labs/flux-schnell",
+    "slug": "black-forest-labs/flux-schnell",
+    "provider": "replicate",
+    "width": 1024,
+    "height": 1024,
+    "bytes": 32664,
+    "generatedAt": "2026-10-25T01:14:13.951Z",
+    "costUsd": 0.003,
+    "costBasis": "estimated_provider_cost_no_invoice",
+    "requestId": "g4g56p1y89rzy0d1e2fsxh5kv8"
+  },
+  {
+    "id": "image-05",
+    "group": "image",
+    "files": [
+      "public/gallery/image/image-05.webp"
+    ],
+    "prompt": "A calm European coffee shop interior with warm morning light and empty tables, soft side lighting, centered square composition, tactile editorial detail, natural color; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "model": "black-forest-labs/flux-schnell",
+    "slug": "black-forest-labs/flux-schnell",
+    "provider": "replicate",
+    "width": 1024,
+    "height": 1024,
+    "bytes": 87422,
+    "generatedAt": "2026-10-25T01:14:21.434Z",
+    "costUsd": 0.003,
+    "costBasis": "estimated_provider_cost_no_invoice",
+    "requestId": "y62pwj2v1drzw0d1e2ft9313ew"
+  },
+  {
+    "id": "image-06",
+    "group": "image",
+    "files": [
+      "public/gallery/image/image-06.webp"
+    ],
+    "prompt": "A calm European coffee shop interior with warm morning light and empty tables, cool window rim light, balanced off-center composition, tactile editorial detail, natural color; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "model": "black-forest-labs/flux-schnell",
+    "slug": "black-forest-labs/flux-schnell",
+    "provider": "replicate",
+    "width": 1024,
+    "height": 1024,
+    "bytes": 91572,
+    "generatedAt": "2026-10-25T01:14:29.376Z",
+    "costUsd": 0.003,
+    "costBasis": "estimated_provider_cost_no_invoice",
+    "requestId": "dehtpcvr99rzr0d1e2fv0wd7t0"
+  },
+  {
+    "id": "image-07",
+    "group": "image",
+    "files": [
+      "public/gallery/image/image-07.webp"
+    ],
+    "prompt": "A close-up of a rustic fruit tart with fresh berries on a handmade plate, soft side lighting, centered square composition, tactile editorial detail, natural color; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "model": "black-forest-labs/flux-schnell",
+    "slug": "black-forest-labs/flux-schnell",
+    "provider": "replicate",
+    "width": 1024,
+    "height": 1024,
+    "bytes": 106296,
+    "generatedAt": "2026-10-25T01:14:36.863Z",
+    "costUsd": 0.003,
+    "costBasis": "estimated_provider_cost_no_invoice",
+    "requestId": "q4z7rj4q91rzw0d1e2fr8zac3m"
+  },
+  {
+    "id": "image-08",
+    "group": "image",
+    "files": [
+      "public/gallery/image/image-08.webp"
+    ],
+    "prompt": "A close-up of a rustic fruit tart with fresh berries on a handmade plate, cool window rim light, balanced off-center composition, tactile editorial detail, natural color; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "model": "black-forest-labs/flux-schnell",
+    "slug": "black-forest-labs/flux-schnell",
+    "provider": "replicate",
+    "width": 1024,
+    "height": 1024,
+    "bytes": 69974,
+    "generatedAt": "2026-10-25T01:14:44.280Z",
+    "costUsd": 0.003,
+    "costBasis": "estimated_provider_cost_no_invoice",
+    "requestId": "mqb1tznmhxrzy0d1e2frqcdjx8"
+  },
+  {
+    "id": "image-09",
+    "group": "image",
+    "files": [
+      "public/gallery/image/image-09.webp"
+    ],
+    "prompt": "Misty alpine hills and a clear lake at dawn, wide cinematic landscape, soft side lighting, centered square composition, tactile editorial detail, natural color; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "model": "black-forest-labs/flux-schnell",
+    "slug": "black-forest-labs/flux-schnell",
+    "provider": "replicate",
+    "width": 1024,
+    "height": 1024,
+    "bytes": 74486,
+    "generatedAt": "2026-10-25T01:14:51.870Z",
+    "costUsd": 0.003,
+    "costBasis": "estimated_provider_cost_no_invoice",
+    "requestId": "t328nbehfsrzr0d1e2fvvydycw"
+  },
+  {
+    "id": "image-10",
+    "group": "image",
+    "files": [
+      "public/gallery/image/image-10.webp"
+    ],
+    "prompt": "Misty alpine hills and a clear lake at dawn, wide cinematic landscape, cool window rim light, balanced off-center composition, tactile editorial detail, natural color; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "model": "black-forest-labs/flux-schnell",
+    "slug": "black-forest-labs/flux-schnell",
+    "provider": "replicate",
+    "width": 1024,
+    "height": 1024,
+    "bytes": 15728,
+    "generatedAt": "2026-10-25T01:14:57.519Z",
+    "costUsd": 0.003,
+    "costBasis": "estimated_provider_cost_no_invoice",
+    "requestId": "crex227h45rzt0d1e2fta6kdfm"
+  },
+  {
+    "id": "image-11",
+    "group": "image",
+    "files": [
+      "public/gallery/image/image-11.webp"
+    ],
+    "prompt": "A contemporary stone courtyard with arches, plants, and long afternoon shadows, soft side lighting, centered square composition, tactile editorial detail, natural color; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "model": "black-forest-labs/flux-schnell",
+    "slug": "black-forest-labs/flux-schnell",
+    "provider": "replicate",
+    "width": 896,
+    "height": 896,
+    "bytes": 117064,
+    "generatedAt": "2026-10-25T01:15:06.443Z",
+    "costUsd": 0.003,
+    "costBasis": "estimated_provider_cost_no_invoice",
+    "requestId": "5zjbvzr56xrzy0d1e2gbf7dbjc"
+  },
+  {
+    "id": "image-12",
+    "group": "image",
+    "files": [
+      "public/gallery/image/image-12.webp"
+    ],
+    "prompt": "A contemporary stone courtyard with arches, plants, and long afternoon shadows, cool window rim light, balanced off-center composition, tactile editorial detail, natural color; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "model": "black-forest-labs/flux-schnell",
+    "slug": "black-forest-labs/flux-schnell",
+    "provider": "replicate",
+    "width": 896,
+    "height": 896,
+    "bytes": 119962,
+    "generatedAt": "2026-10-25T01:15:14.231Z",
+    "costUsd": 0.003,
+    "costBasis": "estimated_provider_cost_no_invoice",
+    "requestId": "s8gpct982xrzw0d1e2gb1tc9h4"
+  },
+  {
+    "id": "image-13",
+    "group": "image",
+    "files": [
+      "public/gallery/image/image-13.webp"
+    ],
+    "prompt": "A neutral studio product photograph of a woven travel backpack with no markings, soft side lighting, centered square composition, tactile editorial detail, natural color; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "model": "black-forest-labs/flux-schnell",
+    "slug": "black-forest-labs/flux-schnell",
+    "provider": "replicate",
+    "width": 1024,
+    "height": 1024,
+    "bytes": 86692,
+    "generatedAt": "2026-10-25T01:15:22.625Z",
+    "costUsd": 0.003,
+    "costBasis": "estimated_provider_cost_no_invoice",
+    "requestId": "kfp83aj6gdrzt0d1e2g9dpyygr"
+  },
+  {
+    "id": "image-14",
+    "group": "image",
+    "files": [
+      "public/gallery/image/image-14.webp"
+    ],
+    "prompt": "A neutral studio product photograph of a woven travel backpack with no markings, cool window rim light, balanced off-center composition, tactile editorial detail, natural color; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "model": "black-forest-labs/flux-schnell",
+    "slug": "black-forest-labs/flux-schnell",
+    "provider": "replicate",
+    "width": 1024,
+    "height": 1024,
+    "bytes": 82936,
+    "generatedAt": "2026-10-25T01:15:30.079Z",
+    "costUsd": 0.003,
+    "costBasis": "estimated_provider_cost_no_invoice",
+    "requestId": "m4e0e3k799rzy0d1e2g9jp9bec"
+  },
+  {
+    "id": "image-15",
+    "group": "image",
+    "files": [
+      "public/gallery/image/image-15.webp"
+    ],
+    "prompt": "A flat geometric illustration of a bicycle, leaves, and a bright sun, soft side lighting, centered square composition, tactile editorial detail, natural color; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "model": "black-forest-labs/flux-schnell",
+    "slug": "black-forest-labs/flux-schnell",
+    "provider": "replicate",
+    "width": 1024,
+    "height": 1024,
+    "bytes": 26422,
+    "generatedAt": "2026-10-25T01:15:34.323Z",
+    "costUsd": 0.003,
+    "costBasis": "estimated_provider_cost_no_invoice",
+    "requestId": "1cy3fvc4e5rzw0d1e2gaf5qmcr"
+  },
+  {
+    "id": "image-16",
+    "group": "image",
+    "files": [
+      "public/gallery/image/image-16.webp"
+    ],
+    "prompt": "A flat geometric illustration of a bicycle, leaves, and a bright sun, cool window rim light, balanced off-center composition, tactile editorial detail, natural color; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "model": "black-forest-labs/flux-schnell",
+    "slug": "black-forest-labs/flux-schnell",
+    "provider": "replicate",
+    "width": 1024,
+    "height": 1024,
+    "bytes": 40226,
+    "generatedAt": "2026-10-25T01:15:42.144Z",
+    "costUsd": 0.003,
+    "costBasis": "estimated_provider_cost_no_invoice",
+    "requestId": "9m8rne4n11rzy0d1e2gb1nxg9c"
+  },
+  {
+    "id": "image-17",
+    "group": "image",
+    "files": [
+      "public/gallery/image/image-17.webp"
+    ],
+    "prompt": "A small translucent glass terrarium rendered in polished 3D on a plain pedestal, soft side lighting, centered square composition, tactile editorial detail, natural color; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "model": "black-forest-labs/flux-schnell",
+    "slug": "black-forest-labs/flux-schnell",
+    "provider": "replicate",
+    "width": 1024,
+    "height": 1024,
+    "bytes": 24764,
+    "generatedAt": "2026-10-25T01:15:49.439Z",
+    "costUsd": 0.003,
+    "costBasis": "estimated_provider_cost_no_invoice",
+    "requestId": "1gct4ynkn5rzy0d1e2ga6a3sgg"
+  },
+  {
+    "id": "image-18",
+    "group": "image",
+    "files": [
+      "public/gallery/image/image-18.webp"
+    ],
+    "prompt": "A small translucent glass terrarium rendered in polished 3D on a plain pedestal, cool window rim light, balanced off-center composition, tactile editorial detail, natural color; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "model": "black-forest-labs/flux-schnell",
+    "slug": "black-forest-labs/flux-schnell",
+    "provider": "replicate",
+    "width": 1024,
+    "height": 1024,
+    "bytes": 29324,
+    "generatedAt": "2026-10-25T01:15:57.332Z",
+    "costUsd": 0.003,
+    "costBasis": "estimated_provider_cost_no_invoice",
+    "requestId": "hhfnxa6g45rzw0d1e2g9f9ww1m"
+  },
+  {
+    "id": "image-19",
+    "group": "image",
+    "files": [
+      "public/gallery/image/image-19.webp"
+    ],
+    "prompt": "A fictional person seen from behind in a wool coat on a quiet street, vintage film grain, soft side lighting, centered square composition, tactile editorial detail, natural color; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "model": "black-forest-labs/flux-schnell",
+    "slug": "black-forest-labs/flux-schnell",
+    "provider": "replicate",
+    "width": 1024,
+    "height": 1024,
+    "bytes": 52268,
+    "generatedAt": "2026-10-25T01:16:04.950Z",
+    "costUsd": 0.003,
+    "costBasis": "estimated_provider_cost_no_invoice",
+    "requestId": "7q69kp7g7xrzt0d1e2g92c2bsw"
+  },
+  {
+    "id": "image-20",
+    "group": "image",
+    "files": [
+      "public/gallery/image/image-20.webp"
+    ],
+    "prompt": "A fictional person seen from behind in a wool coat on a quiet street, vintage film grain, cool window rim light, balanced off-center composition, tactile editorial detail, natural color; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "model": "black-forest-labs/flux-schnell",
+    "slug": "black-forest-labs/flux-schnell",
+    "provider": "replicate",
+    "width": 512,
+    "height": 512,
+    "bytes": 13400,
+    "generatedAt": "2026-10-25T01:16:12.799Z",
+    "costUsd": 0.003,
+    "costBasis": "estimated_provider_cost_no_invoice",
+    "requestId": "48qt5nrcm9rzw0d1e2gt7s2qcg",
+    "postprocessing": {
+      "crop": {
+        "left": 512,
+        "top": 96,
+        "width": 512,
+        "height": 512
+      },
+      "quality": 82,
+      "reason": "Remove generated storefront lettering; no additional provider request"
+    }
+  },
+  {
+    "id": "image-21",
+    "group": "image",
+    "files": [
+      "public/gallery/image/image-21.webp"
+    ],
+    "prompt": "An autumn forest path with amber leaves, distant hills, and soft overcast light, soft side lighting, centered square composition, tactile editorial detail, natural color; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "model": "black-forest-labs/flux-schnell",
+    "slug": "black-forest-labs/flux-schnell",
+    "provider": "replicate",
+    "width": 640,
+    "height": 640,
+    "bytes": 138258,
+    "generatedAt": "2026-10-25T01:16:21.640Z",
+    "costUsd": 0.003,
+    "costBasis": "estimated_provider_cost_no_invoice",
+    "requestId": "06yzs59b9drzw0d1e2gsfne05g"
+  },
+  {
+    "id": "image-22",
+    "group": "image",
+    "files": [
+      "public/gallery/image/image-22.webp"
+    ],
+    "prompt": "An autumn forest path with amber leaves, distant hills, and soft overcast light, cool window rim light, balanced off-center composition, tactile editorial detail, natural color; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "model": "black-forest-labs/flux-schnell",
+    "slug": "black-forest-labs/flux-schnell",
+    "provider": "replicate",
+    "width": 1024,
+    "height": 1024,
+    "bytes": 130244,
+    "generatedAt": "2026-10-25T01:16:29.127Z",
+    "costUsd": 0.003,
+    "costBasis": "estimated_provider_cost_no_invoice",
+    "requestId": "n95mx3tdtxrzy0d1e2gv58rsqc"
+  },
+  {
+    "id": "image-23",
+    "group": "image",
+    "files": [
+      "public/gallery/image/image-23.webp"
+    ],
+    "prompt": "An abstract macro texture of layered mineral pigments in teal, ochre, and cream, soft side lighting, centered square composition, tactile editorial detail, natural color; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "model": "black-forest-labs/flux-schnell",
+    "slug": "black-forest-labs/flux-schnell",
+    "provider": "replicate",
+    "width": 512,
+    "height": 512,
+    "bytes": 116604,
+    "generatedAt": "2026-10-25T01:16:38.978Z",
+    "costUsd": 0.003,
+    "costBasis": "estimated_provider_cost_no_invoice",
+    "requestId": "3cz8vrbb7srzt0d1e2gtbaxspg"
+  },
+  {
+    "id": "image-24",
+    "group": "image",
+    "files": [
+      "public/gallery/image/image-24.webp"
+    ],
+    "prompt": "An abstract macro texture of layered mineral pigments in teal, ochre, and cream, cool window rim light, balanced off-center composition, tactile editorial detail, natural color; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "model": "black-forest-labs/flux-schnell",
+    "slug": "black-forest-labs/flux-schnell",
+    "provider": "replicate",
+    "width": 896,
+    "height": 896,
+    "bytes": 135222,
+    "generatedAt": "2026-10-25T01:16:46.968Z",
+    "costUsd": 0.003,
+    "costBasis": "estimated_provider_cost_no_invoice",
+    "requestId": "jxh71xchj9rzr0d1e2gsagt58m"
+  },
+  {
+    "id": "edit-01-before",
+    "parentId": "edit-01",
+    "group": "edit",
+    "files": [
+      "public/gallery/edit/edit-01-before.webp"
+    ],
+    "prompt": "A studio photo of a plain ceramic vase on a small table, camera centered with gentle left-side light, preserve the same subject placement; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "editInstruction": "Remove the background and replace it with a single warm ivory solid color while preserving the vase, framing, and shadows. Apply the camera centered with gentle left-side light treatment while preserving the original composition. Keep the same seed semantics.; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "beforePrompt": "A studio photo of a plain ceramic vase on a small table, camera centered with gentle left-side light, preserve the same subject placement; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "model": "black-forest-labs/flux-schnell",
+    "slug": "black-forest-labs/flux-schnell",
+    "provider": "replicate",
+    "width": 1024,
+    "height": 1024,
+    "bytes": 9674,
+    "generatedAt": "2026-10-25T01:16:54.527Z",
+    "costUsd": 0.003,
+    "costBasis": "estimated_provider_cost_no_invoice",
+    "requestId": "90f60jdjcnrzt0d1e2gstkfqg0"
+  },
+  {
+    "id": "edit-01-after",
+    "parentId": "edit-01",
+    "group": "edit",
+    "files": [
+      "public/gallery/edit/edit-01-after.webp"
+    ],
+    "prompt": "Remove the background and replace it with a single warm ivory solid color while preserving the vase, framing, and shadows. Apply the camera centered with gentle left-side light treatment while preserving the original composition. Keep the same seed semantics.; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "editInstruction": "Remove the background and replace it with a single warm ivory solid color while preserving the vase, framing, and shadows. Apply the camera centered with gentle left-side light treatment while preserving the original composition. Keep the same seed semantics.; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "beforePrompt": "A studio photo of a plain ceramic vase on a small table, camera centered with gentle left-side light, preserve the same subject placement; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "model": "black-forest-labs/flux-kontext-dev",
+    "slug": "black-forest-labs/flux-kontext-dev",
+    "provider": "replicate",
+    "width": 1024,
+    "height": 1024,
+    "bytes": 9944,
+    "generatedAt": "2026-10-25T01:30:15.554Z",
+    "costUsd": 0.025,
+    "costBasis": "estimated_provider_cost_no_invoice",
+    "requestId": "y3rgtazc0hrp00d1e2pvb1xyym"
+  },
+  {
+    "id": "edit-02-before",
+    "parentId": "edit-02",
+    "group": "edit",
+    "files": [
+      "public/gallery/edit/edit-02-before.webp"
+    ],
+    "prompt": "A studio photo of a plain ceramic vase on a small table, camera slightly elevated with broad diffused light, preserve the same subject placement; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "editInstruction": "Remove the background and replace it with a single warm ivory solid color while preserving the vase, framing, and shadows. Apply the camera slightly elevated with broad diffused light treatment while preserving the original composition. Keep the same seed semantics.; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "beforePrompt": "A studio photo of a plain ceramic vase on a small table, camera slightly elevated with broad diffused light, preserve the same subject placement; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "model": "black-forest-labs/flux-schnell",
+    "slug": "black-forest-labs/flux-schnell",
+    "provider": "replicate",
+    "width": 1024,
+    "height": 1024,
+    "bytes": 10520,
+    "generatedAt": "2026-10-25T01:30:23.419Z",
+    "costUsd": 0.003,
+    "costBasis": "estimated_provider_cost_no_invoice",
+    "requestId": "n0p6sn89qdrzw0d1e2qa6f3fhw"
+  },
+  {
+    "id": "edit-02-after",
+    "parentId": "edit-02",
+    "group": "edit",
+    "files": [
+      "public/gallery/edit/edit-02-after.webp"
+    ],
+    "prompt": "Remove the background and replace it with a single warm ivory solid color while preserving the vase, framing, and shadows. Apply the camera slightly elevated with broad diffused light treatment while preserving the original composition. Keep the same seed semantics.; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "editInstruction": "Remove the background and replace it with a single warm ivory solid color while preserving the vase, framing, and shadows. Apply the camera slightly elevated with broad diffused light treatment while preserving the original composition. Keep the same seed semantics.; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "beforePrompt": "A studio photo of a plain ceramic vase on a small table, camera slightly elevated with broad diffused light, preserve the same subject placement; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "model": "black-forest-labs/flux-kontext-dev",
+    "slug": "black-forest-labs/flux-kontext-dev",
+    "provider": "replicate",
+    "width": 1024,
+    "height": 1024,
+    "bytes": 10620,
+    "generatedAt": "2026-10-25T01:30:30.535Z",
+    "costUsd": 0.025,
+    "costBasis": "estimated_provider_cost_no_invoice",
+    "requestId": "a0kh9es6y1rp40d1e2q9czgnng"
+  },
+  {
+    "id": "edit-03-before",
+    "parentId": "edit-03",
+    "group": "edit",
+    "files": [
+      "public/gallery/edit/edit-03-before.webp"
+    ],
+    "prompt": "A quiet European courtyard with a stone arch and leafy plants in clear daylight, camera centered with gentle left-side light, preserve the same subject placement; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "editInstruction": "Change the daylight to a warm blue-and-amber dusk while preserving the exact architecture, camera angle, and composition. Apply the camera centered with gentle left-side light treatment while preserving the original composition. Keep the same seed semantics.; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "beforePrompt": "A quiet European courtyard with a stone arch and leafy plants in clear daylight, camera centered with gentle left-side light, preserve the same subject placement; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "model": "black-forest-labs/flux-schnell",
+    "slug": "black-forest-labs/flux-schnell",
+    "provider": "replicate",
+    "width": 1024,
+    "height": 1024,
+    "bytes": 142574,
+    "generatedAt": "2026-10-25T01:30:38.678Z",
+    "costUsd": 0.003,
+    "costBasis": "estimated_provider_cost_no_invoice",
+    "requestId": "x9tf3wa1tdrzr0d1e2q93n2mcw"
+  },
+  {
+    "id": "edit-03-after",
+    "parentId": "edit-03",
+    "group": "edit",
+    "files": [
+      "public/gallery/edit/edit-03-after.webp"
+    ],
+    "prompt": "Change the daylight to a warm blue-and-amber dusk while preserving the exact architecture, camera angle, and composition. Apply the camera centered with gentle left-side light treatment while preserving the original composition. Keep the same seed semantics.; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "editInstruction": "Change the daylight to a warm blue-and-amber dusk while preserving the exact architecture, camera angle, and composition. Apply the camera centered with gentle left-side light treatment while preserving the original composition. Keep the same seed semantics.; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "beforePrompt": "A quiet European courtyard with a stone arch and leafy plants in clear daylight, camera centered with gentle left-side light, preserve the same subject placement; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "model": "black-forest-labs/flux-kontext-dev",
+    "slug": "black-forest-labs/flux-kontext-dev",
+    "provider": "replicate",
+    "width": 1024,
+    "height": 1024,
+    "bytes": 40446,
+    "generatedAt": "2026-10-25T01:30:45.295Z",
+    "costUsd": 0.025,
+    "costBasis": "estimated_provider_cost_no_invoice",
+    "requestId": "as9dpek2b9rp00d1e2qb3r4j34"
+  },
+  {
+    "id": "edit-04-before",
+    "parentId": "edit-04",
+    "group": "edit",
+    "files": [
+      "public/gallery/edit/edit-04-before.webp"
+    ],
+    "prompt": "A quiet European courtyard with a stone arch and leafy plants in clear daylight, camera slightly elevated with broad diffused light, preserve the same subject placement; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "editInstruction": "Change the daylight to a warm blue-and-amber dusk while preserving the exact architecture, camera angle, and composition. Apply the camera slightly elevated with broad diffused light treatment while preserving the original composition. Keep the same seed semantics.; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "beforePrompt": "A quiet European courtyard with a stone arch and leafy plants in clear daylight, camera slightly elevated with broad diffused light, preserve the same subject placement; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "model": "black-forest-labs/flux-schnell",
+    "slug": "black-forest-labs/flux-schnell",
+    "provider": "replicate",
+    "width": 896,
+    "height": 896,
+    "bytes": 144360,
+    "generatedAt": "2026-10-25T01:30:53.246Z",
+    "costUsd": 0.003,
+    "costBasis": "estimated_provider_cost_no_invoice",
+    "requestId": "zbvpmnbvedrzw0d1e2q8kn16jm"
+  },
+  {
+    "id": "edit-04-after",
+    "parentId": "edit-04",
+    "group": "edit",
+    "files": [
+      "public/gallery/edit/edit-04-after.webp"
+    ],
+    "prompt": "Change the daylight to a warm blue-and-amber dusk while preserving the exact architecture, camera angle, and composition. Apply the camera slightly elevated with broad diffused light treatment while preserving the original composition. Keep the same seed semantics.; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "editInstruction": "Change the daylight to a warm blue-and-amber dusk while preserving the exact architecture, camera angle, and composition. Apply the camera slightly elevated with broad diffused light treatment while preserving the original composition. Keep the same seed semantics.; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "beforePrompt": "A quiet European courtyard with a stone arch and leafy plants in clear daylight, camera slightly elevated with broad diffused light, preserve the same subject placement; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "model": "black-forest-labs/flux-kontext-dev",
+    "slug": "black-forest-labs/flux-kontext-dev",
+    "provider": "replicate",
+    "width": 896,
+    "height": 896,
+    "bytes": 35306,
+    "generatedAt": "2026-10-25T01:30:59.954Z",
+    "costUsd": 0.025,
+    "costBasis": "estimated_provider_cost_no_invoice",
+    "requestId": "e8a74dmvanrp60d1e2q8t75kh8"
+  },
+  {
+    "id": "edit-05-before",
+    "parentId": "edit-05",
+    "group": "edit",
+    "files": [
+      "public/gallery/edit/edit-05-before.webp"
+    ],
+    "prompt": "A softly faded picnic scene with anonymous distant figures shown only from behind; no faces or identifying features, camera centered with gentle left-side light, preserve the same subject placement; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "editInstruction": "Restore gentle contrast, remove dust and scratches, and preserve the original framing and anonymous silhouettes without adding any faces. Apply the camera centered with gentle left-side light treatment while preserving the original composition. Keep the same seed semantics.; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "beforePrompt": "A softly faded picnic scene with anonymous distant figures shown only from behind; no faces or identifying features, camera centered with gentle left-side light, preserve the same subject placement; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "model": "black-forest-labs/flux-schnell",
+    "slug": "black-forest-labs/flux-schnell",
+    "provider": "replicate",
+    "width": 1024,
+    "height": 1024,
+    "bytes": 31884,
+    "generatedAt": "2026-10-25T01:31:07.008Z",
+    "costUsd": 0.003,
+    "costBasis": "estimated_provider_cost_no_invoice",
+    "requestId": "p3q6wv5mpdrzt0d1e2q8xvxpsr"
+  },
+  {
+    "id": "edit-05-after",
+    "parentId": "edit-05",
+    "group": "edit",
+    "files": [
+      "public/gallery/edit/edit-05-after.webp"
+    ],
+    "prompt": "Restore gentle contrast, remove dust and scratches, and preserve the original framing and anonymous silhouettes without adding any faces. Apply the camera centered with gentle left-side light treatment while preserving the original composition. Keep the same seed semantics.; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "editInstruction": "Restore gentle contrast, remove dust and scratches, and preserve the original framing and anonymous silhouettes without adding any faces. Apply the camera centered with gentle left-side light treatment while preserving the original composition. Keep the same seed semantics.; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "beforePrompt": "A softly faded picnic scene with anonymous distant figures shown only from behind; no faces or identifying features, camera centered with gentle left-side light, preserve the same subject placement; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "model": "black-forest-labs/flux-kontext-dev",
+    "slug": "black-forest-labs/flux-kontext-dev",
+    "provider": "replicate",
+    "width": 1024,
+    "height": 1024,
+    "bytes": 48894,
+    "generatedAt": "2026-10-25T01:31:19.584Z",
+    "costUsd": 0.025,
+    "costBasis": "estimated_provider_cost_no_invoice",
+    "requestId": "d5yvpc6h51rp00d1e2q9tkkr1m"
+  },
+  {
+    "id": "edit-06-before",
+    "parentId": "edit-06",
+    "group": "edit",
+    "files": [
+      "public/gallery/edit/edit-06-before.webp"
+    ],
+    "prompt": "A softly faded picnic scene with anonymous distant figures shown only from behind; no faces or identifying features, camera slightly elevated with broad diffused light, preserve the same subject placement; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "editInstruction": "Restore gentle contrast, remove dust and scratches, and preserve the original framing and anonymous silhouettes without adding any faces. Apply the camera slightly elevated with broad diffused light treatment while preserving the original composition. Keep the same seed semantics.; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "beforePrompt": "A softly faded picnic scene with anonymous distant figures shown only from behind; no faces or identifying features, camera slightly elevated with broad diffused light, preserve the same subject placement; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "model": "black-forest-labs/flux-schnell",
+    "slug": "black-forest-labs/flux-schnell",
+    "provider": "replicate",
+    "width": 780,
+    "height": 1024,
+    "bytes": 22008,
+    "generatedAt": "2026-10-25T01:31:28.030Z",
+    "costUsd": 0.003,
+    "costBasis": "estimated_provider_cost_no_invoice",
+    "requestId": "6tjb2c05y1rzw0d1e2qtbhswhc",
+    "postprocessing": {
+      "crop": {
+        "left": 0,
+        "top": 0,
+        "width": 780,
+        "height": 1024
+      },
+      "quality": 82,
+      "reason": "Same crop on both images to exclude foreground front-facing person; no additional provider request"
+    }
+  },
+  {
+    "id": "edit-06-after",
+    "parentId": "edit-06",
+    "group": "edit",
+    "files": [
+      "public/gallery/edit/edit-06-after.webp"
+    ],
+    "prompt": "Restore gentle contrast, remove dust and scratches, and preserve the original framing and anonymous silhouettes without adding any faces. Apply the camera slightly elevated with broad diffused light treatment while preserving the original composition. Keep the same seed semantics.; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "editInstruction": "Restore gentle contrast, remove dust and scratches, and preserve the original framing and anonymous silhouettes without adding any faces. Apply the camera slightly elevated with broad diffused light treatment while preserving the original composition. Keep the same seed semantics.; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "beforePrompt": "A softly faded picnic scene with anonymous distant figures shown only from behind; no faces or identifying features, camera slightly elevated with broad diffused light, preserve the same subject placement; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "model": "black-forest-labs/flux-kontext-dev",
+    "slug": "black-forest-labs/flux-kontext-dev",
+    "provider": "replicate",
+    "width": 780,
+    "height": 1024,
+    "bytes": 23942,
+    "generatedAt": "2026-10-25T01:31:34.818Z",
+    "costUsd": 0.025,
+    "costBasis": "estimated_provider_cost_no_invoice",
+    "requestId": "e5w943h47hrp20d1e2qvy0dfx0",
+    "postprocessing": {
+      "crop": {
+        "left": 0,
+        "top": 0,
+        "width": 780,
+        "height": 1024
+      },
+      "quality": 82,
+      "reason": "Same crop on both images to exclude foreground front-facing person; no additional provider request"
+    }
+  },
+  {
+    "id": "edit-07-before",
+    "parentId": "edit-07",
+    "group": "edit",
+    "files": [
+      "public/gallery/edit/edit-07-before.webp"
+    ],
+    "prompt": "A mountain cabin beside green trees under a clear summer sky, camera centered with gentle left-side light, preserve the same subject placement; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "editInstruction": "Turn the season into a snowy winter scene while preserving the cabin, camera position, and composition. Apply the camera centered with gentle left-side light treatment while preserving the original composition. Keep the same seed semantics.; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "beforePrompt": "A mountain cabin beside green trees under a clear summer sky, camera centered with gentle left-side light, preserve the same subject placement; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "model": "black-forest-labs/flux-schnell",
+    "slug": "black-forest-labs/flux-schnell",
+    "provider": "replicate",
+    "width": 640,
+    "height": 640,
+    "bytes": 102558,
+    "generatedAt": "2026-10-25T01:31:49.996Z",
+    "costUsd": 0.003,
+    "costBasis": "estimated_provider_cost_no_invoice",
+    "requestId": "66rcr4hwxhrzr0d1e2qv1yvgcc"
+  },
+  {
+    "id": "edit-07-after",
+    "parentId": "edit-07",
+    "group": "edit",
+    "files": [
+      "public/gallery/edit/edit-07-after.webp"
+    ],
+    "prompt": "Turn the season into a snowy winter scene while preserving the cabin, camera position, and composition. Apply the camera centered with gentle left-side light treatment while preserving the original composition. Keep the same seed semantics.; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "editInstruction": "Turn the season into a snowy winter scene while preserving the cabin, camera position, and composition. Apply the camera centered with gentle left-side light treatment while preserving the original composition. Keep the same seed semantics.; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "beforePrompt": "A mountain cabin beside green trees under a clear summer sky, camera centered with gentle left-side light, preserve the same subject placement; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "model": "black-forest-labs/flux-kontext-dev",
+    "slug": "black-forest-labs/flux-kontext-dev",
+    "provider": "replicate",
+    "width": 640,
+    "height": 640,
+    "bytes": 85836,
+    "generatedAt": "2026-10-25T01:31:58.340Z",
+    "costUsd": 0.025,
+    "costBasis": "estimated_provider_cost_no_invoice",
+    "requestId": "spsy4jvvrdrp20d1e2qv66f238"
+  },
+  {
+    "id": "edit-08-before",
+    "parentId": "edit-08",
+    "group": "edit",
+    "files": [
+      "public/gallery/edit/edit-08-before.webp"
+    ],
+    "prompt": "A mountain cabin beside green trees under a clear summer sky, camera slightly elevated with broad diffused light, preserve the same subject placement; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "editInstruction": "Turn the season into a snowy winter scene while preserving the cabin, camera position, and composition. Apply the camera slightly elevated with broad diffused light treatment while preserving the original composition. Keep the same seed semantics.; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "beforePrompt": "A mountain cabin beside green trees under a clear summer sky, camera slightly elevated with broad diffused light, preserve the same subject placement; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "model": "black-forest-labs/flux-schnell",
+    "slug": "black-forest-labs/flux-schnell",
+    "provider": "replicate",
+    "width": 896,
+    "height": 896,
+    "bytes": 86046,
+    "generatedAt": "2026-10-25T01:32:06.122Z",
+    "costUsd": 0.003,
+    "costBasis": "estimated_provider_cost_no_invoice",
+    "requestId": "m9kn6mwryhrzt0d1e2qvwg18wm"
+  },
+  {
+    "id": "edit-08-after",
+    "parentId": "edit-08",
+    "group": "edit",
+    "files": [
+      "public/gallery/edit/edit-08-after.webp"
+    ],
+    "prompt": "Turn the season into a snowy winter scene while preserving the cabin, camera position, and composition. Apply the camera slightly elevated with broad diffused light treatment while preserving the original composition. Keep the same seed semantics.; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "editInstruction": "Turn the season into a snowy winter scene while preserving the cabin, camera position, and composition. Apply the camera slightly elevated with broad diffused light treatment while preserving the original composition. Keep the same seed semantics.; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "beforePrompt": "A mountain cabin beside green trees under a clear summer sky, camera slightly elevated with broad diffused light, preserve the same subject placement; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "model": "black-forest-labs/flux-kontext-dev",
+    "slug": "black-forest-labs/flux-kontext-dev",
+    "provider": "replicate",
+    "width": 896,
+    "height": 896,
+    "bytes": 119222,
+    "generatedAt": "2026-10-25T01:32:14.296Z",
+    "costUsd": 0.025,
+    "costBasis": "estimated_provider_cost_no_invoice",
+    "requestId": "cy1q2zdr2srp60d1e2qs2724w0"
+  },
+  {
+    "id": "edit-09-before",
+    "parentId": "edit-09",
+    "group": "edit",
+    "files": [
+      "public/gallery/edit/edit-09-before.webp"
+    ],
+    "prompt": "A still life of pears, a linen cloth, and a ceramic bowl on a plain table, camera centered with gentle left-side light, preserve the same subject placement; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "editInstruction": "Transform the same composition into a delicate watercolor illustration while preserving object placement and proportions. Apply the camera centered with gentle left-side light treatment while preserving the original composition. Keep the same seed semantics.; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "beforePrompt": "A still life of pears, a linen cloth, and a ceramic bowl on a plain table, camera centered with gentle left-side light, preserve the same subject placement; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "model": "black-forest-labs/flux-schnell",
+    "slug": "black-forest-labs/flux-schnell",
+    "provider": "replicate",
+    "width": 1024,
+    "height": 1024,
+    "bytes": 42230,
+    "generatedAt": "2026-10-25T01:32:21.570Z",
+    "costUsd": 0.003,
+    "costBasis": "estimated_provider_cost_no_invoice",
+    "requestId": "b6b8m56q5nrzt0d1e2qtwskc80"
+  },
+  {
+    "id": "edit-09-after",
+    "parentId": "edit-09",
+    "group": "edit",
+    "files": [
+      "public/gallery/edit/edit-09-after.webp"
+    ],
+    "prompt": "Transform the same composition into a delicate watercolor illustration while preserving object placement and proportions. Apply the camera centered with gentle left-side light treatment while preserving the original composition. Keep the same seed semantics.; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "editInstruction": "Transform the same composition into a delicate watercolor illustration while preserving object placement and proportions. Apply the camera centered with gentle left-side light treatment while preserving the original composition. Keep the same seed semantics.; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "beforePrompt": "A still life of pears, a linen cloth, and a ceramic bowl on a plain table, camera centered with gentle left-side light, preserve the same subject placement; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "model": "black-forest-labs/flux-kontext-dev",
+    "slug": "black-forest-labs/flux-kontext-dev",
+    "provider": "replicate",
+    "width": 1024,
+    "height": 1024,
+    "bytes": 56508,
+    "generatedAt": "2026-10-25T01:32:28.296Z",
+    "costUsd": 0.025,
+    "costBasis": "estimated_provider_cost_no_invoice",
+    "requestId": "twqe82zmfsrp00d1e2qvr7f3s8"
+  },
+  {
+    "id": "edit-10-before",
+    "parentId": "edit-10",
+    "group": "edit",
+    "files": [
+      "public/gallery/edit/edit-10-before.webp"
+    ],
+    "prompt": "A still life of pears, a linen cloth, and a ceramic bowl on a plain table, camera slightly elevated with broad diffused light, preserve the same subject placement; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "editInstruction": "Transform the same composition into a delicate watercolor illustration while preserving object placement and proportions. Apply the camera slightly elevated with broad diffused light treatment while preserving the original composition. Keep the same seed semantics.; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "beforePrompt": "A still life of pears, a linen cloth, and a ceramic bowl on a plain table, camera slightly elevated with broad diffused light, preserve the same subject placement; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "model": "black-forest-labs/flux-schnell",
+    "slug": "black-forest-labs/flux-schnell",
+    "provider": "replicate",
+    "width": 1024,
+    "height": 1024,
+    "bytes": 38768,
+    "generatedAt": "2026-10-25T01:32:36.050Z",
+    "costUsd": 0.003,
+    "costBasis": "estimated_provider_cost_no_invoice",
+    "requestId": "eswma20g2srzw0d1e2r9xsd4jm"
+  },
+  {
+    "id": "edit-10-after",
+    "parentId": "edit-10",
+    "group": "edit",
+    "files": [
+      "public/gallery/edit/edit-10-after.webp"
+    ],
+    "prompt": "Transform the same composition into a delicate watercolor illustration while preserving object placement and proportions. Apply the camera slightly elevated with broad diffused light treatment while preserving the original composition. Keep the same seed semantics.; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "editInstruction": "Transform the same composition into a delicate watercolor illustration while preserving object placement and proportions. Apply the camera slightly elevated with broad diffused light treatment while preserving the original composition. Keep the same seed semantics.; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "beforePrompt": "A still life of pears, a linen cloth, and a ceramic bowl on a plain table, camera slightly elevated with broad diffused light, preserve the same subject placement; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "model": "black-forest-labs/flux-kontext-dev",
+    "slug": "black-forest-labs/flux-kontext-dev",
+    "provider": "replicate",
+    "width": 1024,
+    "height": 1024,
+    "bytes": 71658,
+    "generatedAt": "2026-10-25T01:32:42.604Z",
+    "costUsd": 0.025,
+    "costBasis": "estimated_provider_cost_no_invoice",
+    "requestId": "7gkkntsd01rp40d1e2r8qbgmp4"
+  },
+  {
+    "id": "edit-11-before",
+    "parentId": "edit-11",
+    "group": "edit",
+    "files": [
+      "public/gallery/edit/edit-11-before.webp"
+    ],
+    "prompt": "A generic unmarked glass bottle on a neutral studio surface, camera centered with gentle left-side light, preserve the same subject placement; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "editInstruction": "Place the same unmarked bottle on a soft pale-blue studio background while preserving its silhouette, position, and lighting direction. Apply the camera centered with gentle left-side light treatment while preserving the original composition. Keep the same seed semantics.; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "beforePrompt": "A generic unmarked glass bottle on a neutral studio surface, camera centered with gentle left-side light, preserve the same subject placement; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "model": "black-forest-labs/flux-schnell",
+    "slug": "black-forest-labs/flux-schnell",
+    "provider": "replicate",
+    "width": 1024,
+    "height": 1024,
+    "bytes": 12008,
+    "generatedAt": "2026-10-25T01:32:51.086Z",
+    "costUsd": 0.003,
+    "costBasis": "estimated_provider_cost_no_invoice",
+    "requestId": "kzttv4t5x5rzw0d1e2r8zqhjzg"
+  },
+  {
+    "id": "edit-11-after",
+    "parentId": "edit-11",
+    "group": "edit",
+    "files": [
+      "public/gallery/edit/edit-11-after.webp"
+    ],
+    "prompt": "Place the same unmarked bottle on a soft pale-blue studio background while preserving its silhouette, position, and lighting direction. Apply the camera centered with gentle left-side light treatment while preserving the original composition. Keep the same seed semantics.; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "editInstruction": "Place the same unmarked bottle on a soft pale-blue studio background while preserving its silhouette, position, and lighting direction. Apply the camera centered with gentle left-side light treatment while preserving the original composition. Keep the same seed semantics.; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "beforePrompt": "A generic unmarked glass bottle on a neutral studio surface, camera centered with gentle left-side light, preserve the same subject placement; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "model": "black-forest-labs/flux-kontext-dev",
+    "slug": "black-forest-labs/flux-kontext-dev",
+    "provider": "replicate",
+    "width": 1024,
+    "height": 1024,
+    "bytes": 11142,
+    "generatedAt": "2026-10-25T01:32:57.473Z",
+    "costUsd": 0.025,
+    "costBasis": "estimated_provider_cost_no_invoice",
+    "requestId": "w5506rk7s5rp60d1e2r9aabkmw"
+  },
+  {
+    "id": "edit-12-before",
+    "parentId": "edit-12",
+    "group": "edit",
+    "files": [
+      "public/gallery/edit/edit-12-before.webp"
+    ],
+    "prompt": "A generic unmarked glass bottle on a neutral studio surface, camera slightly elevated with broad diffused light, preserve the same subject placement; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "editInstruction": "Place the same unmarked bottle on a soft pale-blue studio background while preserving its silhouette, position, and lighting direction. Apply the camera slightly elevated with broad diffused light treatment while preserving the original composition. Keep the same seed semantics.; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "beforePrompt": "A generic unmarked glass bottle on a neutral studio surface, camera slightly elevated with broad diffused light, preserve the same subject placement; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "model": "black-forest-labs/flux-schnell",
+    "slug": "black-forest-labs/flux-schnell",
+    "provider": "replicate",
+    "width": 1024,
+    "height": 1024,
+    "bytes": 11390,
+    "generatedAt": "2026-10-25T01:33:04.541Z",
+    "costUsd": 0.003,
+    "costBasis": "estimated_provider_cost_no_invoice",
+    "requestId": "1yz8wr3zt5rzt0d1e2r9v9ck24"
+  },
+  {
+    "id": "edit-12-after",
+    "parentId": "edit-12",
+    "group": "edit",
+    "files": [
+      "public/gallery/edit/edit-12-after.webp"
+    ],
+    "prompt": "Place the same unmarked bottle on a soft pale-blue studio background while preserving its silhouette, position, and lighting direction. Apply the camera slightly elevated with broad diffused light treatment while preserving the original composition. Keep the same seed semantics.; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "editInstruction": "Place the same unmarked bottle on a soft pale-blue studio background while preserving its silhouette, position, and lighting direction. Apply the camera slightly elevated with broad diffused light treatment while preserving the original composition. Keep the same seed semantics.; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "beforePrompt": "A generic unmarked glass bottle on a neutral studio surface, camera slightly elevated with broad diffused light, preserve the same subject placement; No identifiable real people, celebrity faces, brand logos, trademarks, readable text, captions, dialogue, or watermark; use original generic content only.",
+    "model": "black-forest-labs/flux-kontext-dev",
+    "slug": "black-forest-labs/flux-kontext-dev",
+    "provider": "replicate",
+    "width": 1024,
+    "height": 1024,
+    "bytes": 11040,
+    "generatedAt": "2026-10-25T01:33:10.893Z",
+    "costUsd": 0.025,
+    "costBasis": "estimated_provider_cost_no_invoice",
+    "requestId": "ytv936cwexrp40d1e2ra7z4f8g"
+  }
+]
